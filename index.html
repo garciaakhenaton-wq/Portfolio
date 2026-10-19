@@ -314,6 +314,31 @@ body.ship-hover { cursor: pointer; }
   background: linear-gradient(100deg, #fff 10%, #ffb02e 45%, #ff2d2d 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .vts-back { position: absolute; right: 0; top: 0; padding: 0.65rem 1.1rem; border-radius: 12px; border: 1px solid rgba(255, 60, 50, 0.55); background: rgba(255, 45, 45, 0.12); color: #fff; font: 600 0.9rem var(--font); cursor: pointer; }
 .vts-back:hover { background: rgba(255, 45, 45, 0.28); box-shadow: 0 0 18px rgba(255, 45, 45, 0.35); }
+/* Article choisi, en tête du grand écran */
+.vts-focus { position: relative; margin: 0 0 1.8rem; padding: 1.2rem 1.3rem; border-radius: 16px; border: 1px solid rgba(255, 176, 46, 0.4); background: linear-gradient(120deg, rgba(255, 176, 46, 0.1), rgba(255, 45, 45, 0.06)); }
+.vts-fmeta { margin: 0 0 0.45rem; font-family: var(--mono); font-size: 0.78rem; color: #c9bfd0; }
+.vts-fmeta b { color: #ffb02e; font-weight: 600; }
+.vts-lang { padding: 0.05rem 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.7rem; }
+.vts-ftitle { margin: 0 0 0.55rem; font-family: var(--display); font-size: clamp(1.05rem, 2.2vw, 1.35rem); line-height: 1.3; color: #fff; text-transform: none; letter-spacing: 0; }
+.vts-fsum { margin: 0 0 0.9rem; color: #e4dbe6; }
+.vts-read { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.55rem 1rem; border-radius: 10px; background: var(--grad); color: #fff; font-weight: 600; font-size: 0.9rem; text-decoration: none; box-shadow: 0 0 18px rgba(255, 45, 45, 0.35); }
+.vts-read:hover { filter: brightness(1.1); }
+.vts.open .vts-focus { animation: vtsIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s both; }
+/* une fois ouvert, changer d'article ne rejoue pas toute l'animation : seul l'article change en fondu */
+.vts.shown .vts-head, .vts.shown .vts-grid > div { animation: none; }
+.vts.shown .vts-focus { animation: vtsSwap 0.4s ease both; }
+@keyframes vtsSwap { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.vts-art { width: 100%; text-align: left; font: inherit; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.8rem; padding: 0.7rem 0.9rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); color: #f5efed; transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease; }
+.vts-art:hover { border-color: rgba(255, 106, 74, 0.7); background: rgba(255, 106, 74, 0.08); transform: translateX(3px); }
+.vts-art.on { border-color: #ffb02e; background: rgba(255, 176, 46, 0.1); }
+.vts-art b { font-size: 0.92rem; }
+.vts-art time { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-family: var(--mono); font-size: 0.75rem; color: #a99b98; white-space: nowrap; }
+.vts-art span { font-size: 0.82rem; color: #c9bfd0; }
+.vts-src ul { max-height: 26rem; overflow: auto; padding-right: 0.2rem; }
+.vt-arts { list-style: none; padding: 0 !important; }
+.vt-arts li { display: grid; gap: 0.1rem; padding: 0.45rem 0; border-bottom: 1px solid var(--line); }
+.vt-arts small { font-family: var(--mono); color: var(--muted); }
+.vt-arts span { font-size: 0.9rem; }
 .vts-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.4rem 2rem; grid-template-areas: "pres keys" "ret src"; }
 .vts-grid > div { position: relative; }
 .vts-grid h3 { margin: 0 0 0.8rem; font-family: var(--mono); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #ff6a4a; }
@@ -373,12 +398,23 @@ body.mission .cursor-glow, body.mission .cursor-trail { opacity: 0 !important; }
 .hud-ship:hover { border-color: #ff8a1a; box-shadow: 0 0 14px rgba(255, 140, 60, 0.45); }
 .hud-ship:focus-visible { outline: 2px solid #ffb02e; outline-offset: 2px; }
 .hud-mark { position: absolute; left: 0; top: 0; margin: -9px 0 0 -9px; display: flex; align-items: center; gap: 0.5rem; padding: 0; border: 0; background: none; color: #fff; font: 600 0.8rem var(--font); cursor: pointer; transition: opacity 0.2s ease; }
-.hud-mark i { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #ffb02e; background: rgba(255, 176, 46, 0.25); box-shadow: 0 0 12px rgba(255, 176, 46, 0.7); animation: blip 2s ease-out infinite; }
-@keyframes blip { 0% { box-shadow: 0 0 0 0 rgba(255, 176, 46, 0.55); } 100% { box-shadow: 0 0 0 16px rgba(255, 176, 46, 0); } }
-.hud-mark em { font-style: normal; font-family: var(--mono); color: #ffb02e; margin-right: 0.35rem; }
+.hud-mark { --mc: #ffb02e; --mb: rgba(255, 176, 46, 0.28); }
+.hud-mark.t-act { --mc: #6db8ff; --mb: rgba(109, 184, 255, 0.28); }
+.hud-mark i { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--mc); background: var(--mb); color: var(--mc); box-shadow: 0 0 12px var(--mc); animation: blip 2.2s ease-out infinite; }
+@keyframes blip { 0% { box-shadow: 0 0 0 0 currentColor; } 100% { box-shadow: 0 0 0 14px transparent; } }
+.hud-mark em { font-style: normal; font-family: var(--mono); color: var(--mc); margin-right: 0.35rem; }
+.hud-mark span { opacity: 0; transform: translateX(-4px); transition: opacity 0.25s ease, transform 0.25s ease; max-width: min(300px, 60vw); overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.hud-mark.near span, .hud-mark:hover span, .hud-mark:focus-visible span, .hud-mark.on span { opacity: 1; transform: none; }
+.hud-legend { position: absolute; left: 1.5rem; bottom: calc(3.6rem + env(safe-area-inset-bottom, 0px)); margin: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; max-width: calc(100% - 3rem); font-family: var(--mono); font-size: 0.75rem; color: #c9bfd0; pointer-events: none; transition: opacity 0.4s ease; }
+.hud-legend .lg { display: inline-flex; align-items: center; gap: 0.4rem; }
+.hud-legend .lg i { width: 9px; height: 9px; border-radius: 50%; background: #ffb02e; box-shadow: 0 0 8px #ffb02e; }
+.hud-legend .lg.t-act i { background: #6db8ff; box-shadow: 0 0 8px #6db8ff; }
+.hud-legend .lg-up { color: #8f8496; }
+.hud.diving .hud-legend { opacity: 0; }
+@media (max-width: 600px) { .hud-legend { left: 0.75rem; bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px)); font-size: 0.68rem; } }
 .hud-mark span { padding: 0.2rem 0.6rem; border-radius: 999px; background: rgba(10, 5, 18, 0.78); border: 1px solid rgba(255, 176, 46, 0.45); white-space: nowrap; }
-.hud-mark:hover i, .hud-mark.on i { background: #ffb02e; }
-.hud-mark.on span { border-color: #ffb02e; box-shadow: 0 0 14px rgba(255, 176, 46, 0.45); }
+.hud-mark:hover i, .hud-mark.on i { background: var(--mc); }
+.hud-mark.on span { border-color: var(--mc); box-shadow: 0 0 14px var(--mb); }
 .hud-mark:focus-visible { outline: 2px solid #ffb02e; outline-offset: 3px; border-radius: 999px; }
 .hud-links a:hover { border-color: #ff2d2d; }
 @media (max-width: 700px) {
@@ -874,10 +910,10 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "zh": "任务：技术观察"
  },
  "hud.hint": {
-  "fr": "Deux signaux de veille t'attendent : clique sur l'un d'eux pour plonger dedans. Fais glisser pour tourner la Terre.",
-  "en": "Two tech-watch signals are waiting: click one to dive into it. Drag to spin the Earth.",
-  "ja": "2つのウォッチ信号が待っています。クリックして飛び込もう。ドラッグで地球を回せます。",
-  "zh": "两个技术观察信号在等你：点击其中一个即可潜入。拖动可旋转地球。"
+  "fr": "Chaque point est un article de veille : fais tourner la Terre pour tous les trouver, puis clique sur l'un d'eux pour plonger dedans.",
+  "en": "Each dot is a tech-watch article: spin the Earth to find them all, then click one to dive in.",
+  "ja": "各点はウォッチ記事です。地球を回してすべて見つけ、クリックして飛び込もう。",
+  "zh": "每个点都是一篇技术观察文章：旋转地球找到它们，再点击其中一篇潜入。"
  },
  "hud.back": {
   "fr": "Retour au portfolio",
@@ -1054,16 +1090,16 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "zh": "2026年第二季度DRAM合约价格预计涨幅（TrendForce）"
  },
  "vt.ram.k2n": {
-  "fr": "+13 à 18 %",
-  "en": "+13–18%",
-  "ja": "+13〜18%",
-  "zh": "+13–18%"
+  "fr": "+10 à 15 %",
+  "en": "+10–15%",
+  "ja": "+10〜15%",
+  "zh": "+10–15%"
  },
  "vt.ram.k2d": {
-  "fr": "au 3e trimestre 2026 : ça monte encore, mais moins vite",
-  "en": "in Q3 2026: still rising, but more slowly",
-  "ja": "2026年第3四半期:上昇は続くが鈍化",
-  "zh": "2026年第三季度：仍在上涨，但涨速放缓"
+  "fr": "hausse prévue de la DRAM au 4e trimestre 2026 : ça ralentit, mais ça monte toujours",
+  "en": "forecast DRAM rise in Q4 2026: slowing down, but still going up",
+  "ja": "2026年第4四半期のDRAM予測上昇率:鈍化しつつも上昇が続く",
+  "zh": "2026年第四季度DRAM预计涨幅：涨势放缓，但仍在上涨"
  },
  "vt.ram.k3n": {
   "fr": "Fév. 2026",
@@ -1202,6 +1238,30 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "en": "The timeline changed along the way: when doing tech watch, always check the date and source of information before trusting it.",
   "ja": "スケジュールは途中で変更された。技術ウォッチでは、情報を信じる前に必ず日付と情報源を確認する必要がある。",
   "zh": "时间表中途发生了变化：做技术观察时，相信一条信息之前一定要核实它的日期和来源。"
+ },
+ "vt.h.arts": {
+  "fr": "Articles de veille",
+  "en": "Tech-watch articles",
+  "ja": "ウォッチ記事",
+  "zh": "技术观察文章"
+ },
+ "vt.read": {
+  "fr": "Lire l'article",
+  "en": "Read the article",
+  "ja": "記事を読む",
+  "zh": "阅读文章"
+ },
+ "vt.updated": {
+  "fr": "Mis à jour le",
+  "en": "Updated",
+  "ja": "更新日",
+  "zh": "更新于"
+ },
+ "vt.empty": {
+  "fr": "Pas encore d'article pour ce sujet.",
+  "en": "No article for this topic yet.",
+  "ja": "このテーマの記事はまだありません。",
+  "zh": "该主题暂无文章。"
  },
  "ct.li.soon": {
   "fr": "Profil LinkedIn bientôt disponible. En attendant, écris-moi par e-mail.",
@@ -2454,7 +2514,8 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     <p class="hud-title" data-i18n="hud.title">Mission : veille technologique</p>
     <button type="button" class="hud-back" id="hud-back" data-i18n="hud.back">Retour au portfolio</button>
   </div>
-  <p class="hud-hint" data-i18n="hud.hint">Deux signaux de veille t'attendent : clique sur l'un d'eux pour plonger dedans.</p>
+  <p class="hud-hint" data-i18n="hud.hint">Chaque point est un article de veille : fais tourner la Terre pour tous les trouver.</p>
+  <p class="hud-legend" id="hud-legend" aria-live="polite"></p>
   <div class="hud-warp" id="hud-warp" aria-hidden="true"></div>
   <div class="hud-markers" id="hud-markers"></div>
   <button type="button" class="hud-ship" id="hud-ship" data-i18n="hud.ship">Clique sur le vaisseau pour revenir</button>
@@ -2481,24 +2542,15 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   <div class="win-body" id="win-body"></div>
 </dialog>
 
-<!-- ============ SCRIPT 1b : les 2 sujets de veille (données + rendu) ============ -->
+<!-- ============ VEILLE : articles (copie de secours ; la version à jour est dans veille.json) ============
+     Mis à jour automatiquement chaque semaine. Ne pas modifier à la main : utiliser outils/synchro_veille.py -->
+<script type="application/json" id="veille-data">{"updated":"2026-10-19","max_par_sujet":10,"articles":[{"id":"ram-2026-10-19-startupfortune","topic":"ram","date":"2026-10-19","source":"Startup Fortune","lang":"en","title":"Samsung's own memory chief says the RAM shortage won't peak until 2028","url":"https://startupfortune.com/samsungs-own-memory-chief-says-the-ram-shortage-wont-peak-until-2028","summary":{"fr":"Le responsable des ventes mémoire de Samsung prévoit que la pénurie de DRAM et de HBM va s'aggraver en 2027 et rester forte jusqu'en 2028, faute de nouvelles capacités de production.","en":"Samsung's memory sales chief expects the DRAM and HBM shortage to worsen through 2027 and stay tight into 2028, with no significant new supply before then.","ja":"Samsungのメモリ営業責任者は、DRAMとHBMの不足が2027年にかけて深刻化し、2028年まで続くと予測。それまで大幅な供給増は見込めないという。","zh":"三星存储业务销售负责人预计，DRAM和HBM短缺将在2027年加剧，并持续到2028年，在此之前不会有明显的新增产能。"}},{"id":"act-2026-10-15-actuia","topic":"act","date":"2026-10-15","source":"ActuIA","lang":"fr","title":"AI Act : les enquêtes pourraient prolonger le délai de sanction","url":"https://www.actuia.com/actualite/ai-act-les-enquetes-pourraient-prolonger-le-delai-de-sanction/","summary":{"fr":"La Commission consulte jusqu'au 9 novembre 2026 sur les règles d'enquête de l'AI Act : chaque acte d'enquête pourrait relancer le délai de 5 ans pour sanctionner un fournisseur.","en":"The Commission is consulting until 9 November 2026 on AI Act investigation rules: each investigative step could restart the 5-year limit for sanctioning a provider.","ja":"欧州委員会は2026年11月9日までAI法の調査規則について意見を募集中。調査のたびに、事業者を制裁できる5年の期限がリセットされる可能性がある。","zh":"欧盟委员会正就《人工智能法》调查规则征求意见，截止2026年11月9日：每次调查行动都可能让处罚供应商的5年时效重新计算。"}},{"id":"ram-2026-10-14-themotleyfool","topic":"ram","date":"2026-10-14","source":"The Motley Fool","lang":"en","title":"As AI Devours Memory Chips, the Companies That Make Them Hold the Pricing Power","url":"https://www.fool.com/investing/2026/10/14/as-ai-devours-memory-chips-the-companies-that-make/","summary":{"fr":"Samsung, SK hynix et Micron produisent plus de 95 % de la DRAM mondiale et orientent leurs usines vers la HBM pour l'IA. SK hynix dit avoir déjà vendu toute sa capacité de 2026.","en":"Samsung, SK hynix and Micron make over 95% of the world's DRAM and are shifting their fabs towards HBM for AI. SK hynix says its 2026 capacity is essentially sold out.","ja":"Samsung、SK hynix、Micronは世界のDRAMの95%以上を生産し、工場をAI向けHBMへ振り向けている。SK hynixは2026年の生産能力が事実上完売したという。","zh":"三星、SK海力士和美光生产了全球95%以上的DRAM，并把产能转向用于人工智能的HBM。SK海力士表示其2026年产能已基本售罄。"}},{"id":"ram-2026-10-13-tomshardwarefr","topic":"ram","date":"2026-10-13","source":"Tom's Hardware FR","lang":"fr","title":"Les prix de la RAM deviennent incontrôlables, et la pénurie pourrait durer encore trois ans","url":"https://www.tomshardware.fr/les-prix-de-la-ram-deviennent-incontrolables-et-la-penurie-pourrait-durer-encore-trois-ans/","summary":{"fr":"Selon Barclays, les prix contractuels de la DDR4 ont pris 24 % en trois mois (+20 % pour la DDR5). Citi prévoit un pic du déficit de DRAM fin 2027.","en":"According to Barclays, DDR4 contract prices rose 24% in three months (DDR5 +20%). Citi expects the DRAM deficit to peak in late 2027.","ja":"Barclaysによると、DDR4の契約価格は3か月で24%上昇(DDR5は20%)。Citiは、DRAMの供給不足が2027年末にピークを迎えると予測している。","zh":"据巴克莱银行数据，DDR4合约价格三个月上涨24%（DDR5上涨20%）。花旗预计DRAM供应缺口将在2027年底达到峰值。"}},{"id":"act-2026-10-13-donnéespersonnel","topic":"act","date":"2026-10-13","source":"Données Personnelles","lang":"fr","title":"Actualité IA et AI Act 2026 : calendrier et obligations","url":"https://www.donneespersonnelles.fr/actualite-ia-2026","summary":{"fr":"Début septembre 2026, la Commission a envoyé des demandes d'informations à plus de 30 fournisseurs d'IA : première utilisation de ses pouvoirs de contrôle depuis août 2026.","en":"In early September 2026, the Commission sent information requests to more than 30 AI providers: its first use of enforcement powers since August 2026.","ja":"2026年9月初め、欧州委員会は30社以上のAI事業者に情報提供を要請した。2026年8月以降、執行権限を初めて行使したことになる。","zh":"2026年9月初，欧盟委员会向30多家人工智能供应商发出信息索取请求，这是其自2026年8月以来首次行使执法权。"}},{"id":"act-2026-10-07-behaviture","topic":"act","date":"2026-10-07","source":"Behaviture","lang":"en","title":"The EU AI Act in October 2026: What Companies Need to Do Now","url":"https://behaviture.com/insights/the-eu-ai-act-in-october-2026-what-companies-need-to-do-now","summary":{"fr":"Les amendes vont jusqu'à 35 millions d'euros ou 7 % du chiffre d'affaires mondial pour une pratique interdite, et 15 millions ou 3 % pour un manque de transparence (article 50).","en":"Fines reach up to €35 million or 7% of worldwide turnover for a prohibited practice, and €15 million or 3% for transparency breaches (Article 50).","ja":"罰金は、禁止行為の場合最大3,500万ユーロまたは世界売上高の7%、透明性違反(第50条)の場合1,500万ユーロまたは3%に達する。","zh":"违反禁止性规定的罚款最高可达3500万欧元或全球年营业额的7%，违反透明度义务（第50条）最高1500万欧元或3%。"}},{"id":"act-2026-10-06-actuiaéthique","topic":"act","date":"2026-10-06","source":"ActuIA · Éthique","lang":"fr","title":"Éthique et régulation de l'IA : le point au 6 octobre 2026","url":"https://www.actuia.com/actualite/ethique-et-regulation-de-lia-le-point-au-6-octobre-2026/","summary":{"fr":"OpenAI va ajouter un filigrane aux textes de ChatGPT dans l'Union européenne pour respecter l'article 50 de l'AI Act sur la transparence.","en":"OpenAI will add a watermark to ChatGPT texts in the European Union to comply with the AI Act's Article 50 on transparency.","ja":"OpenAIは、AI法第50条の透明性義務に対応するため、EU域内でChatGPTの文章に透かしを入れる。","zh":"OpenAI将在欧盟为ChatGPT生成的文本添加水印，以遵守《人工智能法》第50条的透明度要求。"}},{"id":"act-2026-10-06-actuia","topic":"act","date":"2026-10-06","source":"ActuIA","lang":"en","title":"AI Act: obligations in force and delays under omnibus 2026/1744","url":"https://www.actuia.com/en/news/ai-act-obligations-in-force-and-delays-under-omnibus-2026-1744/","summary":{"fr":"Prochaine échéance le 2 décembre 2026 : les IA génératives déjà sur le marché devront marquer leurs contenus, et deux nouvelles interdictions entreront en vigueur.","en":"Next deadline on 2 December 2026: generative AI already on the market must mark its content, and two new prohibitions take effect.","ja":"次の期限は2026年12月2日。既に市場にある生成AIはコンテンツへの表示が義務となり、2つの新たな禁止事項が施行される。","zh":"下一个截止日期是2026年12月2日：已上市的生成式人工智能必须为其内容加标识，两项新的禁令也将生效。"}},{"id":"ram-2026-10-01-pausehardware","topic":"ram","date":"2026-10-01","source":"Pause Hardware","lang":"fr","title":"Prix de la mémoire : la demande IA maintient la hausse au quatrième trimestre 2026","url":"https://pausehardware.com/prix-memoire-hausse-ia-fin-2026/","summary":{"fr":"TrendForce prévoit encore +10 à 15 % sur les prix de la DRAM et +15 à 20 % sur la NAND au 4e trimestre 2026, portés par les serveurs d'IA.","en":"TrendForce still forecasts +10–15% for DRAM and +15–20% for NAND contract prices in Q4 2026, driven by AI servers.","ja":"TrendForceは、AIサーバーの需要により、2026年第4四半期もDRAMが10〜15%、NANDが15〜20%値上がりすると予測。","zh":"TrendForce预测，在AI服务器需求推动下，2026年第四季度DRAM合约价格仍将上涨10–15%，NAND上涨15–20%。"}},{"id":"act-2026-09-29-playmoweb","topic":"act","date":"2026-09-29","source":"Playmoweb","lang":"fr","title":"AI Act : depuis le 2 août 2026, votre chatbot doit dire qu'il est une IA","url":"https://playmoweb.com/ai-act-2-aout-2026-obligations-transparence-application/","summary":{"fr":"Depuis le 2 août 2026, un chatbot doit dire qu'il est une IA dès la première interaction, et les deepfakes doivent être signalés. Conseils concrets pour les développeurs.","en":"Since 2 August 2026, a chatbot must say it is an AI from the first interaction, and deepfakes must be labelled. Practical tips for developers.","ja":"2026年8月2日以降、チャットボットは最初のやり取りでAIであることを示し、ディープフェイクには表示が必要になった。開発者向けの具体的な助言もある。","zh":"自2026年8月2日起，聊天机器人必须在首次交互时表明自己是人工智能，深度伪造内容也必须加以标注。文章还为开发者提供了具体建议。"}},{"id":"act-2026-09-04-aiactinsight","topic":"act","date":"2026-09-04","source":"AI Act Insight","lang":"fr","title":"Digital Omnibus : ce qui est reporté dans l'AI Act","url":"https://aiactinsight.eu/fr/ai-act/digital-omnibus/","summary":{"fr":"Le règlement (UE) 2026/1744, publié le 24 juillet 2026, reporte les règles « haut risque » au 2 décembre 2027 et au 2 août 2028.","en":"Regulation (EU) 2026/1744, published on 24 July 2026, postpones the high-risk rules to 2 December 2027 and 2 August 2028.","ja":"2026年7月24日に公布された規則(EU)2026/1744により、高リスク規則は2027年12月2日と2028年8月2日に延期された。","zh":"2026年7月24日公布的欧盟第2026/1744号条例，将高风险规则推迟至2027年12月2日和2028年8月2日。"}},{"id":"ram-2026-08-05-rtbf","topic":"ram","date":"2026-08-05","source":"RTBF","lang":"fr","title":"Crise de la RAM : 2026 était déjà difficile, mais Samsung annonce une situation encore pire en 2027","url":"https://www.rtbf.be/article/crise-de-la-ram-2026-etait-deja-difficile-mais-samsung-annonce-une-situation-encore-pire-en-2027-11766293","summary":{"fr":"Samsung, qui produit environ un tiers des puces mémoire, annonce des tensions encore plus fortes en 2027. PC, cartes graphiques, consoles et smartphones risquent de coûter plus cher.","en":"Samsung, which makes about a third of the world's memory chips, expects even tighter supply in 2027. PCs, graphics cards, consoles and smartphones may cost more.","ja":"世界のメモリチップの約3分の1を生産するSamsungは、2027年にさらに供給がひっ迫すると発表。PC、グラフィックカード、ゲーム機、スマートフォンの値上がりが懸念される。","zh":"生产全球约三分之一存储芯片的三星表示，2027年供应将更加紧张。电脑、显卡、游戏机和手机都可能涨价。"}},{"id":"act-2026-07-22-quanticavocats","topic":"act","date":"2026-07-22","source":"Quantic Avocats","lang":"fr","title":"AI Act : le calendrier des obligations haut risque officiellement reporté","url":"https://www.quantic-avocats.com/2026/07/22/ai-act-digital-omnibus-report-obligations-haut-risque/","summary":{"fr":"Le Parlement (16 juin) puis le Conseil (29 juin 2026) ont adopté le report : les systèmes à haut risque de l'annexe III passent au 2 décembre 2027.","en":"Parliament (16 June) and then the Council (29 June 2026) adopted the delay: Annex III high-risk systems move to 2 December 2027.","ja":"欧州議会(6月16日)と理事会(2026年6月29日)が延期を採択。附属書IIIの高リスクシステムは2027年12月2日に延期された。","zh":"欧洲议会（6月16日）和理事会（2026年6月29日）先后通过推迟方案：附件三中的高风险系统推迟至2027年12月2日。"}},{"id":"ram-2026-07-03-trendforce","topic":"ram","date":"2026-07-03","source":"TrendForce","lang":"en","title":"AI Server Demand Continues to Support Memory Prices in 3Q26, but Gains Moderate","url":"https://www.trendforce.com/presscenter/news/20260703-13134.html","summary":{"fr":"Les prix de la DRAM devaient encore monter de 13 à 18 % au 3e trimestre 2026 : la hausse ralentit car les fabricants de PC et de smartphones atteignent leurs limites.","en":"DRAM contract prices were expected to rise another 13–18% in Q3 2026: growth is slowing as PC and smartphone makers hit their affordability limits.","ja":"2026年第3四半期のDRAM契約価格はさらに13〜18%上昇する見通し。PCやスマートフォンのメーカーが購入の限界に近づき、上昇ペースは鈍化している。","zh":"2026年第三季度DRAM合约价格预计再涨13–18%：由于电脑和手机厂商已接近承受极限，涨势有所放缓。"}},{"id":"ram-2026-06-30-learnup","topic":"ram","date":"2026-06-30","source":"LearnUp","lang":"fr","title":"RAM : prix de la mémoire en hausse de 50 % en 2026","url":"https://www.learnup.fr/ram-prix-hausse-2026-jefferies","summary":{"fr":"La banque Jefferies prévoit +40 à 50 % sur la DRAM et la NAND au 3e trimestre 2026, puis +30 à 40 % au 4e, et pas de baisse avant 2028.","en":"Jefferies forecasts +40–50% for DRAM and NAND in Q3 2026, then +30–40% in Q4, with no decline expected before 2028.","ja":"Jefferiesは、DRAMとNANDが2026年第3四半期に40〜50%、第4四半期に30〜40%値上がりし、2028年までは下がらないと予測。","zh":"Jefferies预测，2026年第三季度DRAM和NAND价格将上涨40–50%，第四季度再涨30–40%，2028年前不会下降。"}},{"id":"ram-2026-03-31-iconnect007trend","topic":"ram","date":"2026-03-31","source":"I-Connect007 · TrendForce","lang":"en","title":"AI Server Demand to Drive Memory Contract Price Increases in 2Q26","url":"https://iconnect007.com/article/149414/ai-server-demand-to-drive-memory-contract-price-increases-in-2q26-as-csps-secure-supply-via-longterm-agreements/149411/pcb","summary":{"fr":"TrendForce annonçait +58 à 63 % sur la DRAM et +70 à 75 % sur la NAND au 2e trimestre 2026 : les fabricants réservent leur production aux serveurs d'IA.","en":"TrendForce forecast +58–63% for DRAM and +70–75% for NAND in Q2 2026, as makers reserve production for AI servers.","ja":"TrendForceは2026年第2四半期にDRAMが58〜63%、NANDが70〜75%上昇すると予測。メーカーは生産をAIサーバー向けに優先している。","zh":"TrendForce预测2026年第二季度DRAM上涨58–63%，NAND上涨70–75%，因为厂商将产能优先留给AI服务器。"}},{"id":"ram-2026-02-26-gartner","topic":"ram","date":"2026-02-26","source":"Gartner","lang":"en","title":"Gartner Says Surging Memory Costs Will Reduce Global PC and Smartphone Shipments in 2026","url":"https://www.gartner.com/en/newsroom/press-releases/2026-02-26-gartner-says-surging-memory-costs-will-reduce-global-pc-and-smartphone-shipments-in-2026","summary":{"fr":"Gartner prévoit des PC 17 % plus chers fin 2026, car la mémoire et les SSD coûtent 130 % de plus. Les ventes de PC baisseraient de plus de 10 %.","en":"Gartner expects PCs to cost 17% more by the end of 2026 because memory and SSDs cost 130% more. PC shipments could fall by over 10%.","ja":"Gartnerは、メモリとSSDの価格が130%上昇するため、2026年末までにPCが17%値上がりすると予測。PC出荷台数は10%以上減少する可能性がある。","zh":"Gartner预计，由于内存和固态硬盘价格上涨130%，到2026年底电脑价格将上涨17%，电脑出货量可能下降超过10%。"}},{"id":"ram-2025-12-04-iphonesoft","topic":"ram","date":"2025-12-04","source":"iPhoneSoft","lang":"fr","title":"Crise de la mémoire : Micron annonce que la marque Crucial va disparaître","url":"https://iphonesoft.fr/2025/12/04/crise-memoire-micron-annonce-marque-crucial-disparaitre","summary":{"fr":"Micron arrête sa marque grand public Crucial (RAM et SSD) d'ici février 2026 pour réserver sa production aux centres de données d'IA.","en":"Micron is ending its Crucial consumer brand (RAM and SSDs) by February 2026 to reserve its production for AI data centres.","ja":"Micronは2026年2月までに一般向けブランドCrucial(RAMとSSD)を終了し、生産をAIデータセンター向けに集中させる。","zh":"美光将在2026年2月前停止其消费级品牌Crucial（内存和固态硬盘），把产能留给人工智能数据中心。"}},{"id":"act-2024-07-12-eurlex","topic":"act","date":"2024-07-12","source":"EUR-Lex","lang":"fr","title":"Règlement (UE) 2024/1689 sur l'intelligence artificielle","url":"https://eur-lex.europa.eu/eli/reg/2024/1689/oj","summary":{"fr":"Le texte officiel de l'AI Act, publié au Journal officiel de l'UE le 12 juillet 2024 : la référence à consulter en cas de doute.","en":"The official text of the AI Act, published in the EU Official Journal on 12 July 2024: the reference to check when in doubt.","ja":"2024年7月12日にEU官報で公布されたAI法の正式な条文。迷ったときに確認すべき基準となる資料。","zh":"《人工智能法》官方文本，于2024年7月12日在欧盟官方公报上公布，有疑问时应查阅的权威参考。"}}]}</script>
+
+<!-- ============ SCRIPT 1b : veille (sujets, articles, rendu du grand écran) ============ -->
 <script>
 (function () {
-  /* Sources : nom du média, date (AAAA-MM-JJ), titre de l'article, lien */
-  var VT = {
-    ram: { n: "01", keys: "vt.h.keys", src: [
-      ["TrendForce", "2026-07-03", "AI Server Demand Continues to Support Memory Prices in 3Q26, but Gains Moderate", "https://www.trendforce.com/presscenter/news/20260703-13134.html"],
-      ["I-Connect007 · TrendForce", "2026-03-31", "AI Server Demand to Drive Memory Contract Price Increases in 2Q26", "https://iconnect007.com/article/149414/ai-server-demand-to-drive-memory-contract-price-increases-in-2q26-as-csps-secure-supply-via-longterm-agreements/149411/pcb"],
-      ["RTBF", "2026-08-05", "Crise de la RAM : Samsung annonce une situation encore pire en 2027", "https://www.rtbf.be/article/crise-de-la-ram-2026-etait-deja-difficile-mais-samsung-annonce-une-situation-encore-pire-en-2027-11766293"],
-      ["iPhoneSoft", "2025-12-04", "Crise de la mémoire : Micron annonce que la marque Crucial va disparaître", "https://iphonesoft.fr/2025/12/04/crise-memoire-micron-annonce-marque-crucial-disparaitre"]
-    ] },
-    act: { n: "02", keys: "vt.h.dates", src: [
-      ["EUR-Lex", "2024-07-12", "Règlement (UE) 2024/1689 sur l'intelligence artificielle", "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"],
-      ["Quantic Avocats", "2026-07-22", "AI Act : le calendrier des obligations haut risque officiellement reporté", "https://www.quantic-avocats.com/2026/07/22/ai-act-digital-omnibus-report-obligations-haut-risque/"],
-      ["AI Act Insight", "2026-09-04", "Digital Omnibus : ce qui est reporté dans l'AI Act", "https://aiactinsight.eu/fr/ai-act/digital-omnibus/"],
-      ["Playmoweb", "2026-09-29", "AI Act : depuis le 2 août 2026, votre chatbot doit dire qu'il est une IA", "https://playmoweb.com/ai-act-2-aout-2026-obligations-transparence-application/"]
-    ] }
-  };
+  /* Les 2 sujets ; leurs articles (10 au maximum chacun) viennent de veille.json */
+  var VT = { ram: { n: "01", keys: "vt.h.keys" }, act: { n: "02", keys: "vt.h.dates" } }, MAXI = 10;
   window.VT = VT;
   function T(k) { return window.__t ? window.__t(k) : k; }
   function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -2506,32 +2558,63 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     var l = window.__lang || "fr", loc = l === "zh" ? "zh-CN" : l === "ja" ? "ja-JP" : l === "en" ? "en-GB" : "fr-FR";
     try { return new Date(iso + "T12:00:00").toLocaleDateString(loc, { day: "numeric", month: "short", year: "numeric" }); } catch (e) { return iso; }
   }
-  /* Contenu du grand écran (et des cartes sans 3D quand compact = true) */
-  window.__vtHTML = function (key, compact) {
-    var d = VT[key], p = "vt." + key + ".", h = "";
-    var src = d.src.map(function (s) { return '<li><a href="' + esc(s[3]) + '" target="_blank" rel="noopener" aria-label="' + esc(T("vt.open") + " : " + s[0]) + '"><b>' + esc(s[0]) + '</b><time datetime="' + s[1] + '">' + esc(day(s[1])) + '</time><span>' + esc(s[2]) + '</span></a></li>'; }).join("");
-    var keys = [1, 2, 3, 4].map(function (i) { return '<li><b>' + esc(T(p + "k" + i + "n")) + '</b><span>' + esc(T(p + "k" + i + "d")) + '</span></li>'; }).join("");
-    var ret = [1, 2, 3].map(function (i) { return '<li>' + esc(T(p + "r" + i)) + '</li>'; }).join("");
+  window.__vtDay = day;
+  function valid(d) {
+    return !!d && Array.isArray(d.articles) && d.articles.every(function (a) { return a && a.id && VT[a.topic] && /^https:\/\//.test(a.url || "") && a.title && a.summary && /^\d{4}-\d{2}-\d{2}$/.test(a.date || ""); });
+  }
+  try { window.VEILLE = JSON.parse(document.getElementById("veille-data").textContent); } catch (e) { window.VEILLE = null; }
+  if (!valid(window.VEILLE)) window.VEILLE = { updated: "", articles: [] };
+  /* Articles d'un sujet, du plus récent au plus ancien */
+  window.__vtArticles = function (key) {
+    return window.VEILLE.articles.filter(function (a) { return a.topic === key; }).sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }).slice(0, MAXI);
+  };
+  function sum(a) { var l = window.__lang || "fr"; return (a.summary && (a.summary[l] || a.summary.fr)) || ""; }
+  /* Contenu du grand écran (article choisi + sujet) ; compact = cartes de la version sans 3D */
+  window.__vtHTML = function (key, compact, focusId) {
+    var d = VT[key], p = "vt." + key + ".", arts = window.__vtArticles(key), h = "";
+    var focus = arts.filter(function (a) { return a.id === focusId; })[0] || null;
+    var ret = [1, 2, 3].map(function (i) { return "<li>" + esc(T(p + "r" + i)) + "</li>"; }).join("");
+    var head = esc(T("vt.h.arts")) + " (" + arts.length + ")";
     if (compact) {
-      return '<p class="vts-sig">' + d.n + ' · ' + esc(T(p + "tag")) + '</p><h3 class="vt-tt">' + esc(T(p + "t")) + '</h3>' +
-        '<p>' + esc(T(p + "p1")) + '</p><p>' + esc(T(p + "p2")) + '</p>' +
-        '<h4>' + esc(T("vt.h.ret")) + '</h4><ol>' + ret + '</ol>' +
-        '<h4>' + esc(T("vt.h.src")) + '</h4><ul>' + d.src.map(function (s) { return '<li><a href="' + esc(s[3]) + '" target="_blank" rel="noopener">' + esc(s[0]) + '</a> — ' + esc(s[2]) + ' (' + esc(day(s[1])) + ')</li>'; }).join("") + '</ul>';
+      return '<p class="vts-sig">' + d.n + " · " + esc(T(p + "tag")) + '</p><h3 class="vt-tt">' + esc(T(p + "t")) + "</h3>" +
+        "<p>" + esc(T(p + "p1")) + "</p><p>" + esc(T(p + "p2")) + "</p>" +
+        "<h4>" + esc(T("vt.h.ret")) + "</h4><ol>" + ret + "</ol>" +
+        "<h4>" + head + "</h4>" + (arts.length ? '<ul class="vt-arts">' + arts.map(function (a) {
+          return '<li><a href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.title) + "</a><small>" + esc(a.source) + " · " + esc(day(a.date)) + "</small><span>" + esc(sum(a)) + "</span></li>";
+        }).join("") + "</ul>" : "<p>" + esc(T("vt.empty")) + "</p>");
     }
+    if (focus) {
+      h += '<div class="vts-focus"><p class="vts-fmeta"><b>' + esc(focus.source) + '</b> · <time datetime="' + focus.date + '">' + esc(day(focus.date)) + "</time>" +
+        (focus.lang && focus.lang !== (window.__lang || "fr") ? ' · <span class="vts-lang">' + esc(focus.lang.toUpperCase()) + "</span>" : "") + "</p>" +
+        '<h3 class="vts-ftitle">' + esc(focus.title) + '</h3><p class="vts-fsum">' + esc(sum(focus)) + "</p>" +
+        '<a class="vts-read" href="' + esc(focus.url) + '" target="_blank" rel="noopener">' + esc(T("vt.read")) + ' <span aria-hidden="true">↗</span></a></div>';
+    }
+    var keys = [1, 2, 3, 4].map(function (i) { return "<li><b>" + esc(T(p + "k" + i + "n")) + "</b><span>" + esc(T(p + "k" + i + "d")) + "</span></li>"; }).join("");
+    var list = arts.map(function (a) {
+      return '<li><button type="button" class="vts-art' + (focus && a.id === focus.id ? " on" : "") + '" data-art="' + esc(a.id) + '"' + (focus && a.id === focus.id ? ' aria-current="true"' : "") + "><b>" + esc(a.source) +
+        '</b><time datetime="' + a.date + '">' + esc(day(a.date)) + "</time><span>" + esc(a.title) + "</span></button></li>";
+    }).join("");
     h += '<div class="vts-grid">';
-    h += '<div class="vts-pres"><h3>' + esc(T("vt.h.pres")) + '</h3><p>' + esc(T(p + "p1")) + '</p><p>' + esc(T(p + "p2")) + '</p></div>';
-    h += '<div class="vts-keys"><h3>' + esc(T(d.keys)) + '</h3><ul>' + keys + '</ul></div>';
-    h += '<div class="vts-ret"><h3>' + esc(T("vt.h.ret")) + '</h3><ol>' + ret + '</ol></div>';
-    h += '<div class="vts-src"><h3>' + esc(T("vt.h.src")) + '</h3><ul>' + src + '</ul></div>';
-    return h + '</div>';
+    h += '<div class="vts-pres"><h3>' + esc(T("vt.h.pres")) + "</h3><p>" + esc(T(p + "p1")) + "</p><p>" + esc(T(p + "p2")) + "</p></div>";
+    h += '<div class="vts-keys"><h3>' + esc(T(d.keys)) + "</h3><ul>" + keys + "</ul></div>";
+    h += '<div class="vts-ret"><h3>' + esc(T("vt.h.ret")) + "</h3><ol>" + ret + "</ol></div>";
+    h += '<div class="vts-src"><h3>' + head + "</h3>" + (arts.length ? "<ul>" + list + "</ul>" : "<p>" + esc(T("vt.empty")) + "</p>") + "</div>";
+    return h + "</div>";
   };
   /* Version sans 3D : les deux sujets en cartes dans la section Veille */
   function fallback() {
     var box = document.getElementById("vt-fallback"); if (!box) return;
-    box.innerHTML = ["ram", "act"].map(function (k) { return '<article class="card vt-card vt-topic">' + window.__vtHTML(k, true) + '</article>'; }).join("");
+    box.innerHTML = ["ram", "act"].map(function (k) { return '<article class="card vt-card vt-topic">' + window.__vtHTML(k, true) + "</article>"; }).join("");
   }
   document.addEventListener("DOMContentLoaded", fallback);
   document.addEventListener("langchange", fallback);
+  /* Charge la dernière version de veille.json (mise à jour chaque semaine) */
+  if (window.fetch && location.protocol !== "file:") {
+    fetch("veille.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!valid(d) || (d.updated || "") < (window.VEILLE.updated || "")) return;
+      window.VEILLE = d; fallback(); document.dispatchEvent(new CustomEvent("veilledata"));
+    }).catch(function () {});
+  }
 })();
 </script>
 
@@ -3848,21 +3931,44 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     var ENG = SD.engines.map(function (e) { return new THREE.Vector3(e[0], e[1], e[2] - 0.15); }), engW = new THREE.Vector3();
     ship.visible = false;
 
-    /* --- Les 2 signaux de veille sur la Terre (latitude, longitude) --- */
-    var SPOTS = [{ k: "ram", n: "01", lat: 16, lon: 72 }, { k: "act", n: "02", lat: 34, lon: 118 }];
+    /* --- Articles de veille répartis sur toute la Terre (10 au maximum par sujet) --- */
+    var SPOTS = [];
     var markersEl = document.getElementById("hud-markers"), vts = document.getElementById("vts"), vtsBody = document.getElementById("vts-body");
     var vtsT = document.getElementById("vts-t"), vtsTag = document.getElementById("vts-tag"), vtsNum = document.getElementById("vts-num"), vtsBack = document.getElementById("vts-back"), warp = document.getElementById("hud-warp");
+    var legendEl = document.getElementById("hud-legend");
     function T(k) { return window.__t ? window.__t(k) : k; }
-    SPOTS.forEach(function (sp) {
-      var la = sp.lat * Math.PI / 180, lo = sp.lon * Math.PI / 180;
-      sp.local = new THREE.Vector3(Math.cos(la) * Math.cos(lo), Math.sin(la), Math.cos(la) * Math.sin(lo)).multiplyScalar(2.02);
-      var b = document.createElement("button"); b.type = "button"; b.className = "hud-mark";
-      b.innerHTML = "<i></i><span></span>"; sp.el = b; sp.label = b.querySelector("span");
-      b.addEventListener("click", function (e) { e.stopPropagation(); dive(sp); });
-      markersEl.appendChild(b);
-    });
+    function buildSpots() {
+      SPOTS.forEach(function (sp) { sp.el.remove(); });
+      var arts = [].concat(window.__vtArticles("ram"), window.__vtArticles("act")).sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+      var N = Math.max(1, arts.length);
+      SPOTS = arts.map(function (art, i) {
+        /* spirale de Fibonacci : des points bien répartis sur tout le globe (sans les pôles) */
+        var y = (1 - 2 * (i + 0.5) / N) * 0.88, lat = Math.asin(y) * 180 / Math.PI, lon = (70 + i * 137.508) % 360;
+        var sp = { k: art.topic, id: art.id, art: art, n: window.VT[art.topic].n, lat: lat, lon: lon };
+        var la = lat * Math.PI / 180, lo = lon * Math.PI / 180;
+        sp.local = new THREE.Vector3(Math.cos(la) * Math.cos(lo), Math.sin(la), Math.cos(la) * Math.sin(lo)).multiplyScalar(2.02);
+        var b = document.createElement("button"); b.type = "button"; b.className = "hud-mark t-" + art.topic;
+        b.innerHTML = "<i></i><span></span>"; sp.el = b; sp.label = b.querySelector("span");
+        b.addEventListener("click", function (e) { e.stopPropagation(); dive(sp); });
+        markersEl.appendChild(b);
+        return sp;
+      });
+      labels();
+      if (vtsOpen && vtsSpot) { var same = SPOTS.filter(function (o) { return o.id === vtsSpot.id; })[0]; if (same) { vtsSpot = same; same.el.classList.add("on"); } fillScreen(vtsSpot); }
+    }
+    function legend() {
+      if (!legendEl) return;
+      var h = ["ram", "act"].map(function (k) { return '<span class="lg t-' + k + '"><i></i>' + window.VT[k].n + " · " + T("vt." + k + ".s") + " (" + window.__vtArticles(k).length + ")</span>"; }).join("");
+      if (window.VEILLE && window.VEILLE.updated) h += '<span class="lg-up">' + T("vt.updated") + " " + window.__vtDay(window.VEILLE.updated) + "</span>";
+      legendEl.innerHTML = h;
+    }
     function labels() {
-      SPOTS.forEach(function (sp) { sp.label.innerHTML = "<em>" + sp.n + "</em>"; sp.label.appendChild(document.createTextNode(T("vt." + sp.k + ".s"))); sp.el.setAttribute("aria-label", sp.n + " · " + T("vt." + sp.k + ".t")); });
+      SPOTS.forEach(function (sp) {
+        var t = sp.art.title.length > 52 ? sp.art.title.slice(0, 50).replace(/\s+\S*$/, "") + "…" : sp.art.title;
+        sp.label.innerHTML = "<em>" + sp.n + "</em>"; sp.label.appendChild(document.createTextNode(t));
+        sp.el.setAttribute("aria-label", T("vt." + sp.k + ".s") + " · " + sp.art.source + " · " + sp.art.title);
+      });
+      legend();
       if (vtsOpen && vtsSpot) fillScreen(vtsSpot);
     }
     /* Faire tourner la planète pour amener un point (ou le milieu des deux signaux) face à nous */
@@ -3871,7 +3977,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
       M.dragT = wrapNear(lon * Math.PI / 180 - Math.PI / 2 - spin, M.drag);
       M.dragYT = Math.max(-0.7, Math.min(0.7, lat * Math.PI / 180 - 0.18));
     }
-    function faceSignals() { faceLatLon((SPOTS[0].lat + SPOTS[1].lat) / 2, (SPOTS[0].lon + SPOTS[1].lon) / 2); }
+    function faceSignals() { if (SPOTS[0]) faceLatLon(SPOTS[0].lat, SPOTS[0].lon); }   /* l'article le plus récent face à nous */
     /* Plongée : la caméra fonce vers le signal, une lueur grandit, puis le grand écran s'ouvre */
     var vtsSpot = null, vtsOpen = false; M.dv = 0; M.dvDir = 0;
     function dive(sp) {
@@ -3881,22 +3987,30 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     }
     function fillScreen(sp) {
       vtsNum.textContent = sp.n; vtsTag.textContent = T("vt." + sp.k + ".tag"); vtsT.textContent = T("vt." + sp.k + ".t");
-      vtsBody.innerHTML = window.__vtHTML ? window.__vtHTML(sp.k) : "";
+      vtsBody.innerHTML = window.__vtHTML ? window.__vtHTML(sp.k, false, sp.id) : "";
     }
     function openScreen() {
       fillScreen(vtsSpot); vts.hidden = false; vtsOpen = true; vts.querySelector(".vts-frame").scrollTop = 0;
       requestAnimationFrame(function () { requestAnimationFrame(function () { vts.classList.add("open"); }); });
       setTimeout(function () { if (vtsOpen) vtsBack.focus({ preventScroll: true }); }, 500);
+      setTimeout(function () { if (vtsOpen) vts.classList.add("shown"); }, 1500);
     }
     function closeScreen(instant) {
       if (!vtsOpen && !instant) return;
-      vtsOpen = false; vts.classList.remove("open");
+      vtsOpen = false; vts.classList.remove("open", "shown");
       if (instant) { vts.hidden = true; M.dv = 0; M.dvDir = 0; hud.classList.remove("diving"); warp.style.opacity = "0"; SPOTS.forEach(function (o) { o.el.classList.remove("on"); }); return; }
       setTimeout(function () { if (!vtsOpen) vts.hidden = true; }, 800);
       setTimeout(function () { if (!vtsOpen) M.dvDir = -1; }, 450);   /* puis la caméra ressort vers la vue de la Terre */
     }
     vtsBack.addEventListener("click", function () { closeScreen(); });
-    labels(); document.addEventListener("langchange", labels);
+    /* Dans le grand écran : choisir un autre article du même sujet */
+    vtsBody.addEventListener("click", function (e) {
+      var bt = e.target.closest && e.target.closest("[data-art]"); if (!bt) return;
+      var o = SPOTS.filter(function (x) { return x.id === bt.getAttribute("data-art"); })[0]; if (!o) return;
+      vtsSpot = o; fillScreen(o); SPOTS.forEach(function (x) { x.el.classList.toggle("on", x === o); });
+      var fr = vts.querySelector(".vts-frame"); if (fr.scrollTo) fr.scrollTo({ top: 0, behavior: "smooth" }); else fr.scrollTop = 0;
+    });
+    buildSpots(); document.addEventListener("langchange", labels); document.addEventListener("veilledata", buildSpots);
 
     /* --- Lancer / terminer la mission --- */
     var P0 = new THREE.Vector3(), C1 = new THREE.Vector3(), C2 = new THREE.Vector3(), P3 = new THREE.Vector3(), D1 = new THREE.Vector3(), D2 = new THREE.Vector3(), PK = new THREE.Vector3(), R0 = new THREE.Vector3(), R1 = new THREE.Vector3(), R2 = new THREE.Vector3();
@@ -4257,6 +4371,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
         sp.el.style.opacity = show ? Math.min(1, (facing - 0.12) * 4).toFixed(2) : "0";
         sp.el.style.pointerEvents = show ? "auto" : "none";
         sp.el.tabIndex = show ? 0 : -1;
+        sp.el.classList.toggle("near", show && facing > 0.82);
       });
     }
     MISSION_OK = true;

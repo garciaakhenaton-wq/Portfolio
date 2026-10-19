@@ -13,10 +13,17 @@ Thème spatial en 3D : une planète qui change (Mars, Terre, Vénus, Jupiter), d
 | À propos | Mon parcours : un vaisseau voyage d'étape en étape quand on fait défiler la page, et mon CV à télécharger |
 | Compétences | HTML, CSS, terminal, machine virtuelle, IA : chaque carte ouvre une petite fenêtre interactive (éditeur HTML en direct, réglages CSS, mini-terminal, configurateur de VM, démo IA) |
 | Projets | Ma première page web, création d'un réseau LAN, ce portfolio |
-| Veille technologique | Mission spatiale vers la Terre : deux sujets de veille (prix de la RAM et IA, AI Act européen) avec présentation, ce que j'en retiens et sources |
+| Veille technologique | Mission spatiale vers la Terre : chaque point du globe est un article de veille sur mes deux sujets (prix de la RAM et IA, AI Act européen), avec un grand écran de présentation |
 | Contact | E-mail et LinkedIn |
 
 Le site est disponible en **4 langues** (français, anglais, japonais, chinois) et en **mode jour / nuit**.
+
+## Veille automatique
+
+Les articles affichés sur la Terre sont dans [`veille.json`](veille.json) : **10 articles au maximum par sujet**.
+Chaque semaine, une tâche programmée cherche les nouveaux articles, les ajoute (titre, source, date, lien et résumé en 4 langues)
+et remplace les plus anciens quand un sujet en a déjà 10. Le script [`outils/synchro_veille.py`](outils/synchro_veille.py)
+vérifie le fichier, applique la limite et met à jour la copie de secours dans `index.html`.
 
 ## Technologies
 
