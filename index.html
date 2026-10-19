@@ -379,6 +379,17 @@ body.ship-hover { cursor: pointer; }
 .vt-topic p, .vt-topic li { color: var(--muted); }
 .vt-topic ul, .vt-topic ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
 
+/* --- Pièce de veille : le vrai curseur disparaît, c'est la souris du bureau qui le remplace --- */
+.room-ui { position: fixed; inset: 0; z-index: 40; cursor: none; touch-action: none; opacity: 0; transition: opacity 0.6s ease; }
+.room-ui.on { opacity: 1; }
+.room-ui[hidden] { display: none; }
+.room-back { position: absolute; left: calc(1rem + env(safe-area-inset-left, 0px)); top: calc(1rem + env(safe-area-inset-top, 0px)); padding: 0.6rem 1.1rem; border-radius: 12px; border: 1px solid rgba(255, 60, 50, 0.55); background: rgba(16, 8, 22, 0.7); color: #fff; font: 600 0.9rem var(--font); cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.room-back:hover { background: rgba(255, 45, 45, 0.25); }
+.room-help { position: absolute; left: 50%; bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); margin: 0; max-width: calc(100% - 2rem); width: max-content; padding: 0.5rem 1rem; border-radius: 999px; background: rgba(10, 5, 18, 0.7); color: #e9e2ee; font: 500 0.85rem var(--mono); text-align: center; pointer-events: none; animation: roomHelp 7s ease forwards; }
+@keyframes roomHelp { 0%, 75% { opacity: 1; } 100% { opacity: 0; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.hud.in-room > *:not(.hud-warp) { opacity: 0 !important; pointer-events: none !important; }
+
 /* Pendant la mission, la page s'efface pour laisser place à l'espace */
 body.mission main, body.mission footer, body.mission .side-nav, body.mission .progress { opacity: 0; pointer-events: none; }
 main, footer, .side-nav, .progress { transition: opacity 0.8s ease; }
@@ -1125,6 +1136,18 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "en": "Why this article",
   "ja": "この記事を選んだ理由",
   "zh": "为什么选这篇文章"
+ },
+ "room.help": {
+  "fr": "Bouge ta souris : c'est la souris du bureau. Clique sur l'écran, molette pour te rapprocher, Échap pour revenir.",
+  "en": "Move your mouse: it's the desk mouse. Click on the screen, scroll to lean in, Esc to go back.",
+  "ja": "マウスを動かすと机のマウスが動きます。画面をクリック、ホイールで近づき、Escで戻ります。",
+  "zh": "移动鼠标：它就是桌上的鼠标。点击屏幕，滚轮靠近屏幕，按 Esc 返回。"
+ },
+ "room.hint": {
+  "fr": "Molette : se rapprocher de l'écran  ·  Échap : retour à la Terre",
+  "en": "Scroll: lean in  ·  Esc: back to Earth",
+  "ja": "ホイール:画面に近づく · Esc:地球に戻る",
+  "zh": "滚轮：靠近屏幕 · Esc：返回地球"
  },
  "ct.li.soon": {
   "fr": "Profil LinkedIn bientôt disponible. En attendant, écris-moi par e-mail.",
@@ -2393,6 +2416,13 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
       <div class="vts-body" id="vts-body"></div>
     </div>
   </div>
+</div>
+
+<!-- ============ PIÈCE DE VEILLE : par-dessus la scène 3D (ta souris = la souris du bureau) ============ -->
+<div class="room-ui" id="room-ui" hidden>
+  <button type="button" class="room-back" id="room-back"><span aria-hidden="true">←</span> <span data-i18n="vt.back">Retour à la Terre</span></button>
+  <p class="room-help" data-i18n="room.help">Bouge ta souris : c'est la souris du bureau. Clique sur l'écran, molette pour te rapprocher.</p>
+  <p class="sr-only" id="room-live" aria-live="polite"></p>
 </div>
 
 <!-- ============ FENÊTRE D'EXEMPLE (ouverte depuis les compétences) ============ -->
@@ -3923,7 +3953,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     }
     function endMission() {
       if (M.state !== "parked" && M.state !== "reveal") return;
-      M.state = "return"; M.t = 0; M.hudShown = false; hud.classList.remove("show"); closeScreen(true); M.dragT = M.dragYT = null;
+      M.state = "return"; M.t = 0; M.hudShown = false; hud.classList.remove("show"); closeScreen(true); if (ROOM.on) { ROOM.out = false; ROOM.on = false; roomUI.hidden = true; roomUI.classList.remove("on"); hud.classList.remove("in-room"); } M.dragT = M.dragYT = null;
       setTimeout(function () { if (M.state === "return" || M.state === "idle") hud.hidden = true; }, 500);
       document.body.classList.remove("mission");
       document.documentElement.style.overflow = ""; window.scrollTo(0, M.savedY);
@@ -3980,7 +4010,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     if (dock) dock.addEventListener("click", function () { if (M.state !== "idle") return; if (M.out !== 2) { M.out = 2; ship.visible = true; } startMission(); });
     document.getElementById("hud-back").addEventListener("click", endMission);
     if (shipTag) shipTag.addEventListener("click", function (e) { e.stopPropagation(); endMission(); });
-    document.addEventListener("keydown", function (e) { if (e.key !== "Escape") return; if (vtsOpen) { closeScreen(); return; } if (M.dv > 0 || M.dvDir) return; if (M.state === "parked" || M.state === "reveal") endMission(); });
+    document.addEventListener("keydown", function (e) { if (e.key !== "Escape") return; if (ROOM.on) { exitRoom(); return; } if (vtsOpen) { closeScreen(); return; } if (M.dv > 0 || M.dvDir) return; if (M.state === "parked" || M.state === "reveal") endMission(); });
     /* Glisser = tourner la planète ; simple clic sur le vaisseau posé = retour */
     var dragP = null, moved = 0, ray2 = new THREE.Raycaster(), ndc2 = new THREE.Vector2(), shipSphere = new THREE.Sphere();
     hud.addEventListener("pointerdown", function (e) { if (e.target.closest("button, a, .vts") || M.dv > 0 || M.dvDir) return; M.dragT = M.dragYT = null; dragP = [e.clientX, e.clientY]; moved = 0; M.dragging = true; M.vel = M.velY = 0; hud.setPointerCapture(e.pointerId); hud.classList.add("grab"); });
@@ -4188,7 +4218,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
           dC.copy(dW).addScaledVector(dN, 0.85).add(tmpA.set(0, 0.08, 0));   /* juste au-dessus du signal */
           var dk = ease(M.dv); camM.lerp(dC, dk); lookM.lerp(dW, dk);
           warp.style.opacity = (vtsOpen ? 0.35 : Math.pow(M.dv, 3) * 0.95).toFixed(3);
-          if (M.dvDir > 0 && M.dv >= 1) { M.dvDir = 0; openScreen(); }
+          if (M.dvDir > 0 && M.dv >= 1) { M.dvDir = 0; if (!enterRoom(vtsSpot)) openScreen(); }   /* on entre dans la pièce de veille (sinon : grand écran) */
           if (M.dvDir < 0 && M.dv <= 0) { M.dvDir = 0; hud.classList.remove("diving"); warp.style.opacity = "0"; SPOTS.forEach(function (o) { o.el.classList.remove("on"); }); }
         }
       } else if (M.state === "return") {
@@ -4240,6 +4270,816 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
         sp.el.classList.toggle("near", show && facing > 0.82);
       });
     }
+    /* =====================================================
+       LA PIÈCE DE VEILLE : bureau, écran, clavier AZERTY, souris, mains.
+       Tout est généré en JavaScript (unités : mètres ; dessus du bureau à y = 0,
+       on regarde vers -Z). Un seul shader pour tout, avec un numéro de matériau par sommet.
+       Matériaux : 0 mur, 1 sol, 2 bois du bureau, 3 tapis, 4 corps du clavier, 5 touche,
+                   6 souris, 7 boîtier de l'écran, 8 dalle de l'écran, 9 peau, 10 ongle, 11 manche,
+                   12 fenêtre sur l'espace, 13 bande LED, 14 tasse, 15 métal brossé, 16 café
+       ===================================================== */
+    function buildRoomData() {
+      function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+      function add(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+      function mul(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
+      function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+      function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+      function len(a) { return Math.hypot(a[0], a[1], a[2]); }
+      function norm(a) { var l = len(a) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
+      function lerp3(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+      function rotY(p, a) { var c = Math.cos(a), s = Math.sin(a); return [p[0] * c + p[2] * s, p[1], -p[0] * s + p[2] * c]; }
+      function rotX(p, a) { var c = Math.cos(a), s = Math.sin(a); return [p[0], p[1] * c - p[2] * s, p[1] * s + p[2] * c]; }
+      function rotAxis(v, k, a) {   /* rotation de v autour de l'axe unitaire k (Rodrigues) */
+        var c = Math.cos(a), s = Math.sin(a), kv = cross(k, v), kd = dot(k, v);
+        return [v[0] * c + kv[0] * s + k[0] * kd * (1 - c), v[1] * c + kv[1] * s + k[1] * kd * (1 - c), v[2] * c + kv[2] * s + k[2] * kd * (1 - c)];
+      }
+      /* Un « lot » de géométrie (une partie qui bouge ensemble) */
+      function Batch() { return { P: [], N: [], U: [], M: [], K: [] }; }
+      function addMesh(B, V, F, opt) {
+        opt = opt || {};
+        if (opt.inside && opt.perTri) {   /* forme convexe : chaque triangle est orienté vers l'extérieur */
+          F = F.map(function (f) { var n = cross(sub(V[f[1]], V[f[0]]), sub(V[f[2]], V[f[0]])); var c = mul(add(add(V[f[0]], V[f[1]]), V[f[2]]), 1 / 3); return dot(n, sub(c, opt.inside(c))) >= 0 ? f : [f[0], f[2], f[1]]; });
+        } else if (opt.inside) {
+          var sc = 0;
+          F.forEach(function (f) { var n = cross(sub(V[f[1]], V[f[0]]), sub(V[f[2]], V[f[0]])); var c = mul(add(add(V[f[0]], V[f[1]]), V[f[2]]), 1 / 3); sc += dot(n, sub(c, opt.inside(c))) >= 0 ? 1 : -1; });
+          if (sc < 0) F = F.map(function (f) { return [f[0], f[2], f[1]]; });
+        }
+        var vn = opt.normals;
+        if (!vn && opt.smooth) {
+          vn = V.map(function () { return [0, 0, 0]; });
+          F.forEach(function (f) { var n = cross(sub(V[f[1]], V[f[0]]), sub(V[f[2]], V[f[0]])); f.forEach(function (i) { vn[i] = add(vn[i], n); }); });
+          vn = vn.map(norm);
+        }
+        F.forEach(function (f) {
+          var fn = vn ? null : norm(cross(sub(V[f[1]], V[f[0]]), sub(V[f[2]], V[f[0]])));
+          f.forEach(function (i) {
+            B.P.push(V[i][0], V[i][1], V[i][2]); var n = vn ? vn[i] : fn; B.N.push(n[0], n[1], n[2]);
+            var uv = opt.uv ? opt.uv[i] : [0, 0]; B.U.push(uv[0], uv[1]);
+            B.M.push(typeof opt.mat === "function" ? opt.mat(V[i], i) : opt.mat || 0); B.K.push(opt.key === undefined ? -1 : opt.key);
+          });
+        });
+      }
+      function grid(R, closeU) {   /* anneaux -> faces */
+        var V = [], F = [], m = R[0].length;
+        R.forEach(function (r) { r.forEach(function (v) { V.push(v); }); });
+        for (var i = 0; i < R.length - 1; i++) for (var j = 0; j < (closeU ? m : m - 1); j++) {
+          var a = i * m + j, b = i * m + (j + 1) % m, c = (i + 1) * m + j, d = (i + 1) * m + (j + 1) % m;
+          F.push([a, c, b], [b, c, d]);
+        }
+        return [V, F];
+      }
+      /* Boîte aux arêtes arrondies (normales parfaites), avec rétrécissement du haut (taper) et transformation */
+      function rbox(B, c, size, r, opt) {
+        opt = opt || {};
+        var h = [size[0] / 2, size[1] / 2, size[2] / 2], n = opt.n || 5, V = [], NN = [], UV = [], F = [];
+        r = Math.min(r, h[0], h[1], h[2]);
+        var faces = [[0, 1, 2, 1], [0, 1, 2, -1], [1, 0, 2, 1], [1, 0, 2, -1], [2, 0, 1, 1], [2, 0, 1, -1]];   /* axe normal, axes u, v, signe */
+        faces.forEach(function (fc) {
+          var base = V.length;
+          for (var i = 0; i <= n; i++) for (var j = 0; j <= n; j++) {
+            var p = [0, 0, 0]; p[fc[0]] = fc[3]; p[fc[1]] = -1 + 2 * i / n; p[fc[2]] = -1 + 2 * j / n;
+            /* répartition plus serrée vers les bords (arrondis plus lisses) */
+            p[fc[1]] = Math.sign(p[fc[1]]) * Math.pow(Math.abs(p[fc[1]]), 0.6); p[fc[2]] = Math.sign(p[fc[2]]) * Math.pow(Math.abs(p[fc[2]]), 0.6);
+            var q = [p[0] * h[0], p[1] * h[1], p[2] * h[2]];
+            var inner = [Math.max(-(h[0] - r), Math.min(h[0] - r, q[0])), Math.max(-(h[1] - r), Math.min(h[1] - r, q[1])), Math.max(-(h[2] - r), Math.min(h[2] - r, q[2]))];
+            var d = norm(sub(q, inner)); if (len(sub(q, inner)) < 1e-9) d = [0, 0, 0], d[fc[0]] = fc[3];
+            var pos = add(inner, mul(d, r));
+            if (opt.taper) { var t = (pos[1] + h[1]) / (2 * h[1]); var s = 1 - opt.taper * t; pos[0] *= s; pos[2] *= s; }
+            if (opt.dish && fc[0] === 1 && fc[3] > 0) pos[1] -= opt.dish * (1 - (pos[0] * pos[0] / (h[0] * h[0]) + pos[2] * pos[2] / (h[2] * h[2])) * 0.9);
+            V.push(pos); NN.push(d);
+            UV.push([(p[fc[1]] + 1) / 2, (p[fc[2]] + 1) / 2, fc[0] === 1 && fc[3] > 0 ? 1 : 0]);
+          }
+          for (var a2 = 0; a2 < n; a2++) for (var b2 = 0; b2 < n; b2++) {
+            var i0 = base + a2 * (n + 1) + b2, i1 = i0 + 1, i2 = i0 + n + 1, i3 = i2 + 1;
+            F.push([i0, i2, i1], [i1, i2, i3]);
+          }
+        });
+        var tf = opt.tf || function (p) { return p; };
+        var V2 = V.map(function (p) { return add(tf(p), c); });
+        var N2 = opt.taper ? null : NN.map(function (nn) { return norm(tf(nn)); });
+        addMesh(B, V2, F, { mat: opt.mat, normals: N2, smooth: !N2, key: opt.key, perTri: true, inside: function () { return c; },
+          uv: UV.map(function (u) { return opt.uvf ? opt.uvf(u) : [u[0], u[1]]; }) });
+      }
+      function lathe(B, c, prof, seg, opt) {   /* révolution autour de Y */
+        var R = prof.map(function (p) { var r = []; for (var j = 0; j < seg; j++) { var t = j / seg * Math.PI * 2; r.push([c[0] + Math.cos(t) * p[0], c[1] + p[1], c[2] + Math.sin(t) * p[0]]); } return r; });
+        var g = grid(R, true);
+        addMesh(B, g[0], g[1], { mat: opt.mat, smooth: true, inside: opt.inside || function (p) { return [c[0], p[1], c[2]]; },
+          uv: g[0].map(function (p, i) { return [(i % seg) / seg, Math.floor(i / seg) / (prof.length - 1)]; }) });
+      }
+      function quad(B, a, b, c2, d, mat, uvs) { addMesh(B, [a, b, c2, d], [[0, 1, 2], [0, 2, 3]], { mat: mat, uv: uvs || [[0, 0], [1, 0], [1, 1], [0, 1]] }); }
+
+      var S = Batch();   /* tout ce qui ne bouge pas */
+      /* ---------- Pièce : mur du fond avec grande fenêtre, murs latéraux, sol ---------- */
+      var WZ = -0.92, WX0 = -0.95, WX1 = 0.95, WY0 = 0.04, WY1 = 1.02;
+      quad(S, [-1.7, -0.75, WZ], [WX0, -0.75, WZ], [WX0, 1.5, WZ], [-1.7, 1.5, WZ], 0);
+      quad(S, [WX1, -0.75, WZ], [1.7, -0.75, WZ], [1.7, 1.5, WZ], [WX1, 1.5, WZ], 0);
+      quad(S, [WX0, -0.75, WZ], [WX1, -0.75, WZ], [WX1, WY0, WZ], [WX0, WY0, WZ], 0);
+      quad(S, [WX0, WY1, WZ], [WX1, WY1, WZ], [WX1, 1.5, WZ], [WX0, 1.5, WZ], 0);
+      quad(S, [WX0, WY0, WZ - 0.02], [WX1, WY0, WZ - 0.02], [WX1, WY1, WZ - 0.02], [WX0, WY1, WZ - 0.02], 12, [[0, 0], [1, 0], [1, 1], [0, 1]]);
+      /* cadre de la fenêtre (épais, arrondi) et montant central */
+      rbox(S, [0, WY0 - 0.015, WZ + 0.02], [WX1 - WX0 + 0.09, 0.05, 0.08], 0.012, { mat: 15 });
+      rbox(S, [0, WY1 + 0.015, WZ + 0.02], [WX1 - WX0 + 0.09, 0.05, 0.08], 0.012, { mat: 15 });
+      rbox(S, [WX0 - 0.02, (WY0 + WY1) / 2, WZ + 0.02], [0.05, WY1 - WY0, 0.08], 0.012, { mat: 15 });
+      rbox(S, [WX1 + 0.02, (WY0 + WY1) / 2, WZ + 0.02], [0.05, WY1 - WY0, 0.08], 0.012, { mat: 15 });
+      rbox(S, [0, (WY0 + WY1) / 2, WZ + 0.005], [0.03, WY1 - WY0, 0.04], 0.008, { mat: 15 });
+      /* bande LED sous la fenêtre */
+      rbox(S, [0, WY0 - 0.045, WZ + 0.05], [WX1 - WX0, 0.008, 0.01], 0.003, { mat: 13 });
+      quad(S, [-1.7, -0.75, 0.9], [-1.7, -0.75, WZ], [-1.7, 1.5, WZ], [-1.7, 1.5, 0.9], 0);
+      quad(S, [1.7, -0.75, WZ], [1.7, -0.75, 0.9], [1.7, 1.5, 0.9], [1.7, 1.5, WZ], 0);
+      quad(S, [-1.7, -0.75, 0.9], [1.7, -0.75, 0.9], [1.7, -0.75, WZ], [-1.7, -0.75, WZ], 1);
+      /* ---------- Bureau en bois ---------- */
+      rbox(S, [0, -0.016, -0.03], [1.56, 0.032, 0.8], 0.006, { mat: 2, n: 6 });
+      rbox(S, [0, -0.016 - 0.025, -0.42], [1.5, 0.05, 0.02], 0.004, { mat: 13 });   /* LED sous l'arrière du bureau */
+      /* ---------- Tapis de bureau (grand, coutures rouges) ---------- */
+      rbox(S, [0.05, 0.0015, 0.1], [0.88, 0.003, 0.36], 0.0014, { mat: 3, n: 4, uvf: function (u) { return [u[0], u[1]]; } });
+      /* ---------- Écran 27 pouces ---------- */
+      var SC = [0, 0.3, -0.25], SW = 0.698, SH = 0.393;   /* 32 pouces */
+      rbox(S, [SC[0], SC[1], SC[2] - 0.013], [SW + 0.014, SH + 0.016, 0.022], 0.006, { mat: 7, n: 5 });          /* cadre */
+      rbox(S, [SC[0], SC[1] - 0.01, SC[2] - 0.045], [SW * 0.72, SH * 0.66, 0.05], 0.03, { mat: 7, n: 6 });     /* dos bombé */
+      rbox(S, [SC[0], SC[1] - SH / 2 - 0.004, SC[2] + 0.0015], [SW * 0.16, 0.006, 0.004], 0.0018, { mat: 15 }); /* logo/bouton */
+      quad(S, [SC[0] - SW / 2, SC[1] - SH / 2, SC[2] + 0.0006], [SC[0] + SW / 2, SC[1] - SH / 2, SC[2] + 0.0006],
+        [SC[0] + SW / 2, SC[1] + SH / 2, SC[2] + 0.0006], [SC[0] - SW / 2, SC[1] + SH / 2, SC[2] + 0.0006], 8);
+      rbox(S, [0, 0.13, -0.33], [0.06, 0.25, 0.024], 0.009, { mat: 15, n: 5, tf: function (p) { return rotX(p, -0.12); } });   /* pied */
+      rbox(S, [0, 0.006, -0.32], [0.26, 0.012, 0.19], 0.005, { mat: 15, n: 5 });                                                 /* socle */
+      /* ---------- Tasse de café ---------- */
+      var MG = [-0.47, 0, -0.04];
+      lathe(S, MG, [[0.0, 0.0], [0.033, 0.0], [0.038, 0.004], [0.04, 0.02], [0.041, 0.09], [0.0425, 0.095], [0.037, 0.095], [0.035, 0.09], [0.035, 0.012]], 40, { mat: 14 });
+      lathe(S, MG, [[0.0, 0.072], [0.035, 0.072]], 40, { mat: 16 });   /* surface du café */
+      (function () {   /* anse */
+        var R = [], seg = 16, ring = 10;
+        for (var i = 0; i <= seg; i++) { var a = -Math.PI / 2 + i / seg * Math.PI, ctr = [MG[0] + 0.041 + Math.cos(a) * 0.022, MG[1] + 0.05 + Math.sin(a) * 0.025, MG[2]], tg = norm([-Math.sin(a) * 0.022, Math.cos(a) * 0.025, 0]);
+          var nx = norm(cross(tg, [0, 0, 1])), r = [];
+          for (var j = 0; j < ring; j++) { var b = j / ring * Math.PI * 2; r.push(add(ctr, add(mul(nx, Math.cos(b) * 0.006), [0, 0, Math.sin(b) * 0.0075]))); }
+          R.push(r); }
+        var g = grid(R, true); addMesh(S, g[0], g[1], { mat: 14, smooth: true });
+      })();
+
+      /* ---------- Clavier 75 % AZERTY ---------- */
+      var U = 0.019, KX = -0.075, KZ = 0.075, KW = 16.1 * U + 0.022, KD = 6.35 * U + 0.02;
+      rbox(S, [KX, 0.012, KZ], [KW, 0.02, KD], 0.006, { mat: 4, n: 5, tf: function (p) { return rotX(p, 0.045); } });
+      var ROWS = [
+        [["Esc", 1], [" ", 0.25], ["F1", 1], ["F2", 1], ["F3", 1], ["F4", 1], [" ", 0.25], ["F5", 1], ["F6", 1], ["F7", 1], ["F8", 1], [" ", 0.25], ["F9", 1], ["F10", 1], ["F11", 1], ["F12", 1], ["Suppr", 1]],
+        [["²", 1], ["&", 1], ["é", 1], ["\"", 1], ["'", 1], ["(", 1], ["-", 1], ["è", 1], ["_", 1], ["ç", 1], ["à", 1], [")", 1], ["=", 1], ["⌫", 2], ["Début", 1]],
+        [["Tab", 1.5], ["A", 1], ["Z", 1], ["E", 1], ["R", 1], ["T", 1], ["Y", 1], ["U", 1], ["I", 1], ["O", 1], ["P", 1], ["^", 1], ["$", 1], ["↵", 1.5], ["PgUp", 1]],
+        [["Verr", 1.75], ["Q", 1], ["S", 1], ["D", 1], ["F", 1], ["G", 1], ["H", 1], ["J", 1], ["K", 1], ["L", 1], ["M", 1], ["ù", 1], ["*", 1], ["↵", 1.25], ["PgDn", 1]],
+        [["⇧", 1.25], ["<", 1], ["W", 1], ["X", 1], ["C", 1], ["V", 1], ["B", 1], ["N", 1], [",", 1], [";", 1], [":", 1], ["!", 1], ["⇧", 1.75], ["↑", 1], ["Fin", 1]],
+        [["Ctrl", 1.25], ["⊞", 1.25], ["Alt", 1.25], [" ", 6.25], ["AltGr", 1], ["Fn", 1], ["Ctrl", 1], ["←", 1], ["↓", 1], ["→", 1]]
+      ];
+      var KEYS = [], x0 = KX - 16 * U / 2;
+      ROWS.forEach(function (row, ri) {
+        var x = x0, zr = KZ - KD / 2 + 0.01 + (ri + 0.5) * U * (ri === 0 ? 1 : 1) + (ri > 0 ? 0.25 * U : 0);
+        row.forEach(function (k) {
+          var w = k[1] * U;
+          if (k[0] !== " " || k[1] > 2) {
+            var cx = x + w / 2, idx = KEYS.length, yb = 0.012 + 0.01 + (KD / 2 - (zr - KZ)) * Math.tan(0.045) * -1 + 0.0045 + (ri === 0 ? -0.0006 : 0);
+            KEYS.push({ label: k[0], x: cx, z: zr, w: w, row: ri });
+            var cell = idx;   /* case de l'atlas des inscriptions */
+            rbox(S, [cx, 0.0222 + 0.0045 + (zr - KZ) * -0.045 + (ri === 0 ? 0.001 : 0), zr], [w - 0.0018, 0.009, U - 0.0018], 0.0022,
+              { mat: 5, n: 4, taper: 0.16, dish: 0.0006, key: idx,
+                uvf: function (u) { return u[2] ? [((cell % 16) + u[0]) / 16, (Math.floor(cell / 16) + u[1]) / 8] : [-1, -1]; } });
+          }
+          x += w;
+        });
+      });
+
+      /* ---------- Souris (lot à part : elle bouge) ---------- */
+      var MS = Batch();
+      (function () {
+        var Lm = 0.118, Wm = 0.064, Hm = 0.038, R = [], UVm = [], NS = 34, NA = 36;
+        for (var i = 0; i <= NS; i++) {
+          var t = i / NS, z = (t - 0.5) * Lm;   /* t = 0 : avant (côté -z) */
+          var wf = Math.pow(Math.sin(Math.PI * Math.min(1, 0.06 + t * 1.0)), 0.55);          /* largeur le long de la souris */
+          var w = Wm / 2 * (0.78 + 0.22 * Math.sin(Math.PI * Math.pow(t, 0.8))) * wf;
+          var hh = Hm * (0.55 + 0.45 * Math.sin(Math.PI * Math.pow(t, 0.75))) * Math.pow(Math.sin(Math.PI * Math.min(1, 0.04 + t * 0.98)), 0.35);
+          var row = [];
+          for (var j = 0; j <= NA; j++) {
+            var a = j / NA * Math.PI;   /* de droite (0) à gauche (π), par-dessus */
+            var cx = Math.cos(a), sy = Math.sin(a);
+            var x = w * Math.sign(cx) * Math.pow(Math.abs(cx), 0.8);
+            var y = 0.0015 + hh * Math.pow(sy, 0.55) * (1 - 0.12 * Math.max(0, -cx));   /* un peu plus bas côté pouce */
+            row.push([x, y, z]); UVm.push([t, j / NA]);
+          }
+          R.push(row);
+        }
+        var g = grid(R, false);
+        addMesh(MS, g[0], g[1], { mat: 6, smooth: true, uv: UVm, inside: function (p) { return [0, 0.012, p[2]]; } });
+        /* dessous plat */
+        var bot = R.map(function (r) { return [r[0], r[r.length - 1]]; }), V = [], F = [];
+        bot.forEach(function (b) { V.push([b[0][0], 0.0015, b[0][2]], [b[1][0], 0.0015, b[1][2]]); });
+        for (var k = 0; k < bot.length - 1; k++) F.push([k * 2, k * 2 + 1, k * 2 + 2], [k * 2 + 1, k * 2 + 3, k * 2 + 2]);
+        addMesh(MS, V, F, { mat: 6, inside: function () { return [0, 0.02, 0]; } });
+        /* molette */
+        var W0 = [], seg = 20;
+        for (var s2 = 0; s2 <= 1; s2++) { var r = []; for (var j2 = 0; j2 < seg; j2++) { var tt = j2 / seg * Math.PI * 2; r.push([(s2 - 0.5) * 0.007, 0.03 + Math.cos(tt) * 0.0085, -0.03 + Math.sin(tt) * 0.0085]); } W0.push(r); }
+        var gw = grid(W0, true); addMesh(MS, gw[0], gw[1], { mat: 15, smooth: true, key: 902, inside: function () { return [0, 0.03, -0.03]; } });
+      })();
+
+      return { S: S, MS: MS, KEYS: KEYS, screen: { c: SC, w: SW, h: SH }, win: { x0: WX0, x1: WX1, y0: WY0, y1: WY1, z: WZ - 0.02 }, mug: MG,
+        kb: { x: KX, z: KZ, w: KW, d: KD }, helpers: { Batch: Batch, addMesh: addMesh, grid: grid, rbox: rbox, norm: norm, cross: cross, add: add, sub: sub, mul: mul, dot: dot, rotAxis: rotAxis, rotX: rotX, rotY: rotY, lerp3: lerp3, len: len } };
+    }
+
+    var ROOM_VS = [
+      "attribute vec2 aUV; attribute float aMat; attribute float aKey; attribute float aAO;",
+      "uniform vec2 uKeys[4];",
+      "varying vec3 vW; varying vec3 vN; varying vec3 vL; varying vec2 vUV; varying float vMat; varying float vAO;",
+      "void main(){",
+      "  vec3 p = position;",
+      "  if (aKey > -0.5 && aKey < 899.0) {",   /* touche enfoncée */
+      "    for (int i = 0; i < 4; i++) { if (abs(aKey - uKeys[i].x) < 0.5) p.y -= 0.0034 * uKeys[i].y; }",
+      "  }",
+      "  vL = position; vUV = aUV; vMat = aMat; vAO = aAO;",
+      "  vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz;",
+      "  vN = normalize(mat3(modelMatrix) * normal);",
+      "  gl_Position = projectionMatrix * viewMatrix * w;",
+      "}"].join("\n");
+
+    var ROOM_FS = [
+      "uniform sampler2D uScreen; uniform sampler2D uKeyTex; uniform vec2 uCursor; uniform float uTime; uniform float uPress;",
+      "uniform vec3 uScreenC; uniform vec2 uScreenH; uniform vec3 uScreenCol;",
+      "uniform vec4 uWin; uniform float uWinZ;",
+      "uniform vec3 uMouseP; uniform vec3 uHandR; uniform vec3 uHandL; uniform float uFade;",
+      "varying vec3 vW; varying vec3 vN; varying vec3 vL; varying vec2 vUV; varying float vMat; varying float vAO;",
+      "float hs(vec3 p){ return fract(sin(dot(p, vec3(127.1,311.7,74.7)))*43758.5453); }",
+      "float vn(vec3 x){ vec3 i=floor(x); vec3 f=fract(x); f=f*f*(3.0-2.0*f);",
+      "  return mix(mix(mix(hs(i),hs(i+vec3(1.0,0.0,0.0)),f.x), mix(hs(i+vec3(0.0,1.0,0.0)),hs(i+vec3(1.0,1.0,0.0)),f.x),f.y),",
+      "             mix(mix(hs(i+vec3(0.0,0.0,1.0)),hs(i+vec3(1.0,0.0,1.0)),f.x), mix(hs(i+vec3(0.0,1.0,1.0)),hs(i+vec3(1.0,1.0,1.0)),f.x),f.y),f.z); }",
+      "float fb(vec3 p){ return vn(p)*0.55+vn(p*2.07)*0.27+vn(p*4.3)*0.13+vn(p*8.9)*0.05; }",
+      /* Vue sur l'espace par la fenêtre : étoiles, nébuleuse, la Terre */
+      "vec3 space(vec3 d){",
+      "  vec3 c = vec3(0.004, 0.003, 0.012);",
+      "  float neb = fb(d * 3.0 + vec3(1.3, 0.2, 0.7));",
+      "  c += vec3(0.16, 0.05, 0.28) * smoothstep(0.45, 0.85, neb) * 0.6 + vec3(0.25, 0.03, 0.06) * smoothstep(0.55, 0.9, fb(d * 5.0 + 3.1)) * 0.35;",
+      "  vec3 g = floor(d * 260.0); float st = hs(g);",
+      "  c += vec3(0.9, 0.92, 1.0) * step(0.9965, st) * (0.4 + 0.6 * hs(g + 1.7)) * smoothstep(0.35, 0.0, length(fract(d * 260.0) - 0.5));",
+      "  vec3 C = normalize(vec3(-0.66, 0.02, -0.75)) * 10.0; float rad = 3.6;",
+      "  float tb = dot(d, C), disc = rad * rad - (dot(C, C) - tb * tb);",
+      "  float ang = acos(clamp(dot(d, normalize(C)), -1.0, 1.0)), R = asin(rad / 10.0);",
+      "  if (disc > 0.0) {",
+      "    vec3 n = normalize(d * (tb - sqrt(disc)) - C);",
+      "    float land = smoothstep(0.5, 0.56, fb(n * 2.6 + 2.0)); float cl = smoothstep(0.52, 0.78, fb(n * 4.0 + vec3(uTime * 0.003, 0.0, 0.0)));",
+      "    vec3 ec = mix(vec3(0.015, 0.06, 0.2), mix(vec3(0.1, 0.18, 0.06), vec3(0.32, 0.26, 0.15), fb(n * 9.0)), land);",
+      "    float lit = smoothstep(-0.15, 0.5, dot(n, normalize(vec3(-0.6, 0.55, 0.6))));",
+      "    vec3 night = vec3(1.0, 0.62, 0.28) * land * smoothstep(0.66, 0.74, fb(n * 120.0)) * 0.22 * (1.0 - lit);",
+      "    ec = mix(ec, vec3(0.92), cl * 0.85) * (lit * 1.1 + 0.02) + night;",
+      "    float rim = pow(1.0 - max(dot(n, -d), 0.0), 3.0); ec += vec3(0.25, 0.5, 1.0) * rim * lit * 0.8;",
+      "    c = ec;",
+      "  }",
+      "  c += vec3(0.25, 0.5, 1.0) * exp(-pow((ang - R) / 0.025, 2.0)) * 0.6;",   /* atmosphère */
+      "  return c;",
+      "}",
+      /* Lumière d'un rectangle lumineux (écran, fenêtre) : point représentatif */
+      "vec3 rectL(vec3 p, vec3 c, vec2 h, out float E, vec3 N){",
+      "  vec3 q = vec3(clamp(p.x, c.x - h.x, c.x + h.x), clamp(p.y, c.y - h.y, c.y + h.y), c.z);",
+      "  vec3 L = q - p; float d2 = max(dot(L, L), 1e-5); L *= inversesqrt(d2);",
+      "  float A = 4.0 * h.x * h.y;",
+      "  E = max(dot(N, L), 0.0) * max(-L.z, 0.0) * A / (3.14159 * d2 + A);",
+      "  return L;",
+      "}",
+      "float softShadow(vec3 p, vec3 c, vec2 r, float k){",   /* ombre douce au sol d'un objet posé (ellipse) */
+      "  vec2 d = (p.xz - c.xz) / r; float h = max(0.0, c.y - p.y);",
+      "  return 1.0 - k * exp(-dot(d, d) * 1.6) * smoothstep(0.25, 0.0, h);",
+      "}",
+      "float cursorMask(vec2 uv, out float edge){",   /* flèche du curseur, dessinée sur la dalle */
+      "  vec2 px = (uv - uCursor) * vec2(1920.0, 1080.0); px.y = -px.y;",
+      "  float inTri = step(0.0, px.x) * step(0.0, px.y) * step(px.x, px.y * 0.62) * step(px.y, 30.0 - px.x * 0.35);",
+      "  float stem = step(abs(px.x - 9.5 - (px.y - 18.0) * 0.38), 3.0) * step(16.0, px.y) * step(px.y, 33.0);",
+      "  float m = max(inTri, stem);",
+      "  vec2 q = px - vec2(1.3, 1.6);",
+      "  float inner = step(0.0, q.x) * step(0.0, q.y) * step(q.x, q.y * 0.55) * step(q.y, 26.0 - q.x * 0.35) + step(abs(q.x - 8.5 - (q.y - 18.0) * 0.38), 1.6) * step(17.0, q.y) * step(q.y, 30.0);",
+      "  edge = m * (1.0 - min(1.0, inner));",
+      "  return m;",
+      "}",
+      "void main(){",
+      "  int m = int(vMat + 0.5); vec3 p = vW; vec3 N = normalize(vN); vec3 V = normalize(cameraPosition - p);",
+      "  vec3 alb = vec3(0.5); float rough = 0.6, metal = 0.0, coat = 0.0; vec3 emis = vec3(0.0); float spec = 1.0;",
+      "  float n1 = fb(p * 40.0);",
+      "  if (m == 0) {",   /* panneaux muraux */
+      "    vec2 g = vec2(p.x / 0.6, p.y / 0.42) + vec2(p.z / 0.6, 0.0); vec2 f = abs(fract(g) - 0.5);",
+      "    float seam = smoothstep(0.492, 0.498, max(f.x, f.y));",
+      "    alb = mix(vec3(0.075, 0.075, 0.09), vec3(0.03, 0.03, 0.04), seam) * (0.9 + 0.2 * fb(p * 6.0)); rough = 0.55; metal = 0.3;",
+      "  } else if (m == 1) { vec2 f = abs(fract(p.xz / 0.5) - 0.5); alb = vec3(0.05, 0.05, 0.055) * (1.0 - 0.5 * smoothstep(0.49, 0.497, max(f.x, f.y))); rough = 0.4; }",
+      "  else if (m == 2) {",   /* noyer verni */
+      "    vec3 q = p * vec3(2.2, 9.0, 34.0); float w = fb(vec3(p.x * 1.4, p.y * 30.0, p.z * 9.0)) * 3.0;",
+      "    float rings = 0.5 + 0.5 * sin((p.z * 90.0 + w * 2.5 + fb(p * vec3(2.0, 2.0, 40.0)) * 3.0));",
+      "    alb = mix(vec3(0.17, 0.085, 0.04), vec3(0.3, 0.16, 0.08), rings * 0.45 + 0.55 * fb(p * vec3(4.0, 4.0, 70.0)));",
+      "    alb *= 0.85 + 0.3 * fb(p * vec3(6.0, 6.0, 120.0)); rough = 0.42; coat = 0.7;",
+      "  } else if (m == 3) {",   /* tapis : tissu sombre, couture rouge */
+      "    vec2 e = min(vUV, 1.0 - vUV) * vec2(0.88, 0.36);",
+      "    float edge = step(min(e.x, e.y), 0.0055) * step(0.0028, min(e.x, e.y));",
+      "    float weave = 0.5 + 0.5 * sin(p.x * 2600.0) * sin(p.z * 2600.0);",
+      "    alb = vec3(0.018, 0.017, 0.022) * (0.85 + 0.3 * weave) * (0.9 + 0.2 * n1); rough = 0.95;",
+      "    float st = step(0.5, fract((p.x + p.z) * 220.0));",
+      "    alb = mix(alb, vec3(0.55, 0.04, 0.06) * (0.6 + 0.4 * st), edge); spec = 0.3;",
+      "  } else if (m == 4) { alb = vec3(0.07, 0.07, 0.08) * (0.9 + 0.2 * fb(vec3(p.x * 900.0, p.y * 4.0, p.z * 4.0))); metal = 0.85; rough = 0.32; }",
+      "  else if (m == 5) {",   /* touches PBT + inscriptions rétroéclairées */
+      "    alb = vec3(0.045, 0.045, 0.05) * (0.9 + 0.2 * fb(p * 900.0)); rough = 0.72;",
+      "    if (vUV.x >= 0.0) { float lg = texture2D(uKeyTex, vUV).r; alb = mix(alb, vec3(0.8, 0.8, 0.82), lg); emis += vec3(1.0, 0.92, 0.9) * lg * 0.12; }",
+      "  } else if (m == 6) {",   /* souris noire mate + bande LED rouge */
+      "    alb = vec3(0.028, 0.028, 0.032) * (0.9 + 0.2 * fb(p * 600.0)); rough = 0.5;",
+      "    float t = vUV.x, a = vUV.y;",
+      "    float split = (1.0 - smoothstep(0.0, 0.0006, abs(vL.x))) * step(t, 0.42) * step(0.3, a) * step(a, 0.7);",
+      "    split = max(split, (1.0 - smoothstep(0.0, 0.004, abs(t - 0.42))) * step(0.22, a) * step(a, 0.78));",
+      "    alb *= 1.0 - 0.8 * split;",
+      "    float strip = step(0.62, t) * (step(abs(a - 0.08), 0.03) + step(abs(a - 0.92), 0.03)) * step(t, 0.95);",
+      "    emis += vec3(1.0, 0.1, 0.12) * strip * (0.9 + 0.1 * sin(uTime * 2.0));",
+      "    float grip = smoothstep(0.32, 0.2, a) + smoothstep(0.68, 0.8, a); rough = mix(rough, 0.85, grip);",
+      "  } else if (m == 7) { alb = vec3(0.045, 0.045, 0.05); rough = 0.45; metal = 0.2; }",
+      "  else if (m == 8) {",   /* dalle de l'écran */
+      "    vec3 sc = texture2D(uScreen, vec2(vUV.x, 1.0 - vUV.y)).rgb;",
+      "    float edge; float cm = uCursor.x >= 0.0 ? cursorMask(vUV, edge) : 0.0;",
+      "    sc = mix(sc, vec3(1.0), cm); sc = mix(sc, vec3(0.0), edge);",
+      "    emis = sc * 1.05; alb = vec3(0.0); rough = 0.08; spec = 0.35;",
+      "  }",
+      "  else if (m == 9) {",   /* peau : teinte, rougeurs aux articulations et au bout des doigts, plis, grain */
+      "    alb = vec3(0.62, 0.41, 0.31) * (0.93 + 0.12 * fb(vL * 160.0)); rough = 0.52; spec = 0.55;",
+      "    if (vUV.x > -0.5) {",
+      "      float s = vUV.x, dors = smoothstep(0.15, 0.6, sin(vUV.y * 6.2832));",
+      "      float jt = exp(-pow((s - 1.0) / 0.09, 2.0)) + exp(-pow((s - 2.0) / 0.08, 2.0)) + 0.6 * exp(-pow(s / 0.12, 2.0));",
+      "      float tip = smoothstep(2.55, 2.95, s);",
+      "      alb = mix(alb, vec3(0.66, 0.34, 0.27), clamp(jt * 0.45 * dors + tip * 0.45, 0.0, 1.0));",
+      "      float wm = (exp(-pow((s - 1.0) / 0.06, 2.0)) + exp(-pow((s - 2.0) / 0.05, 2.0))) * dors;",
+      "      alb *= 1.0 - 0.22 * wm * smoothstep(0.55, 1.0, 0.5 + 0.5 * sin(s * 300.0 + sin(vUV.y * 40.0)));",
+      "      float pal = smoothstep(0.1, 0.6, -sin(vUV.y * 6.2832));",   /* plis de flexion côté paume */
+      "      alb *= 1.0 - 0.25 * pal * (exp(-pow((s - 1.0) / 0.025, 2.0)) + exp(-pow((s - 2.0) / 0.022, 2.0)));",
+      "      alb = mix(alb, alb * vec3(1.08, 1.0, 0.95), pal * 0.6);",
+      "    } else if (vUV.x > -1.5) {",
+      "      float vein = smoothstep(0.62, 0.7, fb(vec3(vL.x * 90.0, vL.y * 90.0, vL.z * 25.0))) * smoothstep(0.0, 0.012, vL.y);",
+      "      alb = mix(alb, alb * vec3(0.82, 0.86, 1.02), vein * 0.5);",
+      "    }",
+      "  } else if (m == 10) {",   /* ongle : lunule claire, bord libre blanc, brillant */
+      "    alb = vec3(0.8, 0.56, 0.52); alb = mix(alb, vec3(0.88, 0.76, 0.72), smoothstep(0.2, 0.05, vUV.x));",
+      "    alb = mix(alb, vec3(0.93, 0.9, 0.86), smoothstep(0.88, 0.97, vUV.x)); rough = 0.22; coat = 0.8; spec = 1.2;",
+      "  }",
+      "  else if (m == 11) { alb = vec3(0.06, 0.06, 0.08) * (0.8 + 0.4 * fb(p * 300.0)); rough = 0.95; spec = 0.2; }",
+      "  else if (m == 12) { vec3 d = normalize(p - cameraPosition); emis = space(d) * 1.3; alb = vec3(0.0); rough = 0.05; spec = 0.6; }",
+      "  else if (m == 13) { emis = mix(vec3(1.0, 0.08, 0.14), vec3(0.55, 0.12, 1.0), smoothstep(-0.8, 0.8, p.x)) * 1.6; alb = vec3(0.0); }",
+      "  else if (m == 14) { alb = vec3(0.48, 0.035, 0.045); rough = 0.12; coat = 0.9; }",
+      "  else if (m == 15) { alb = vec3(0.55, 0.56, 0.58) * (0.9 + 0.15 * fb(vec3(p.x * 3.0, p.y * 900.0, p.z * 3.0))); metal = 1.0; rough = 0.33; }",
+      "  else if (m == 16) { alb = vec3(0.055, 0.028, 0.014); rough = 0.1; coat = 0.5; }",
+      "  if (m == 9 || m == 10) {",   /* relief fin de la peau (normale perturbée) */
+      "    float hgt = fb(vL * 1400.0) * 0.000035 + (m == 9 ? fb(vL * 300.0) * 0.00004 : 0.0);",
+      "    vec3 dpx = dFdx(vL), dpy = dFdy(vL); float dhx = dFdx(hgt), dhy = dFdy(hgt);",
+      "    vec3 nl = normalize(cross(dpx, dpy)); vec3 r1 = cross(dpy, nl), r2 = cross(nl, dpx); float det = dot(dpx, r1);",
+      "    if (abs(det) > 1e-14) { vec3 g = sign(det) * (dhx * r1 + dhy * r2); vec3 nb = normalize(abs(det) * nl - g); N = normalize(N + (nb - nl) * 0.6); }",
+      "  }",
+      /* ---- éclairage ---- */
+      "  float ao = vAO;",
+      "  float sh = softShadow(p, uMouseP, vec2(0.04, 0.068), 0.6) * softShadow(p, uHandR, vec2(0.06, 0.1), 0.5) * softShadow(p, uHandL, vec2(0.065, 0.1), 0.45);",
+      "  if (m == 2 || m == 3) sh *= softShadow(p, vec3(-0.075, 0.025, 0.075), vec2(0.2, 0.085), 0.55) * softShadow(p, vec3(0.0, 0.02, -0.32), vec2(0.15, 0.11), 0.5) * softShadow(p, vec3(-0.47, 0.03, -0.04), vec2(0.05, 0.05), 0.6);",
+      "  if (m >= 9 && m <= 11) sh = 1.0;",
+      "  float eS, eW; vec3 LS = rectL(p, uScreenC, uScreenH, eS, N);",
+      "  vec3 winC = vec3((uWin.x + uWin.y) * 0.5, (uWin.z + uWin.w) * 0.5, uWinZ); vec2 winH = vec2((uWin.y - uWin.x) * 0.5, (uWin.w - uWin.z) * 0.5);",
+      "  vec3 LW = rectL(p, winC, winH, eW, N);",
+      "  vec3 ledP = vec3(clamp(p.x, uWin.x, uWin.y), uWin.z - 0.045, uWinZ + 0.07); vec3 Ll = ledP - p; float dl = dot(Ll, Ll); Ll = normalize(Ll);",
+      "  float eL = max(dot(N, Ll), 0.0) * 0.012 / (dl + 0.02);",
+      "  vec3 ledC = mix(vec3(1.0, 0.08, 0.14), vec3(0.55, 0.12, 1.0), smoothstep(-0.8, 0.8, p.x));",
+      "  vec3 lamp = vec3(-0.75, 0.75, 0.25); vec3 Lp = lamp - p; float dp = dot(Lp, Lp); Lp = normalize(Lp);",
+      "  float eP = max(dot(N, Lp), 0.0) * 0.35 / (dp + 0.2);",   /* petite lumière d'appoint chaude, hors champ */
+      "  vec3 irr = uScreenCol * eS * 16.0 + vec3(0.36, 0.44, 0.66) * eW * 6.0 + ledC * eL * 3.0 + vec3(1.0, 0.75, 0.5) * eP * 1.6 + vec3(0.03, 0.03, 0.04) * (0.6 + 0.4 * N.y);",
+      "  vec3 col = alb * (1.0 - metal) * irr * ao * sh;",
+      "  if (m == 9) col += alb * vec3(0.75, 0.22, 0.13) * (dot(irr, vec3(0.33)) * 0.45 + 0.012) * ao;",   /* lumière diffusée sous la peau */
+      /* reflets (GGX simplifié, dans la direction de l'écran et de la fenêtre) */
+      "  float a2 = max(0.002, pow(rough, 4.0));",
+      "  vec3 F0 = mix(vec3(0.04), alb, metal);",
+      "  vec3 H = normalize(LS + V); float ndh = max(dot(N, H), 0.0); float D = a2 / (3.14159 * pow(ndh * ndh * (a2 - 1.0) + 1.0, 2.0));",
+      "  vec3 Fs = F0 + (1.0 - F0) * pow(1.0 - max(dot(V, H), 0.0), 5.0);",
+      "  col += Fs * D * eS * uScreenCol * 2.2 * spec * sh;",
+      "  H = normalize(LW + V); ndh = max(dot(N, H), 0.0); D = a2 / (3.14159 * pow(ndh * ndh * (a2 - 1.0) + 1.0, 2.0));",
+      "  col += Fs * D * eW * vec3(0.4, 0.5, 0.75) * 1.2 * spec * sh;",
+      "  if (coat > 0.0) { float c2 = 0.0016; vec3 Hc = normalize(LS + V); float dc = c2 / (3.14159 * pow(pow(max(dot(N, Hc), 0.0), 2.0) * (c2 - 1.0) + 1.0, 2.0)); col += coat * 0.04 * dc * eS * uScreenCol * 0.25 * sh; }",
+      "  col += emis;",
+      "  col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14);",
+      "  gl_FragColor = vec4(clamp(col * uFade, 0.0, 1.0), 1.0);",
+      "}"].join("\n");
+
+    /* Inscriptions des touches : une case par touche dans un atlas 16 x 8 */
+    function drawKeyAtlas(cv, keys) {
+      var W = 1024, H = 512; cv.width = W; cv.height = H; var x = cv.getContext("2d");
+      x.fillStyle = "#000"; x.fillRect(0, 0, W, H); x.fillStyle = "#fff"; x.textAlign = "center"; x.textBaseline = "middle";
+      keys.forEach(function (k, i) {
+        var cw = W / 16, ch = H / 8, cx = (i % 16) * cw, cy = Math.floor(i / 16) * ch, L = k.label;
+        var big = L.length === 1, sz = big ? 26 : (L.length <= 3 ? 15 : 12);
+        x.font = (big ? "600 " : "500 ") + sz + "px Arial, Helvetica, sans-serif";
+        if (big && /[A-Z]/.test(L)) { x.textAlign = "left"; x.fillText(L, cx + cw * 0.2, cy + ch * 0.32); x.textAlign = "center"; }
+        else x.fillText(L, cx + cw / 2 * (k.w > 0.03 ? 1 : 1), cy + ch * 0.4);
+      });
+      return cv;
+    }
+
+    /* =====================================================
+       MAINS : paume, 4 doigts à 3 phalanges, pouce, ongles, avant-bras et manche.
+       Main droite construite dans son repère : poignet en (0,0,0), doigts vers -Z,
+       dos de la main vers +Y, pouce côté -X. La main gauche est son miroir.
+       uv de la peau : x = position le long du doigt (0 = jointure, 1 et 2 = articulations, 3 = bout), y = angle ;
+       x < 0 pour la paume et le bras.
+       ===================================================== */
+    function buildHandMesh(H, side, pose) {
+      var B = H.Batch(), add = H.add, mul = H.mul, sub = H.sub, norm = H.norm, cross = H.cross, dot = H.dot, rotAxis = H.rotAxis;
+      var mir = side === "L" ? -1 : 1;
+      function M(p) { return [p[0] * mir, p[1], p[2]]; }
+      function sst(a, b, x) { var u = Math.max(0, Math.min(1, (x - a) / (b - a))); return u * u * (3 - 2 * u); }
+      function spl(xs, ys, x) {   /* interpolation douce (Catmull-Rom), xs croissant ou décroissant */
+        if (xs[0] > xs[xs.length - 1]) { xs = xs.slice().reverse(); ys = ys.slice().reverse(); }
+        var n = xs.length; if (x <= xs[0]) return ys[0]; if (x >= xs[n - 1]) return ys[n - 1];
+        var i = 0; while (x > xs[i + 1]) i++;
+        var u = (x - xs[i]) / (xs[i + 1] - xs[i]), p0 = ys[Math.max(0, i - 1)], p1 = ys[i], p2 = ys[i + 1], p3 = ys[Math.min(n - 1, i + 2)];
+        return 0.5 * (2 * p1 + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u * u * u);
+      }
+      function addSkin(V, F, UV, mat, inside) {
+        if (mir < 0) { V = V.map(M); }
+        H.addMesh(B, V, F, { mat: mat, smooth: true, uv: UV, inside: inside ? function (c) { return M(inside(M(c))); } : null });
+      }
+      /* ---------- Paume + avant-bras : sections le long de Z ---------- */
+      var ZS = [0.3, 0.18, 0.1, 0.04, 0.012, -0.015, -0.04, -0.065, -0.082, -0.092, -0.098, -0.1015];
+      var WS = [0.034, 0.032, 0.029, 0.0265, 0.0275, 0.034, 0.04, 0.0425, 0.0425, 0.04, 0.032, 0.016];
+      var HT = [0.023, 0.021, 0.019, 0.016, 0.0145, 0.014, 0.0135, 0.0125, 0.0118, 0.0105, 0.0078, 0.0035];   /* dessus */
+      var HB = [0.022, 0.02, 0.018, 0.015, 0.0145, 0.0132, 0.0115, 0.0105, 0.0098, 0.0088, 0.0065, 0.003];   /* dessous */
+      var KN = [[-0.027, -0.086], [-0.0075, -0.089], [0.0115, -0.087], [0.029, -0.081]];   /* jointures (x, z) */
+      var R = [], UV = [], NA = 44, NZ = 54;
+      for (var i = 0; i <= NZ; i++) {
+        var z = 0.3 + (-0.1015 - 0.3) * Math.pow(i / NZ, 0.8), w = spl(ZS, WS, z), ht = spl(ZS, HT, z), hb = spl(ZS, HB, z), row = [];
+        for (var j = 0; j < NA; j++) {
+          var a = j / NA * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+          var x = w * Math.sign(ca) * Math.pow(Math.abs(ca), 0.92), y;
+          if (sa >= 0) {   /* dos de la main : arche transversale, jointures, tendons */
+            y = ht * Math.pow(sa, 0.82);
+            KN.forEach(function (k) { y += 0.0034 * Math.exp(-Math.pow((x - k[0]) / 0.0068, 2) - Math.pow((z - k[1]) / 0.0085, 2)); });
+            KN.forEach(function (k) { var tx = k[0] * (0.35 + 0.65 * Math.min(1, Math.max(0, -z) / 0.085)); y += 0.0006 * Math.exp(-Math.pow((x - tx) / 0.0028, 2)) * sst(0.005, -0.02, z) * sst(-0.092, -0.07, z); });
+          } else {   /* paume : creux au centre, éminences du pouce et du petit doigt */
+            y = -hb * Math.pow(-sa, 0.75);
+            y += 0.0025 * Math.exp(-Math.pow(x / 0.016, 2) - Math.pow((z + 0.05) / 0.025, 2));
+            y -= 0.0085 * Math.exp(-Math.pow((x + 0.021) / 0.015, 2) - Math.pow((z + 0.03) / 0.026, 2));
+            y -= 0.004 * Math.exp(-Math.pow((x - 0.027) / 0.011, 2) - Math.pow((z + 0.038) / 0.034, 2));
+            y -= 0.0022 * Math.exp(-Math.pow((z + 0.083) / 0.007, 2));   /* coussinet sous les doigts */
+          }
+          row.push([x, y, z]); UV.push([-1, j / NA]);
+        }
+        R.push(row);
+      }
+      /* fermeture de l'avant de la paume */
+      var endC = R[R.length - 1].reduce(function (s2, v) { return add(s2, mul(v, 1 / NA)); }, [0, 0, 0]);
+      R.push(R[R.length - 1].map(function () { return add(endC, [0, 0, -0.0015]); })); for (var e2 = 0; e2 < NA; e2++) UV.push([-1, e2 / NA]);
+      var g = H.grid(R, true);
+      addSkin(g[0], g[1], UV, 9, function (c) { return [0, 0, c[2]]; });
+      /* ---------- Doigts ---------- */
+      function finger(o) {
+        var lat0, d0, J = [o.base], D = [], d;
+        if (o.dirs) {   /* directions données (pouce) + direction du dessus de l'ongle */
+          D = o.dirs.map(norm); lat0 = norm(cross(D[0], o.dorsal));
+          for (var k0 = 0; k0 < 3; k0++) J[k0 + 1] = add(J[k0], mul(D[k0], o.len[k0]));
+        } else {
+          lat0 = H.rotY([1, 0, 0], o.yaw); d0 = norm(H.rotY([0, 0, -1], o.yaw)); d = d0;
+          for (var k = 0; k < 3; k++) { d = norm(rotAxis(d, lat0, -o.flex[k])); D[k] = d; J[k + 1] = add(J[k], mul(d, o.len[k])); }
+        }
+        function seg(k, s) { return add(J[k], mul(D[k], o.len[k] * (s - k))); }
+        function pos(s) {
+          var k = Math.max(0, Math.min(2, Math.floor(s))), p = seg(k, s);
+          for (var q = 1; q <= 2; q++) if (Math.abs(s - q) < 0.2) { var wq = sst(-0.2, 0.2, s - q); p = H.lerp3(seg(q - 1, s), seg(q, s), wq); }
+          return p;
+        }
+        var S0 = o.s0 || -0.45, NS = 64, NAf = 28, Rf = [], UVf = [], frames = [];
+        function sAt(i) { var t = i / NS; return S0 + (3 - S0) * (1 - Math.pow(1 - t, 1.35)); }
+        for (var i2 = 0; i2 <= NS; i2++) {
+          var s = sAt(i2), c = pos(s), T = norm(sub(pos(s + 0.01), pos(s - 0.01)));
+          var Xl = norm(sub(lat0, mul(T, dot(lat0, T)))), Dv = norm(cross(Xl, T));
+          var r = o.r0 + (o.r3 - o.r0) * Math.max(0, s) / 3;
+          if (o.thumb && s < 1) r = o.r0 * 1.45 + (o.r0 - o.r0 * 1.45) * Math.max(0, s);
+          r *= 1 - 0.05 * Math.sin(Math.PI * (s - Math.floor(s))) * (s > 0 ? 1 : 0);   /* plus fin au milieu des phalanges */
+          var tipK = s > 2.7 ? Math.sqrt(Math.max(0, 1 - Math.pow((s - 2.7) / 0.3, 2))) : 1;
+          var row2 = [];
+          for (var j2 = 0; j2 < NAf; j2++) {
+            var a2 = j2 / NAf * Math.PI * 2, ca2 = Math.cos(a2), sa2 = Math.sin(a2);
+            var rw = r * 1.07, rh = r * 0.93;
+            if (sa2 < 0) {   /* pulpe des doigts, côté paume */
+              rh *= 1.06 + 0.07 * Math.exp(-Math.pow(((s % 1) - 0.55) / 0.22, 2)) * (s > 0 ? 1 : 0);
+              if (s > 2.2) rh *= 1.06;
+            } else {   /* articulations saillantes sur le dessus */
+              rh += r * 0.16 * (Math.exp(-Math.pow((s - 1) / 0.12, 2)) + 0.8 * Math.exp(-Math.pow((s - 2) / 0.11, 2))) * Math.pow(sa2, 2);
+            }
+            var p = add(c, add(mul(Xl, rw * ca2 * tipK), mul(Dv, rh * sa2 * tipK)));
+            if (s > 2.7) p = add(p, mul(T, 0.0));
+            row2.push(p); UVf.push([s, j2 / NAf]);
+          }
+          Rf.push(row2); frames.push({ c: c, T: T, X: Xl, D: Dv, r: r, s: s, tipK: tipK });
+        }
+        /* bout du doigt fermé */
+        var last = Rf[Rf.length - 1], tip = add(pos(3), mul(frames[frames.length - 1].T, 0.0));
+        var gF = H.grid(Rf, true), V = gF[0], F = gF[1], m = NAf, base = (Rf.length - 1) * m;
+        V.push(tip); UVf.push([3, 0.5]); var ti = V.length - 1;
+        for (var j3 = 0; j3 < m; j3++) F.push([base + j3, base + (j3 + 1) % m, ti]);
+        addSkin(V, F, UVf, 9, function (cc) {   /* point intérieur : le plus proche sur l'axe */
+          var best = frames[0].c, bd = 1e9; frames.forEach(function (fr) { var dd = H.len(sub(cc, fr.c)); if (dd < bd) { bd = dd; best = fr.c; } }); return best;
+        });
+        /* ongle */
+        var Rn = [], UVn = [], NSn = 14, NAn = 12;
+        for (var a3 = 0; a3 <= NSn; a3++) {
+          var sn = 2.28 + (2.96 - 2.28) * a3 / NSn, fr = null, bd2 = 1e9;
+          frames.forEach(function (f2) { var dd = Math.abs(f2.s - sn); if (dd < bd2) { bd2 = dd; fr = f2; } });
+          var cN = pos(Math.min(sn, 2.9)), Tn = fr.T, Xn = fr.X, Dn = fr.D, rr = fr.r;
+          var hw = 0.92 * Math.sqrt(sst(2.28, 2.42, sn)) * (o.thumb ? 1.05 : 1);
+          var rowN = [];
+          for (var b3 = 0; b3 <= NAn; b3++) {
+            var ang = Math.PI / 2 + (b3 / NAn * 2 - 1) * hw;
+            var lift = rr * (0.93 * 1.0) + 0.0007 + 0.0006 * Math.cos((b3 / NAn * 2 - 1) * 1.4);
+            var pn = add(cN, add(mul(Xn, Math.cos(ang) * rr * 1.07 * 1.01), mul(Dn, Math.sin(ang) * lift)));
+            if (sn > 2.9) pn = add(pn, mul(Tn, (sn - 2.9) * o.len[2] * 1.0));
+            rowN.push(pn); UVn.push([a3 / NSn, b3 / NAn]);
+          }
+          Rn.push(rowN);
+        }
+        var gN = H.grid(Rn, false);
+        addSkin(gN[0], gN[1], UVn, 10, function (cc) { var best = frames[0].c, bd = 1e9; frames.forEach(function (fr) { var dd = H.len(sub(cc, fr.c)); if (dd < bd) { bd = dd; best = fr.c; } }); return best; });
+        return J[3];
+      }
+      var tips = [];
+      pose.f.forEach(function (fp, k) {
+        var K = KN[k];
+        tips.push(finger({ base: [K[0], -0.0025, K[1] + 0.004], yaw: fp.yaw, flex: fp.flex, len: [[0.041, 0.046, 0.043, 0.034][k], [0.025, 0.029, 0.027, 0.02][k], [0.02, 0.021, 0.021, 0.019][k]],
+          r0: [0.0094, 0.0097, 0.0091, 0.0081][k], r3: [0.0078, 0.008, 0.0076, 0.0068][k] }));
+      });
+      tips.push(finger({ base: [-0.024, -0.007, -0.016], dirs: pose.t.dirs, dorsal: pose.t.dorsal, len: [0.04, 0.031, 0.027], r0: 0.0108, r3: 0.0092, thumb: true, s0: -0.35 }));
+      /* ---------- Manche (sweat) ---------- */
+      var Rs = [], UVs = [];
+      for (var i4 = 0; i4 <= 14; i4++) {
+        var zs = 0.055 + i4 / 14 * 0.32, ws = spl(ZS, WS, zs) + 0.011 + i4 * 0.0006, hh2 = spl(ZS, HT, zs) + 0.012 + i4 * 0.0006, rows = [];
+        for (var j4 = 0; j4 < 32; j4++) {
+          var a4 = j4 / 32 * Math.PI * 2, fold = 1 + 0.06 * Math.sin(a4 * 3 + i4 * 1.7) * Math.sin(i4 * 0.9) + (i4 < 2 ? 0.04 : 0);
+          rows.push([Math.cos(a4) * ws * fold, Math.sin(a4) * hh2 * fold, zs]); UVs.push([-2, j4 / 32]);
+        }
+        Rs.push(rows);
+      }
+      var gS = H.grid(Rs, true); addSkin(gS[0], gS[1], UVs, 11, function (c) { return [0, 0, c[2]]; });
+      return { B: B, tips: tips.map(M) };
+    }
+    /* Poses : souris (main droite) et clavier (main gauche) */
+    var HAND_POSES = {
+      mouse: { f: [{ yaw: 0.05, flex: [0.12, 0.42, 0.26] }, { yaw: 0.0, flex: [0.12, 0.45, 0.28] }, { yaw: -0.07, flex: [0.3, 0.75, 0.38] }, { yaw: -0.16, flex: [0.42, 0.9, 0.42] }],
+               t: { dirs: [[-0.5, -0.32, -0.8], [-0.22, -0.42, -0.88], [-0.05, -0.45, -0.89]], dorsal: [-0.8, 0.55, 0.1] } },
+      keys: { f: [{ yaw: 0.04, flex: [0.4, 0.9, 0.45] }, { yaw: 0.0, flex: [0.4, 0.95, 0.45] }, { yaw: -0.05, flex: [0.42, 0.95, 0.45] }, { yaw: -0.12, flex: [0.45, 0.95, 0.45] }],
+              t: { dirs: [[-0.45, -0.5, -0.74], [-0.2, -0.7, -0.68], [0.0, -0.8, -0.6]], dorsal: [-0.85, 0.4, 0.2] } }
+    };
+
+    /* =====================================================
+       ÉCRAN DU BUREAU : la veille dessinée dans un canvas (1920 x 1080 « logiques »).
+       st = { topic, artId, hover, articles: {ia:[...], cyber:[...], dev:[...]}, updated }
+       Renvoie les zones cliquables : { x, y, w, h, act }
+       ===================================================== */
+    function drawScreenUI(cv, st) {
+      var W = 1920, Hh = 1080;
+      if (cv.width !== 2048) { cv.width = 2048; cv.height = 1024; }
+      var x = cv.getContext("2d"); x.setTransform(2048 / W, 0, 0, 1024 / Hh, 0, 0);
+      var T = function (k) { return window.__t ? window.__t(k) : k; };
+      var F = "'Space Grotesk', 'Segoe UI', Arial, sans-serif", MONO = "'JetBrains Mono', Consolas, monospace";
+      var COL = { ia: "#c084fc", cyber: "#ff5a4a", dev: "#5cc8ff" }, NUM = { ia: "01", cyber: "02", dev: "03" };
+      var arts = (st.articles && st.articles[st.topic]) || [], art = arts.filter(function (a) { return a.id === st.artId; })[0] || arts[0] || null;
+      var hits = [], hov = st.hover || "";
+      function hit(px, py, pw, ph, act) { hits.push({ x: px, y: py, w: pw, h: ph, act: act }); return hov === act; }
+      function rr(px, py, pw, ph, r) { x.beginPath(); x.moveTo(px + r, py); x.arcTo(px + pw, py, px + pw, py + ph, r); x.arcTo(px + pw, py + ph, px, py + ph, r); x.arcTo(px, py + ph, px, py, r); x.arcTo(px, py, px + pw, py, r); x.closePath(); }
+      function wrap(text, maxW, maxLines) {
+        var words = String(text || "").split(/(\s+)/), lines = [], cur = "";
+        if (/[　-鿿]/.test(text)) words = String(text).split("");   /* japonais / chinois : coupe au caractère */
+        for (var i = 0; i < words.length; i++) {
+          var tst = cur + words[i];
+          if (x.measureText(tst).width > maxW && cur.trim()) { lines.push(cur.trim()); cur = words[i].trim(); if (lines.length === maxLines) break; }
+          else cur = tst;
+        }
+        if (lines.length < maxLines && cur.trim()) lines.push(cur.trim());
+        if (lines.length === maxLines && (lines.join(" ").length < String(text).replace(/\s+/g, " ").length - 2)) {
+          var l = lines[maxLines - 1]; while (l && x.measureText(l + "…").width > maxW) l = l.slice(0, -1); lines[maxLines - 1] = l + "…";
+        }
+        return lines;
+      }
+      function day(iso) { return window.__vtDay ? window.__vtDay(iso) : iso; }
+      /* fond */
+      var g = x.createLinearGradient(0, 0, W, Hh); g.addColorStop(0, "#0e0718"); g.addColorStop(0.6, "#120814"); g.addColorStop(1, "#1d0710");
+      x.fillStyle = g; x.fillRect(0, 0, W, Hh);
+      var rg = x.createRadialGradient(1500, 120, 0, 1500, 120, 900); rg.addColorStop(0, "rgba(124,58,237,0.22)"); rg.addColorStop(1, "rgba(124,58,237,0)"); x.fillStyle = rg; x.fillRect(0, 0, W, Hh);
+      x.strokeStyle = "rgba(255,255,255,0.025)"; x.lineWidth = 1;
+      for (var gx = 0; gx < W; gx += 60) { x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, Hh); x.stroke(); }
+      for (var gy = 0; gy < Hh; gy += 60) { x.beginPath(); x.moveTo(0, gy); x.lineTo(W, gy); x.stroke(); }
+      /* barre de titre */
+      x.fillStyle = "rgba(255,255,255,0.04)"; x.fillRect(0, 0, W, 76); x.fillStyle = "rgba(255,90,74,0.5)"; x.fillRect(0, 75, W, 2);
+      ["#ff5f57", "#febc2e", "#28c840"].forEach(function (c, i) { x.fillStyle = c; x.beginPath(); x.arc(46 + i * 34, 38, 11, 0, 7); x.fill(); });
+      x.fillStyle = "#e9e2ee"; x.font = "600 30px " + F; x.textBaseline = "middle"; x.textAlign = "left";
+      x.fillText(T("vt.h2") + " — GARCIA Akhenaton", 170, 39);
+      var bw = 380, bh = 52, bx = W - bw - 26, by = 12, hb = hit(bx, by, bw, bh, "back");
+      rr(bx, by, bw, bh, 14); x.fillStyle = hb ? "rgba(255,90,74,0.38)" : "rgba(255,90,74,0.14)"; x.fill(); x.strokeStyle = "rgba(255,90,74,0.8)"; x.lineWidth = 2; x.stroke();
+      x.fillStyle = "#fff"; x.font = "600 27px " + F; x.textAlign = "center"; x.fillText("← " + T("vt.back"), bx + bw / 2, by + bh / 2 + 1);
+      /* onglets des thèmes */
+      var tx = 60;
+      ["ia", "cyber", "dev"].forEach(function (k) {
+        var n = (st.articles && st.articles[k] || []).length, label = NUM[k] + " · " + T("vt." + k + ".s") + "  (" + n + ")";
+        x.font = "600 30px " + F; var w = x.measureText(label).width + 70, on = st.topic === k, h2 = hit(tx, 104, w, 60, "tab:" + k);
+        rr(tx, 104, w, 60, 30); x.fillStyle = on ? "rgba(255,255,255,0.12)" : h2 ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)"; x.fill();
+        x.strokeStyle = on ? COL[k] : "rgba(255,255,255,0.14)"; x.lineWidth = on ? 3 : 2; x.stroke();
+        x.fillStyle = COL[k]; x.beginPath(); x.arc(tx + 30, 134, 9, 0, 7); x.fill();
+        x.fillStyle = on ? "#fff" : "#cfc5d6"; x.textAlign = "left"; x.fillText(label, tx + 50, 135);
+        tx += w + 22;
+      });
+      /* article */
+      var LX = 60, LW = 1090;
+      if (!art) {
+        x.fillStyle = "#cfc5d6"; x.font = "500 40px " + F; x.textAlign = "left"; x.fillText(T("vt.empty"), LX, 300);
+      } else {
+        var y = 236, c = COL[art.topic];
+        x.font = "600 26px " + MONO; x.textAlign = "left"; x.textBaseline = "alphabetic";
+        var meta = art.source.toUpperCase() + "  ·  " + day(art.date) + (art.time ? "  " + art.time : "");
+        x.fillStyle = c; x.fillText(meta, LX, y);
+        y += 26; x.fillStyle = c; x.fillRect(LX, y, 90, 5);
+        y += 70; x.font = "700 60px " + F; x.fillStyle = "#ffffff";
+        wrap(art.title, LW, 3).forEach(function (l) { x.fillText(l, LX, y); y += 72; });
+        y += 14; x.font = "400 35px " + F; x.fillStyle = "#e3dae6";
+        var sum = window.__vtSum ? window.__vtSum(art) : (art.summary && art.summary.fr) || "";
+        wrap(sum, LW, 7).forEach(function (l) { x.fillText(l, LX, y); y += 52; });
+        if (art.note) {
+          y += 22; x.font = "600 34px " + F; var stars = ""; for (var i = 1; i <= 5; i++) stars += i <= art.note ? "★" : "☆";
+          x.fillStyle = "#ffb02e"; x.fillText(stars, LX, y); var sw = x.measureText(stars + "  ").width;
+          x.fillStyle = "#fff"; x.fillText(T("vt.note") + " " + art.note + "/5", LX + sw, y);
+          var why = art.reason ? (art.reason[window.__lang || "fr"] || art.reason.fr) : "";
+          if (why) { y += 46; x.font = "400 29px " + F; x.fillStyle = "#b9adc2"; wrap(why, LW, 2).forEach(function (l) { x.fillText(l, LX, y); y += 40; }); }
+        }
+        y = Math.max(y + 30, 860); y = Math.min(y, 930);
+        var rw = 420, rh = 76, ho = hit(LX, y, rw, rh, "open");
+        rr(LX, y, rw, rh, 18); var bg = x.createLinearGradient(LX, y, LX + rw, y); bg.addColorStop(0, "#c4141f"); bg.addColorStop(1, "#ff8a1a");
+        x.fillStyle = bg; x.globalAlpha = ho ? 1 : 0.9; x.fill(); x.globalAlpha = 1;
+        if (ho) { x.shadowColor = "rgba(255,90,40,0.8)"; x.shadowBlur = 30; x.fill(); x.shadowBlur = 0; }
+        x.fillStyle = "#fff"; x.font = "700 33px " + F; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(T("vt.read") + "  ↗", LX + rw / 2, y + rh / 2 + 1);
+      }
+      /* liste des articles du thème */
+      var RX = 1230, RW = 630, ry = 210;
+      x.textAlign = "left"; x.textBaseline = "alphabetic"; x.font = "600 26px " + MONO; x.fillStyle = "#ff6a4a";
+      x.fillText((T("vt.h.arts") + " (" + arts.length + ")").toUpperCase(), RX, ry + 26); ry += 50;
+      x.save(); rr(RX - 10, ry - 6, RW + 20, 1080 - ry - 90, 16); x.clip();
+      arts.forEach(function (a) {
+        if (ry > 960) return;
+        var on = art && a.id === art.id, act = "art:" + a.id, hh = hit(RX, ry, RW, 112, act);
+        rr(RX, ry, RW, 112, 16); x.fillStyle = on ? "rgba(255,176,46,0.12)" : hh ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.035)"; x.fill();
+        x.strokeStyle = on ? "#ffb02e" : "rgba(255,255,255,0.1)"; x.lineWidth = on ? 2.5 : 1.5; x.stroke();
+        x.fillStyle = COL[a.topic]; x.fillRect(RX, ry + 16, 5, 80);
+        x.font = "600 25px " + F; x.fillStyle = "#fff"; x.fillText(a.source, RX + 26, ry + 40);
+        x.font = "500 22px " + MONO; x.fillStyle = "#a99b98"; x.textAlign = "right"; x.fillText(day(a.date), RX + RW - 20, ry + 40); x.textAlign = "left";
+        x.font = "400 25px " + F; x.fillStyle = "#d4cbd8"; x.fillText(wrap(a.title, RW - 50, 1)[0] || "", RX + 26, ry + 82);
+        ry += 126;
+      });
+      x.restore();
+      /* barre d'état */
+      x.fillStyle = "rgba(255,255,255,0.04)"; x.fillRect(0, Hh - 64, W, 64);
+      x.font = "500 24px " + MONO; x.fillStyle = "#8f8496"; x.textBaseline = "middle"; x.textAlign = "left";
+      x.fillText((st.updated ? T("vt.updated") + " " + day(st.updated) + "   ·   " : "") + T("room.hint"), 40, Hh - 32);
+      return hits;
+    }
+
+    /* =====================================================
+       PIÈCE DE VEILLE : contrôleur (Three.js)
+       Quand on plonge dans un signal de la Terre, on arrive devant un bureau :
+       l'écran affiche la veille, ta vraie souris pilote la souris du bureau
+       (et la main qui la tient), le curseur de l'écran suit, un clic clique sur l'écran,
+       la molette rapproche de l'écran, les touches du clavier s'enfoncent quand tu tapes.
+       ===================================================== */
+    var ROOM = { on: false, built: false, t: 0, fade: 0, out: false, zoom: 0, zoomT: 0, nx: 0.6, ny: 0.45, sx: 0.6, sy: 0.45, press: 0, hover: "", st: null, hits: [], keyQ: [] };
+    var roomUI = document.getElementById("room-ui"), roomBack = document.getElementById("room-back"), roomLive = document.getElementById("room-live");
+    function buildRoom() {
+      if (ROOM.built) return true;
+      var R = buildRoomData(), H = R.helpers;
+      ROOM.R = R;
+      ROOM.scene = new THREE.Scene();
+      ROOM.cam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.01, 20);
+      /* textures : écran + inscriptions des touches */
+      ROOM.scv = document.createElement("canvas"); ROOM.scv.width = 2048; ROOM.scv.height = 1024;
+      ROOM.stex = new THREE.CanvasTexture(ROOM.scv); ROOM.stex.flipY = false; ROOM.stex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      ROOM.ktex = new THREE.CanvasTexture(drawKeyAtlas(document.createElement("canvas"), R.KEYS)); ROOM.ktex.flipY = false;
+      ROOM.U = {
+        uScreen: { value: ROOM.stex }, uKeyTex: { value: ROOM.ktex }, uCursor: { value: new THREE.Vector2(0.6, 0.55) }, uTime: { value: 0 }, uPress: { value: 0 },
+        uScreenC: { value: new THREE.Vector3().fromArray(R.screen.c) }, uScreenH: { value: new THREE.Vector2(R.screen.w / 2, R.screen.h / 2) }, uScreenCol: { value: new THREE.Vector3(0.52, 0.48, 0.72) },
+        uWin: { value: new THREE.Vector4(R.win.x0, R.win.x1, R.win.y0, R.win.y1) }, uWinZ: { value: R.win.z },
+        uMouseP: { value: new THREE.Vector3() }, uHandR: { value: new THREE.Vector3() }, uHandL: { value: new THREE.Vector3() }, uFade: { value: 0 },
+        uKeys: { value: [new THREE.Vector2(-1, 0), new THREE.Vector2(-1, 0), new THREE.Vector2(-1, 0), new THREE.Vector2(-1, 0)] }
+      };
+      var mat = new THREE.ShaderMaterial({ uniforms: ROOM.U, vertexShader: ROOM_VS, fragmentShader: ROOM_FS });
+      mat.extensions = { derivatives: true };
+      function mesh(B) {
+        var g = new THREE.BufferGeometry(), n = B.P.length / 3;
+        g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(B.P), 3));
+        g.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(B.N), 3));
+        g.setAttribute("aUV", new THREE.BufferAttribute(new Float32Array(B.U), 2));
+        g.setAttribute("aMat", new THREE.BufferAttribute(new Float32Array(B.M), 1));
+        g.setAttribute("aKey", new THREE.BufferAttribute(new Float32Array(B.K), 1));
+        g.setAttribute("aAO", new THREE.BufferAttribute(new Float32Array(n).fill(1), 1));
+        var m = new THREE.Mesh(g, mat); m.frustumCulled = false; return m;
+      }
+      ROOM.scene.add(mesh(R.S));
+      ROOM.mouse = new THREE.Group(); ROOM.mouse.add(mesh(R.MS)); ROOM.scene.add(ROOM.mouse);
+      /* main droite posée sur la souris (elle la suit), main gauche sur le clavier */
+      ROOM.handR = mesh(buildHandMesh(H, "R", HAND_POSES.mouse).B);
+      ROOM.handR.rotation.order = "YXZ"; ROOM.handR.position.set(0.004, 0.034, 0.092); ROOM.handR.rotation.set(0.2, -0.05, -0.05);
+      ROOM.mouse.add(ROOM.handR);
+      ROOM.handL = mesh(buildHandMesh(H, "L", HAND_POSES.keys).B);
+      ROOM.handL.rotation.order = "YXZ"; ROOM.handL.position.set(-0.165, 0.046, 0.185); ROOM.handL.rotation.set(0.2, 0.18, 0.06);
+      ROOM.scene.add(ROOM.handL);
+      /* touches : retrouver une touche à partir de la touche tapée */
+      ROOM.keyIndex = {};
+      R.KEYS.forEach(function (k, i) { var L = k.label; if (!(L in ROOM.keyIndex)) ROOM.keyIndex[L] = i; });
+      ROOM.built = true;
+      return true;
+    }
+    function roomArticles() { var o = {}; Object.keys(window.VT).forEach(function (k) { o[k] = window.__vtArticles(k); }); return o; }
+    function drawRoomScreen() {
+      if (!ROOM.built || !ROOM.st) return;
+      ROOM.st.articles = roomArticles(); ROOM.st.updated = window.VEILLE && window.VEILLE.updated; ROOM.st.hover = ROOM.hover;
+      ROOM.hits = drawScreenUI(ROOM.scv, ROOM.st); ROOM.stex.needsUpdate = true;
+      var a = (ROOM.st.articles[ROOM.st.topic] || []).filter(function (x) { return x.id === ROOM.st.artId; })[0];
+      if (roomLive) roomLive.textContent = a ? a.source + " — " + a.title : "";
+    }
+    function enterRoom(sp) {
+      try { if (!buildRoom()) return false; } catch (e) { console.error("pièce", e); return false; }
+      ROOM.st = { topic: sp.k, artId: sp.id, hover: "" };
+      ROOM.on = true; ROOM.out = false; ROOM.t = 0; ROOM.fade = 0; ROOM.zoom = ROOM.zoomT = 0; ROOM.hover = "";
+      drawRoomScreen();
+      roomUI.hidden = false; requestAnimationFrame(function () { roomUI.classList.add("on"); });
+      hud.classList.add("in-room");
+      setTimeout(function () { if (ROOM.on && roomBack) roomBack.focus({ preventScroll: true }); }, 600);
+      return true;
+    }
+    function exitRoom(instant) {
+      if (!ROOM.on || ROOM.out) return;
+      ROOM.out = true; roomUI.classList.remove("on");
+      if (instant) finishExit();
+    }
+    function finishExit() {
+      ROOM.on = false; ROOM.out = false; roomUI.hidden = true; hud.classList.remove("in-room");
+      M.dvDir = -1;   /* la caméra ressort de la Terre */
+    }
+    window.__roomOn = function () { return ROOM.on; };
+    window.__roomHits = function () { return ROOM.hits; };   /* zones cliquables de l'écran (tests) */
+    /* ta souris -> la souris du bureau et le curseur de l'écran */
+    function roomPointer(e) {
+      ROOM.nx = Math.max(0, Math.min(1, e.clientX / window.innerWidth)); ROOM.ny = Math.max(0, Math.min(1, e.clientY / window.innerHeight));
+      var px = ROOM.nx * 1920, py = ROOM.ny * 1080, h = "";
+      for (var i = ROOM.hits.length - 1; i >= 0; i--) { var r = ROOM.hits[i]; if (px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h) { h = r.act; break; } }
+      if (h !== ROOM.hover) { ROOM.hover = h; drawRoomScreen(); }
+      roomUI.style.cursor = "none";
+    }
+    function roomClick() {
+      ROOM.press = 1;
+      var act = ROOM.hover; if (!act) return;
+      if (act === "back") exitRoom();
+      else if (act === "open") { var a = (ROOM.st.articles[ROOM.st.topic] || []).filter(function (x) { return x.id === ROOM.st.artId; })[0]; if (a) window.open(a.url, "_blank", "noopener"); }
+      else if (act.indexOf("tab:") === 0) { var k = act.slice(4), list = window.__vtArticles(k); ROOM.st.topic = k; ROOM.st.artId = list[0] ? list[0].id : null; drawRoomScreen(); }
+      else if (act.indexOf("art:") === 0) { ROOM.st.artId = act.slice(4); drawRoomScreen(); }
+    }
+    if (roomUI) {
+      roomUI.addEventListener("pointermove", roomPointer);
+      roomUI.addEventListener("pointerdown", function (e) { if (e.target.closest("button")) return; roomPointer(e); });
+      roomUI.addEventListener("click", function (e) { if (e.target.closest("button")) return; roomClick(); });
+      roomUI.addEventListener("wheel", function (e) { e.preventDefault(); ROOM.zoomT = Math.max(0, Math.min(1, ROOM.zoomT + (e.deltaY < 0 ? 0.35 : -0.35))); }, { passive: false });
+    }
+    if (roomBack) roomBack.addEventListener("click", function () { exitRoom(); });
+    /* le clavier du bureau : la touche tapée s'enfonce, la main gauche suit */
+    var KEYMAP = { " ": " ", "Enter": "↵", "Backspace": "⌫", "Tab": "Tab", "Shift": "⇧", "Control": "Ctrl", "Alt": "Alt", "AltGraph": "AltGr", "ArrowLeft": "←", "ArrowRight": "→", "ArrowUp": "↑", "ArrowDown": "↓", "Delete": "Suppr", "CapsLock": "Verr", "Meta": "⊞" };
+    document.addEventListener("keydown", function (e) {
+      if (!ROOM.on || e.key === "Escape") return;
+      var lab = KEYMAP[e.key] || (e.key.length === 1 ? e.key.toUpperCase() : e.key), idx = ROOM.keyIndex[lab];
+      if (idx === undefined && e.key.length === 1) idx = ROOM.keyIndex[e.key];
+      if (idx !== undefined) { ROOM.keyQ.unshift({ i: idx, a: 1 }); ROOM.keyQ.length = Math.min(ROOM.keyQ.length, 4); }
+      if (e.key === " " || e.key.indexOf("Arrow") === 0) e.preventDefault();
+    });
+    document.addEventListener("langchange", function () { if (ROOM.on) drawRoomScreen(); });
+    document.addEventListener("veilledata", function () { if (ROOM.on) drawRoomScreen(); });
+    /* chaque image */
+    var rEye = new THREE.Vector3(), rTgt = new THREE.Vector3(), rTmp = new THREE.Vector3();
+    function roomFrame(dt, now) {
+      var t = now / 1000, U = ROOM.U;
+      ROOM.t += dt;
+      ROOM.fade = ROOM.out ? Math.max(0, ROOM.fade - dt / 0.4) : Math.min(1, ROOM.fade + dt / 0.6);
+      if (ROOM.out && ROOM.fade <= 0) { finishExit(); return; }
+      U.uFade.value = ROOM.fade; U.uTime.value = t;
+      /* souris + main (avec un léger lissage), petite rotation du poignet */
+      ROOM.sx += (ROOM.nx - ROOM.sx) * Math.min(1, dt * 18); ROOM.sy += (ROOM.ny - ROOM.sy) * Math.min(1, dt * 18);
+      var mx = 0.205 + ROOM.sx * 0.155, mz = 0.045 + ROOM.sy * 0.15;
+      ROOM.press = Math.max(0, ROOM.press - dt * 6);
+      ROOM.mouse.position.set(mx, -0.0008 * ROOM.press, mz); ROOM.mouse.rotation.y = -(mx - 0.28) * 0.9 + (mz - 0.12) * 0.4;
+      ROOM.handR.position.y = 0.034 - 0.0022 * ROOM.press;
+      U.uCursor.value.set(ROOM.sx, 1 - ROOM.sy);
+      U.uMouseP.value.set(mx, 0.03, mz);
+      ROOM.mouse.updateMatrixWorld(true); rTmp.set(0, 0, -0.05); ROOM.handR.localToWorld(rTmp); U.uHandR.value.set(rTmp.x, 0.06, rTmp.z);
+      /* touches tapées */
+      var kd = 0;
+      for (var i = 0; i < 4; i++) {
+        var q = ROOM.keyQ[i];
+        if (q) { q.a = Math.max(0, q.a - dt * 7); U.uKeys.value[i].set(q.i, Math.min(1, q.a * 1.6)); kd = Math.max(kd, q.a); } else U.uKeys.value[i].set(-1, 0);
+      }
+      ROOM.handL.position.set(-0.165, 0.046 - 0.0025 * kd + Math.sin(t * 1.1) * 0.0006, 0.185);
+      U.uHandL.value.set(-0.165, 0.07, 0.115);
+      /* caméra : arrivée en douceur, petits mouvements de tête, molette = se rapprocher de l'écran */
+      ROOM.zoom += (ROOM.zoomT - ROOM.zoom) * Math.min(1, dt * 4);
+      var arr = 1 - Math.pow(1 - Math.min(1, ROOM.t / 1.3), 3), z = ROOM.zoom * ROOM.zoom * (3 - 2 * ROOM.zoom);
+      rEye.set(0.03 + (ROOM.sx - 0.5) * 0.025, 0.40 + 0.12 * (1 - arr) + Math.sin(t * 0.7) * 0.002, 0.55 + 0.35 * (1 - arr));
+      rTgt.set((ROOM.sx - 0.5) * 0.05, 0.14, -0.2);
+      rEye.lerp(rTmp.set(0, 0.3, 0.13), z); rTgt.lerp(rTmp.set(0, 0.3, -0.25), z);
+      ROOM.cam.position.copy(rEye); ROOM.cam.lookAt(rTgt);
+      ROOM.cam.fov = 55 - 3 * z; ROOM.cam.aspect = window.innerWidth / window.innerHeight; ROOM.cam.updateProjectionMatrix();
+    }
+
     MISSION_OK = true;
     } catch (err) { console.error("mission", err); document.documentElement.classList.add("no3d"); }
 
@@ -4459,7 +5299,8 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
 
       /* Secousse de la caméra après une explosion */
       if (shake > 0.002) { shakeV.set((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake, 0); camera.position.add(shakeV); camera.updateMatrixWorld(); }
-      renderer.render(scene, camera);
+      if (ROOM && ROOM.on) { try { roomFrame(dt, now); } catch (e) { console.error(e); } }
+      if (ROOM && ROOM.on) renderer.render(ROOM.scene, ROOM.cam); else renderer.render(scene, camera);   /* dans la pièce de veille, on ne dessine qu'elle */
       if (shake > 0.002) { camera.position.sub(shakeV); shake *= Math.exp(-dt * 6); }
       if (!reduce) requestAnimationFrame(frame);
     }
