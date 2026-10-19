@@ -320,7 +320,12 @@ body.ship-hover { cursor: pointer; }
 .vts-fmeta b { color: #ffb02e; font-weight: 600; }
 .vts-lang { padding: 0.05rem 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.7rem; }
 .vts-ftitle { margin: 0 0 0.55rem; font-family: var(--display); font-size: clamp(1.05rem, 2.2vw, 1.35rem); line-height: 1.3; color: #fff; text-transform: none; letter-spacing: 0; }
-.vts-fsum { margin: 0 0 0.9rem; color: #e4dbe6; }
+.vts-fsum { margin: 0 0 0.8rem; color: #e4dbe6; font-size: 1.05rem; }
+.vts-note { margin: 0 0 1rem; color: #c9bfd0; font-size: 0.9rem; }
+.vts-note b { color: #fff; }
+.vts-stars { color: #ffb02e; letter-spacing: 0.08em; }
+.vts-grid.two-col { grid-template-areas: "pres src"; }
+@media (max-width: 860px) { .vts-grid.two-col { grid-template-areas: "pres" "src"; } }
 .vts-read { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.55rem 1rem; border-radius: 10px; background: var(--grad); color: #fff; font-weight: 600; font-size: 0.9rem; text-decoration: none; box-shadow: 0 0 18px rgba(255, 45, 45, 0.35); }
 .vts-read:hover { filter: brightness(1.1); }
 .vts.open .vts-focus { animation: vtsIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s both; }
@@ -399,7 +404,9 @@ body.mission .cursor-glow, body.mission .cursor-trail { opacity: 0 !important; }
 .hud-ship:focus-visible { outline: 2px solid #ffb02e; outline-offset: 2px; }
 .hud-mark { position: absolute; left: 0; top: 0; margin: -9px 0 0 -9px; display: flex; align-items: center; gap: 0.5rem; padding: 0; border: 0; background: none; color: #fff; font: 600 0.8rem var(--font); cursor: pointer; transition: opacity 0.2s ease; }
 .hud-mark { --mc: #ffb02e; --mb: rgba(255, 176, 46, 0.28); }
-.hud-mark.t-act { --mc: #6db8ff; --mb: rgba(109, 184, 255, 0.28); }
+.hud-mark.t-ia { --mc: #c084fc; --mb: rgba(192, 132, 252, 0.28); }
+.hud-mark.t-cyber { --mc: #ff5a4a; --mb: rgba(255, 90, 74, 0.28); }
+.hud-mark.t-dev { --mc: #5cc8ff; --mb: rgba(92, 200, 255, 0.28); }
 .hud-mark i { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--mc); background: var(--mb); color: var(--mc); box-shadow: 0 0 12px var(--mc); animation: blip 2.2s ease-out infinite; }
 @keyframes blip { 0% { box-shadow: 0 0 0 0 currentColor; } 100% { box-shadow: 0 0 0 14px transparent; } }
 .hud-mark em { font-style: normal; font-family: var(--mono); color: var(--mc); margin-right: 0.35rem; }
@@ -407,8 +414,8 @@ body.mission .cursor-glow, body.mission .cursor-trail { opacity: 0 !important; }
 .hud-mark.near span, .hud-mark:hover span, .hud-mark:focus-visible span, .hud-mark.on span { opacity: 1; transform: none; }
 .hud-legend { position: absolute; left: 1.5rem; bottom: calc(3.6rem + env(safe-area-inset-bottom, 0px)); margin: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; max-width: calc(100% - 3rem); font-family: var(--mono); font-size: 0.75rem; color: #c9bfd0; pointer-events: none; transition: opacity 0.4s ease; }
 .hud-legend .lg { display: inline-flex; align-items: center; gap: 0.4rem; }
-.hud-legend .lg i { width: 9px; height: 9px; border-radius: 50%; background: #ffb02e; box-shadow: 0 0 8px #ffb02e; }
-.hud-legend .lg.t-act i { background: #6db8ff; box-shadow: 0 0 8px #6db8ff; }
+.hud-legend .lg i { width: 9px; height: 9px; border-radius: 50%; background: var(--lc, #ffb02e); box-shadow: 0 0 8px var(--lc, #ffb02e); }
+.hud-legend .t-ia { --lc: #c084fc; } .hud-legend .t-cyber { --lc: #ff5a4a; } .hud-legend .t-dev { --lc: #5cc8ff; }
 .hud-legend .lg-up { color: #8f8496; }
 .hud.diving .hud-legend { opacity: 0; }
 @media (max-width: 600px) { .hud-legend { left: 0.75rem; bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px)); font-size: 0.68rem; } }
@@ -1011,30 +1018,6 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "ja": "地球に戻る",
   "zh": "返回地球"
  },
- "vt.h.pres": {
-  "fr": "Présentation",
-  "en": "Overview",
-  "ja": "概要",
-  "zh": "简介"
- },
- "vt.h.keys": {
-  "fr": "Chiffres clés",
-  "en": "Key figures",
-  "ja": "主な数字",
-  "zh": "关键数据"
- },
- "vt.h.dates": {
-  "fr": "Dates clés",
-  "en": "Key dates",
-  "ja": "主な日付",
-  "zh": "关键日期"
- },
- "vt.h.ret": {
-  "fr": "Ce que j'en retiens",
-  "en": "What I take away",
-  "ja": "私が学んだこと",
-  "zh": "我的收获"
- },
  "vt.h.src": {
   "fr": "Sources",
   "en": "Sources",
@@ -1046,198 +1029,6 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "en": "Open source",
   "ja": "情報源を開く",
   "zh": "打开来源"
- },
- "vt.ram.s": {
-  "fr": "Prix de la RAM et IA",
-  "en": "RAM prices & AI",
-  "ja": "RAM価格とAI",
-  "zh": "内存价格与AI"
- },
- "vt.ram.t": {
-  "fr": "La montée du prix de la RAM à cause de l'IA",
-  "en": "RAM prices soaring because of AI",
-  "ja": "AIによるRAM価格の高騰",
-  "zh": "人工智能推高内存价格"
- },
- "vt.ram.tag": {
-  "fr": "Matériel · Composants",
-  "en": "Hardware · Components",
-  "ja": "ハードウェア・部品",
-  "zh": "硬件 · 元器件"
- },
- "vt.ram.p1": {
-  "fr": "Depuis la fin de 2025, le prix de la mémoire vive (DRAM) et du stockage (NAND) s'envole. Les centres de données d'IA en achètent des quantités énormes : la mémoire HBM collée aux puces d'IA et la DRAM des serveurs.",
-  "en": "Since late 2025, the price of memory (DRAM) and storage (NAND) has skyrocketed. AI data centres buy huge amounts of it: HBM memory stacked next to AI chips, and server DRAM.",
-  "ja": "2025年末から、メモリ(DRAM)とストレージ(NAND)の価格が急騰しています。AIデータセンターが、AIチップの横に積層されるHBMやサーバー用DRAMを大量に購入しているためです。",
-  "zh": "自2025年底以来，内存（DRAM）和存储（NAND）价格飞涨。人工智能数据中心大量采购内存：与AI芯片堆叠在一起的HBM，以及服务器用DRAM。"
- },
- "vt.ram.p2": {
-  "fr": "Les trois grands fabricants (Samsung, SK hynix et Micron) réservent leur production à ces produits plus rentables et signent des contrats sur plusieurs années avec les géants du cloud. Il reste donc moins de mémoire pour les PC, les smartphones, les cartes graphiques et les consoles, qui coûtent plus cher.",
-  "en": "The three big manufacturers (Samsung, SK hynix and Micron) are prioritising these more profitable products and signing multi-year contracts with cloud giants. That leaves less memory for PCs, smartphones, graphics cards and consoles, which are getting more expensive.",
-  "ja": "三大メーカー(Samsung、SK hynix、Micron)は利益率の高いこれらの製品を優先し、クラウド大手と複数年契約を結んでいます。その結果、PC、スマートフォン、グラフィックカード、ゲーム機向けのメモリが減り、価格が上がっています。",
-  "zh": "三大厂商（三星、SK海力士和美光）优先生产这些利润更高的产品，并与云计算巨头签订多年合同。留给电脑、手机、显卡和游戏机的内存因此减少，它们也变得更贵。"
- },
- "vt.ram.k1n": {
-  "fr": "+58 à 63 %",
-  "en": "+58–63%",
-  "ja": "+58〜63%",
-  "zh": "+58–63%"
- },
- "vt.ram.k1d": {
-  "fr": "hausse prévue des prix de la DRAM au 2e trimestre 2026 (TrendForce)",
-  "en": "forecast rise in DRAM contract prices in Q2 2026 (TrendForce)",
-  "ja": "2026年第2四半期のDRAM契約価格の予測上昇率(TrendForce)",
-  "zh": "2026年第二季度DRAM合约价格预计涨幅（TrendForce）"
- },
- "vt.ram.k2n": {
-  "fr": "+10 à 15 %",
-  "en": "+10–15%",
-  "ja": "+10〜15%",
-  "zh": "+10–15%"
- },
- "vt.ram.k2d": {
-  "fr": "hausse prévue de la DRAM au 4e trimestre 2026 : ça ralentit, mais ça monte toujours",
-  "en": "forecast DRAM rise in Q4 2026: slowing down, but still going up",
-  "ja": "2026年第4四半期のDRAM予測上昇率:鈍化しつつも上昇が続く",
-  "zh": "2026年第四季度DRAM预计涨幅：涨势放缓，但仍在上涨"
- },
- "vt.ram.k3n": {
-  "fr": "Fév. 2026",
-  "en": "Feb 2026",
-  "ja": "2026年2月",
-  "zh": "2026年2月"
- },
- "vt.ram.k3d": {
-  "fr": "fin de Crucial : Micron quitte la RAM grand public pour servir l'IA",
-  "en": "end of Crucial: Micron leaves consumer RAM to serve AI",
-  "ja": "Crucial終了:MicronはAI向けに注力するため一般向けRAMから撤退",
-  "zh": "Crucial品牌终结：美光退出消费级内存，转向服务人工智能"
- },
- "vt.ram.k4n": {
-  "fr": "2027-2028",
-  "en": "2027–2028",
-  "ja": "2027〜2028年",
-  "zh": "2027–2028年"
- },
- "vt.ram.k4d": {
-  "fr": "Samsung prévoit une pénurie encore pire en 2027, qui pourrait durer jusqu'en 2028",
-  "en": "Samsung expects an even worse shortage in 2027, possibly lasting until 2028",
-  "ja": "Samsungは2027年に不足がさらに深刻化し、2028年まで続く可能性があると予測",
-  "zh": "三星预计2027年短缺将更严重，并可能持续到2028年"
- },
- "vt.ram.r1": {
-  "fr": "Une technologie logicielle, l'IA, change le prix du matériel que tout le monde achète : PC, cartes graphiques, smartphones.",
-  "en": "A software technology, AI, is changing the price of hardware everyone buys: PCs, graphics cards, smartphones.",
-  "ja": "AIというソフトウェア技術が、PC、グラフィックカード、スマートフォンなど誰もが買うハードウェアの価格を変えている。",
-  "zh": "人工智能这种软件技术，正在改变每个人都会购买的硬件价格：电脑、显卡、手机。"
- },
- "vt.ram.r2": {
-  "fr": "Pour un futur développeur, la mémoire devient une ressource chère : écrire du code sobre, qui consomme peu de RAM, est un vrai atout.",
-  "en": "For a future developer, memory is becoming an expensive resource: writing lean code that uses little RAM is a real asset.",
-  "ja": "将来の開発者にとって、メモリは高価な資源になりつつある。RAMをあまり使わない効率的なコードを書くことは大きな強みだ。",
-  "zh": "对未来的开发者来说，内存正变成昂贵的资源：编写占用内存少的精简代码是一项真正的优势。"
- },
- "vt.ram.r3": {
-  "fr": "Pour acheter un PC, mieux vaut anticiper et bien choisir sa quantité de RAM plutôt qu'attendre une baisse : les tensions pourraient durer jusqu'en 2028.",
-  "en": "When buying a PC, it is better to plan ahead and choose the right amount of RAM than to wait for prices to drop: the shortage could last until 2028.",
-  "ja": "PCを買うなら、値下がりを待つより早めに計画し、適切なRAM容量を選ぶほうがいい。供給不足は2028年まで続く可能性がある。",
-  "zh": "买电脑时，与其等降价，不如提前规划、选好内存容量：短缺可能持续到2028年。"
- },
- "vt.act.s": {
-  "fr": "L'AI Act européen",
-  "en": "The EU AI Act",
-  "ja": "EUのAI法",
-  "zh": "欧盟《人工智能法》"
- },
- "vt.act.t": {
-  "fr": "L'AI Act : l'Europe encadre l'intelligence artificielle",
-  "en": "The AI Act: Europe regulates artificial intelligence",
-  "ja": "AI法:欧州が人工知能を規制",
-  "zh": "《人工智能法》：欧洲监管人工智能"
- },
- "vt.act.tag": {
-  "fr": "Droit du numérique · Règlement européen",
-  "en": "Digital law · EU regulation",
-  "ja": "デジタル法・EU規則",
-  "zh": "数字法律 · 欧盟法规"
- },
- "vt.act.p1": {
-  "fr": "L'AI Act (règlement (UE) 2024/1689) est la première grande loi qui encadre l'IA selon son niveau de risque : certains usages sont interdits, d'autres sont « à haut risque » et très contrôlés, d'autres doivent simplement être transparents.",
-  "en": "The AI Act (Regulation (EU) 2024/1689) is the first major law that regulates AI according to its level of risk: some uses are banned, others are “high-risk” and tightly controlled, and others simply have to be transparent.",
-  "ja": "AI法(規則(EU)2024/1689)は、リスクの大きさに応じてAIを規制する初の本格的な法律だ。禁止される用途、厳しく管理される「高リスク」の用途、透明性だけが求められる用途がある。",
-  "zh": "《人工智能法》（欧盟第2024/1689号条例）是第一部按风险等级监管人工智能的重要法律：有些用途被禁止，有些属于受到严格管控的“高风险”，还有些只需保持透明。"
- },
- "vt.act.p2": {
-  "fr": "Il s'applique par étapes. En juillet 2026, le « Digital Omnibus » a repoussé les règles des systèmes à haut risque, mais l'obligation de transparence s'applique depuis le 2 août 2026 : un chatbot doit dire qu'il est une IA.",
-  "en": "It applies in stages. In July 2026, the “Digital Omnibus” postponed the rules for high-risk systems, but the transparency obligation has applied since 2 August 2026: a chatbot must say it is an AI.",
-  "ja": "段階的に適用される。2026年7月の「デジタル・オムニバス」で高リスクシステムの規則は延期されたが、透明性の義務は2026年8月2日から適用されている。チャットボットはAIであることを明示しなければならない。",
-  "zh": "该法分阶段实施。2026年7月，“数字综合法案”推迟了高风险系统的规则，但透明度义务自2026年8月2日起生效：聊天机器人必须表明自己是人工智能。"
- },
- "vt.act.k1n": {
-  "fr": "2 fév. 2025",
-  "en": "2 Feb 2025",
-  "ja": "2025年2月2日",
-  "zh": "2025年2月2日"
- },
- "vt.act.k1d": {
-  "fr": "interdiction de certaines pratiques (ex. notation sociale) et obligation de former à l'IA",
-  "en": "ban on certain practices (e.g. social scoring) and AI literacy obligation",
-  "ja": "一部の行為(社会的スコアリングなど)の禁止とAIリテラシーの義務",
-  "zh": "禁止某些做法（如社会评分），并规定人工智能素养义务"
- },
- "vt.act.k2n": {
-  "fr": "2 août 2025",
-  "en": "2 Aug 2025",
-  "ja": "2025年8月2日",
-  "zh": "2025年8月2日"
- },
- "vt.act.k2d": {
-  "fr": "règles pour les modèles d'IA à usage général (comme ceux des chatbots)",
-  "en": "rules for general-purpose AI models (like those behind chatbots)",
-  "ja": "汎用AIモデル(チャットボットの基盤など)の規則",
-  "zh": "通用人工智能模型（如聊天机器人背后的模型）的规则"
- },
- "vt.act.k3n": {
-  "fr": "2 août 2026",
-  "en": "2 Aug 2026",
-  "ja": "2026年8月2日",
-  "zh": "2026年8月2日"
- },
- "vt.act.k3d": {
-  "fr": "transparence : chatbots signalés comme IA, deepfakes et contenus générés marqués",
-  "en": "transparency: chatbots disclosed as AI, deepfakes and generated content labelled",
-  "ja": "透明性:チャットボットはAIと明示、ディープフェイクや生成コンテンツには表示",
-  "zh": "透明度：聊天机器人须表明是AI，深度伪造和生成内容须加标识"
- },
- "vt.act.k4n": {
-  "fr": "Déc. 2027 / août 2028",
-  "en": "Dec 2027 / Aug 2028",
-  "ja": "2027年12月/2028年8月",
-  "zh": "2027年12月 / 2028年8月"
- },
- "vt.act.k4d": {
-  "fr": "règles des systèmes à haut risque (recrutement, crédit, éducation…, puis produits réglementés), après le report",
-  "en": "rules for high-risk systems (recruitment, credit, education…, then regulated products), after the delay",
-  "ja": "高リスクシステム(採用、融資、教育…、次に規制対象製品)の規則、延期後",
-  "zh": "高风险系统（招聘、信贷、教育……以及受监管产品）的规则，推迟后生效"
- },
- "vt.act.r1": {
-  "fr": "Si je crée un chatbot, je dois afficher clairement que c'est une IA : c'est une obligation légale, pas juste une bonne pratique. C'est ce que fait la démo IA de ce portfolio.",
-  "en": "If I build a chatbot, I must clearly show that it is an AI: it is a legal obligation, not just good practice. The AI demo in this portfolio does exactly that.",
-  "ja": "チャットボットを作るなら、AIであることをはっきり示す必要がある。それは単なるマナーではなく法的義務だ。このポートフォリオのAIデモもそうしている。",
-  "zh": "如果我开发聊天机器人，就必须清楚表明它是人工智能：这是法律义务，而不只是良好做法。本作品集里的AI演示就是这样做的。"
- },
- "vt.act.r2": {
-  "fr": "La loi juge l'usage, pas la technologie : une IA qui trie des CV sera bien plus encadrée qu'un filtre anti-spam.",
-  "en": "The law judges the use, not the technology: an AI that sorts CVs will be far more regulated than a spam filter.",
-  "ja": "法律は技術ではなく用途を評価する。履歴書を選別するAIは、迷惑メールフィルターよりはるかに厳しく規制される。",
-  "zh": "法律评判的是用途而不是技术：筛选简历的人工智能会比垃圾邮件过滤器受到严格得多的监管。"
- },
- "vt.act.r3": {
-  "fr": "Le calendrier a changé en cours de route : en veille, il faut toujours vérifier la date et la source d'une information avant de la croire.",
-  "en": "The timeline changed along the way: when doing tech watch, always check the date and source of information before trusting it.",
-  "ja": "スケジュールは途中で変更された。技術ウォッチでは、情報を信じる前に必ず日付と情報源を確認する必要がある。",
-  "zh": "时间表中途发生了变化：做技术观察时，相信一条信息之前一定要核实它的日期和来源。"
  },
  "vt.h.arts": {
   "fr": "Articles de veille",
@@ -1262,6 +1053,78 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   "en": "No article for this topic yet.",
   "ja": "このテーマの記事はまだありません。",
   "zh": "该主题暂无文章。"
+ },
+ "vt.ia.s": {
+  "fr": "IA",
+  "en": "AI",
+  "ja": "AI",
+  "zh": "人工智能"
+ },
+ "vt.ia.t": {
+  "fr": "Intelligence artificielle",
+  "en": "Artificial intelligence",
+  "ja": "人工知能",
+  "zh": "人工智能"
+ },
+ "vt.ia.d": {
+  "fr": "Les nouveautés de l'intelligence artificielle : nouveaux modèles, outils, usages, et règles qui encadrent l'IA.",
+  "en": "What's new in artificial intelligence: new models, tools and uses, and the rules that govern AI.",
+  "ja": "人工知能の最新動向:新しいモデル、ツール、使い方、そしてAIを規制するルール。",
+  "zh": "人工智能的最新动态：新模型、新工具、新用途，以及监管人工智能的规则。"
+ },
+ "vt.cyber.s": {
+  "fr": "Cyber",
+  "en": "Cyber",
+  "ja": "サイバー",
+  "zh": "网络安全"
+ },
+ "vt.cyber.t": {
+  "fr": "Cybersécurité",
+  "en": "Cybersecurity",
+  "ja": "サイバーセキュリティ",
+  "zh": "网络安全"
+ },
+ "vt.cyber.d": {
+  "fr": "La cybersécurité au quotidien : attaques, failles, alertes du CERT-FR et bonnes pratiques pour se protéger.",
+  "en": "Cybersecurity day to day: attacks, vulnerabilities, CERT-FR alerts and good practices to stay protected.",
+  "ja": "日々のサイバーセキュリティ:攻撃、脆弱性、CERT-FRの警報、そして身を守るための対策。",
+  "zh": "日常网络安全：攻击、漏洞、CERT-FR警报，以及自我防护的良好做法。"
+ },
+ "vt.dev.s": {
+  "fr": "Dev/Infra",
+  "en": "Dev/Infra",
+  "ja": "開発/インフラ",
+  "zh": "开发/基础设施"
+ },
+ "vt.dev.t": {
+  "fr": "Développement et infrastructure",
+  "en": "Development and infrastructure",
+  "ja": "開発とインフラ",
+  "zh": "开发与基础设施"
+ },
+ "vt.dev.d": {
+  "fr": "Le développement et l'infrastructure : outils pour développer, conteneurs, serveurs et retours d'expérience techniques.",
+  "en": "Development and infrastructure: developer tools, containers, servers and hands-on technical experience.",
+  "ja": "開発とインフラ:開発ツール、コンテナ、サーバー、そして技術的な実践事例。",
+  "zh": "开发与基础设施：开发工具、容器、服务器，以及技术实践经验。"
+ },
+ "vt.theme": {
+  "fr": "Le thème",
+  "en": "The topic",
+  "ja": "テーマ",
+  "zh": "主题"
+ },
+ "vt.note": {
+  "fr": "Note",
+  "en": "Rating",
+  "ja": "評価",
+  "zh": "评分"
+ },
+ "vt.why": {
+  "fr": "Pourquoi cet article",
+  "en": "Why this article",
+  "ja": "この記事を選んだ理由",
+  "zh": "为什么选这篇文章"
  },
  "ct.li.soon": {
   "fr": "Profil LinkedIn bientôt disponible. En attendant, écris-moi par e-mail.",
@@ -2544,13 +2407,13 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
 
 <!-- ============ VEILLE : articles (copie de secours ; la version à jour est dans veille.json) ============
      Mis à jour automatiquement chaque semaine. Ne pas modifier à la main : utiliser outils/synchro_veille.py -->
-<script type="application/json" id="veille-data">{"updated":"2026-10-19","max_par_sujet":10,"articles":[{"id":"ram-2026-10-19-startupfortune","topic":"ram","date":"2026-10-19","source":"Startup Fortune","lang":"en","title":"Samsung's own memory chief says the RAM shortage won't peak until 2028","url":"https://startupfortune.com/samsungs-own-memory-chief-says-the-ram-shortage-wont-peak-until-2028","summary":{"fr":"Le responsable des ventes mémoire de Samsung prévoit que la pénurie de DRAM et de HBM va s'aggraver en 2027 et rester forte jusqu'en 2028, faute de nouvelles capacités de production.","en":"Samsung's memory sales chief expects the DRAM and HBM shortage to worsen through 2027 and stay tight into 2028, with no significant new supply before then.","ja":"Samsungのメモリ営業責任者は、DRAMとHBMの不足が2027年にかけて深刻化し、2028年まで続くと予測。それまで大幅な供給増は見込めないという。","zh":"三星存储业务销售负责人预计，DRAM和HBM短缺将在2027年加剧，并持续到2028年，在此之前不会有明显的新增产能。"}},{"id":"act-2026-10-15-actuia","topic":"act","date":"2026-10-15","source":"ActuIA","lang":"fr","title":"AI Act : les enquêtes pourraient prolonger le délai de sanction","url":"https://www.actuia.com/actualite/ai-act-les-enquetes-pourraient-prolonger-le-delai-de-sanction/","summary":{"fr":"La Commission consulte jusqu'au 9 novembre 2026 sur les règles d'enquête de l'AI Act : chaque acte d'enquête pourrait relancer le délai de 5 ans pour sanctionner un fournisseur.","en":"The Commission is consulting until 9 November 2026 on AI Act investigation rules: each investigative step could restart the 5-year limit for sanctioning a provider.","ja":"欧州委員会は2026年11月9日までAI法の調査規則について意見を募集中。調査のたびに、事業者を制裁できる5年の期限がリセットされる可能性がある。","zh":"欧盟委员会正就《人工智能法》调查规则征求意见，截止2026年11月9日：每次调查行动都可能让处罚供应商的5年时效重新计算。"}},{"id":"ram-2026-10-14-themotleyfool","topic":"ram","date":"2026-10-14","source":"The Motley Fool","lang":"en","title":"As AI Devours Memory Chips, the Companies That Make Them Hold the Pricing Power","url":"https://www.fool.com/investing/2026/10/14/as-ai-devours-memory-chips-the-companies-that-make/","summary":{"fr":"Samsung, SK hynix et Micron produisent plus de 95 % de la DRAM mondiale et orientent leurs usines vers la HBM pour l'IA. SK hynix dit avoir déjà vendu toute sa capacité de 2026.","en":"Samsung, SK hynix and Micron make over 95% of the world's DRAM and are shifting their fabs towards HBM for AI. SK hynix says its 2026 capacity is essentially sold out.","ja":"Samsung、SK hynix、Micronは世界のDRAMの95%以上を生産し、工場をAI向けHBMへ振り向けている。SK hynixは2026年の生産能力が事実上完売したという。","zh":"三星、SK海力士和美光生产了全球95%以上的DRAM，并把产能转向用于人工智能的HBM。SK海力士表示其2026年产能已基本售罄。"}},{"id":"ram-2026-10-13-tomshardwarefr","topic":"ram","date":"2026-10-13","source":"Tom's Hardware FR","lang":"fr","title":"Les prix de la RAM deviennent incontrôlables, et la pénurie pourrait durer encore trois ans","url":"https://www.tomshardware.fr/les-prix-de-la-ram-deviennent-incontrolables-et-la-penurie-pourrait-durer-encore-trois-ans/","summary":{"fr":"Selon Barclays, les prix contractuels de la DDR4 ont pris 24 % en trois mois (+20 % pour la DDR5). Citi prévoit un pic du déficit de DRAM fin 2027.","en":"According to Barclays, DDR4 contract prices rose 24% in three months (DDR5 +20%). Citi expects the DRAM deficit to peak in late 2027.","ja":"Barclaysによると、DDR4の契約価格は3か月で24%上昇(DDR5は20%)。Citiは、DRAMの供給不足が2027年末にピークを迎えると予測している。","zh":"据巴克莱银行数据，DDR4合约价格三个月上涨24%（DDR5上涨20%）。花旗预计DRAM供应缺口将在2027年底达到峰值。"}},{"id":"act-2026-10-13-donnéespersonnel","topic":"act","date":"2026-10-13","source":"Données Personnelles","lang":"fr","title":"Actualité IA et AI Act 2026 : calendrier et obligations","url":"https://www.donneespersonnelles.fr/actualite-ia-2026","summary":{"fr":"Début septembre 2026, la Commission a envoyé des demandes d'informations à plus de 30 fournisseurs d'IA : première utilisation de ses pouvoirs de contrôle depuis août 2026.","en":"In early September 2026, the Commission sent information requests to more than 30 AI providers: its first use of enforcement powers since August 2026.","ja":"2026年9月初め、欧州委員会は30社以上のAI事業者に情報提供を要請した。2026年8月以降、執行権限を初めて行使したことになる。","zh":"2026年9月初，欧盟委员会向30多家人工智能供应商发出信息索取请求，这是其自2026年8月以来首次行使执法权。"}},{"id":"act-2026-10-07-behaviture","topic":"act","date":"2026-10-07","source":"Behaviture","lang":"en","title":"The EU AI Act in October 2026: What Companies Need to Do Now","url":"https://behaviture.com/insights/the-eu-ai-act-in-october-2026-what-companies-need-to-do-now","summary":{"fr":"Les amendes vont jusqu'à 35 millions d'euros ou 7 % du chiffre d'affaires mondial pour une pratique interdite, et 15 millions ou 3 % pour un manque de transparence (article 50).","en":"Fines reach up to €35 million or 7% of worldwide turnover for a prohibited practice, and €15 million or 3% for transparency breaches (Article 50).","ja":"罰金は、禁止行為の場合最大3,500万ユーロまたは世界売上高の7%、透明性違反(第50条)の場合1,500万ユーロまたは3%に達する。","zh":"违反禁止性规定的罚款最高可达3500万欧元或全球年营业额的7%，违反透明度义务（第50条）最高1500万欧元或3%。"}},{"id":"act-2026-10-06-actuiaéthique","topic":"act","date":"2026-10-06","source":"ActuIA · Éthique","lang":"fr","title":"Éthique et régulation de l'IA : le point au 6 octobre 2026","url":"https://www.actuia.com/actualite/ethique-et-regulation-de-lia-le-point-au-6-octobre-2026/","summary":{"fr":"OpenAI va ajouter un filigrane aux textes de ChatGPT dans l'Union européenne pour respecter l'article 50 de l'AI Act sur la transparence.","en":"OpenAI will add a watermark to ChatGPT texts in the European Union to comply with the AI Act's Article 50 on transparency.","ja":"OpenAIは、AI法第50条の透明性義務に対応するため、EU域内でChatGPTの文章に透かしを入れる。","zh":"OpenAI将在欧盟为ChatGPT生成的文本添加水印，以遵守《人工智能法》第50条的透明度要求。"}},{"id":"act-2026-10-06-actuia","topic":"act","date":"2026-10-06","source":"ActuIA","lang":"en","title":"AI Act: obligations in force and delays under omnibus 2026/1744","url":"https://www.actuia.com/en/news/ai-act-obligations-in-force-and-delays-under-omnibus-2026-1744/","summary":{"fr":"Prochaine échéance le 2 décembre 2026 : les IA génératives déjà sur le marché devront marquer leurs contenus, et deux nouvelles interdictions entreront en vigueur.","en":"Next deadline on 2 December 2026: generative AI already on the market must mark its content, and two new prohibitions take effect.","ja":"次の期限は2026年12月2日。既に市場にある生成AIはコンテンツへの表示が義務となり、2つの新たな禁止事項が施行される。","zh":"下一个截止日期是2026年12月2日：已上市的生成式人工智能必须为其内容加标识，两项新的禁令也将生效。"}},{"id":"ram-2026-10-01-pausehardware","topic":"ram","date":"2026-10-01","source":"Pause Hardware","lang":"fr","title":"Prix de la mémoire : la demande IA maintient la hausse au quatrième trimestre 2026","url":"https://pausehardware.com/prix-memoire-hausse-ia-fin-2026/","summary":{"fr":"TrendForce prévoit encore +10 à 15 % sur les prix de la DRAM et +15 à 20 % sur la NAND au 4e trimestre 2026, portés par les serveurs d'IA.","en":"TrendForce still forecasts +10–15% for DRAM and +15–20% for NAND contract prices in Q4 2026, driven by AI servers.","ja":"TrendForceは、AIサーバーの需要により、2026年第4四半期もDRAMが10〜15%、NANDが15〜20%値上がりすると予測。","zh":"TrendForce预测，在AI服务器需求推动下，2026年第四季度DRAM合约价格仍将上涨10–15%，NAND上涨15–20%。"}},{"id":"act-2026-09-29-playmoweb","topic":"act","date":"2026-09-29","source":"Playmoweb","lang":"fr","title":"AI Act : depuis le 2 août 2026, votre chatbot doit dire qu'il est une IA","url":"https://playmoweb.com/ai-act-2-aout-2026-obligations-transparence-application/","summary":{"fr":"Depuis le 2 août 2026, un chatbot doit dire qu'il est une IA dès la première interaction, et les deepfakes doivent être signalés. Conseils concrets pour les développeurs.","en":"Since 2 August 2026, a chatbot must say it is an AI from the first interaction, and deepfakes must be labelled. Practical tips for developers.","ja":"2026年8月2日以降、チャットボットは最初のやり取りでAIであることを示し、ディープフェイクには表示が必要になった。開発者向けの具体的な助言もある。","zh":"自2026年8月2日起，聊天机器人必须在首次交互时表明自己是人工智能，深度伪造内容也必须加以标注。文章还为开发者提供了具体建议。"}},{"id":"act-2026-09-04-aiactinsight","topic":"act","date":"2026-09-04","source":"AI Act Insight","lang":"fr","title":"Digital Omnibus : ce qui est reporté dans l'AI Act","url":"https://aiactinsight.eu/fr/ai-act/digital-omnibus/","summary":{"fr":"Le règlement (UE) 2026/1744, publié le 24 juillet 2026, reporte les règles « haut risque » au 2 décembre 2027 et au 2 août 2028.","en":"Regulation (EU) 2026/1744, published on 24 July 2026, postpones the high-risk rules to 2 December 2027 and 2 August 2028.","ja":"2026年7月24日に公布された規則(EU)2026/1744により、高リスク規則は2027年12月2日と2028年8月2日に延期された。","zh":"2026年7月24日公布的欧盟第2026/1744号条例，将高风险规则推迟至2027年12月2日和2028年8月2日。"}},{"id":"ram-2026-08-05-rtbf","topic":"ram","date":"2026-08-05","source":"RTBF","lang":"fr","title":"Crise de la RAM : 2026 était déjà difficile, mais Samsung annonce une situation encore pire en 2027","url":"https://www.rtbf.be/article/crise-de-la-ram-2026-etait-deja-difficile-mais-samsung-annonce-une-situation-encore-pire-en-2027-11766293","summary":{"fr":"Samsung, qui produit environ un tiers des puces mémoire, annonce des tensions encore plus fortes en 2027. PC, cartes graphiques, consoles et smartphones risquent de coûter plus cher.","en":"Samsung, which makes about a third of the world's memory chips, expects even tighter supply in 2027. PCs, graphics cards, consoles and smartphones may cost more.","ja":"世界のメモリチップの約3分の1を生産するSamsungは、2027年にさらに供給がひっ迫すると発表。PC、グラフィックカード、ゲーム機、スマートフォンの値上がりが懸念される。","zh":"生产全球约三分之一存储芯片的三星表示，2027年供应将更加紧张。电脑、显卡、游戏机和手机都可能涨价。"}},{"id":"act-2026-07-22-quanticavocats","topic":"act","date":"2026-07-22","source":"Quantic Avocats","lang":"fr","title":"AI Act : le calendrier des obligations haut risque officiellement reporté","url":"https://www.quantic-avocats.com/2026/07/22/ai-act-digital-omnibus-report-obligations-haut-risque/","summary":{"fr":"Le Parlement (16 juin) puis le Conseil (29 juin 2026) ont adopté le report : les systèmes à haut risque de l'annexe III passent au 2 décembre 2027.","en":"Parliament (16 June) and then the Council (29 June 2026) adopted the delay: Annex III high-risk systems move to 2 December 2027.","ja":"欧州議会(6月16日)と理事会(2026年6月29日)が延期を採択。附属書IIIの高リスクシステムは2027年12月2日に延期された。","zh":"欧洲议会（6月16日）和理事会（2026年6月29日）先后通过推迟方案：附件三中的高风险系统推迟至2027年12月2日。"}},{"id":"ram-2026-07-03-trendforce","topic":"ram","date":"2026-07-03","source":"TrendForce","lang":"en","title":"AI Server Demand Continues to Support Memory Prices in 3Q26, but Gains Moderate","url":"https://www.trendforce.com/presscenter/news/20260703-13134.html","summary":{"fr":"Les prix de la DRAM devaient encore monter de 13 à 18 % au 3e trimestre 2026 : la hausse ralentit car les fabricants de PC et de smartphones atteignent leurs limites.","en":"DRAM contract prices were expected to rise another 13–18% in Q3 2026: growth is slowing as PC and smartphone makers hit their affordability limits.","ja":"2026年第3四半期のDRAM契約価格はさらに13〜18%上昇する見通し。PCやスマートフォンのメーカーが購入の限界に近づき、上昇ペースは鈍化している。","zh":"2026年第三季度DRAM合约价格预计再涨13–18%：由于电脑和手机厂商已接近承受极限，涨势有所放缓。"}},{"id":"ram-2026-06-30-learnup","topic":"ram","date":"2026-06-30","source":"LearnUp","lang":"fr","title":"RAM : prix de la mémoire en hausse de 50 % en 2026","url":"https://www.learnup.fr/ram-prix-hausse-2026-jefferies","summary":{"fr":"La banque Jefferies prévoit +40 à 50 % sur la DRAM et la NAND au 3e trimestre 2026, puis +30 à 40 % au 4e, et pas de baisse avant 2028.","en":"Jefferies forecasts +40–50% for DRAM and NAND in Q3 2026, then +30–40% in Q4, with no decline expected before 2028.","ja":"Jefferiesは、DRAMとNANDが2026年第3四半期に40〜50%、第4四半期に30〜40%値上がりし、2028年までは下がらないと予測。","zh":"Jefferies预测，2026年第三季度DRAM和NAND价格将上涨40–50%，第四季度再涨30–40%，2028年前不会下降。"}},{"id":"ram-2026-03-31-iconnect007trend","topic":"ram","date":"2026-03-31","source":"I-Connect007 · TrendForce","lang":"en","title":"AI Server Demand to Drive Memory Contract Price Increases in 2Q26","url":"https://iconnect007.com/article/149414/ai-server-demand-to-drive-memory-contract-price-increases-in-2q26-as-csps-secure-supply-via-longterm-agreements/149411/pcb","summary":{"fr":"TrendForce annonçait +58 à 63 % sur la DRAM et +70 à 75 % sur la NAND au 2e trimestre 2026 : les fabricants réservent leur production aux serveurs d'IA.","en":"TrendForce forecast +58–63% for DRAM and +70–75% for NAND in Q2 2026, as makers reserve production for AI servers.","ja":"TrendForceは2026年第2四半期にDRAMが58〜63%、NANDが70〜75%上昇すると予測。メーカーは生産をAIサーバー向けに優先している。","zh":"TrendForce预测2026年第二季度DRAM上涨58–63%，NAND上涨70–75%，因为厂商将产能优先留给AI服务器。"}},{"id":"ram-2026-02-26-gartner","topic":"ram","date":"2026-02-26","source":"Gartner","lang":"en","title":"Gartner Says Surging Memory Costs Will Reduce Global PC and Smartphone Shipments in 2026","url":"https://www.gartner.com/en/newsroom/press-releases/2026-02-26-gartner-says-surging-memory-costs-will-reduce-global-pc-and-smartphone-shipments-in-2026","summary":{"fr":"Gartner prévoit des PC 17 % plus chers fin 2026, car la mémoire et les SSD coûtent 130 % de plus. Les ventes de PC baisseraient de plus de 10 %.","en":"Gartner expects PCs to cost 17% more by the end of 2026 because memory and SSDs cost 130% more. PC shipments could fall by over 10%.","ja":"Gartnerは、メモリとSSDの価格が130%上昇するため、2026年末までにPCが17%値上がりすると予測。PC出荷台数は10%以上減少する可能性がある。","zh":"Gartner预计，由于内存和固态硬盘价格上涨130%，到2026年底电脑价格将上涨17%，电脑出货量可能下降超过10%。"}},{"id":"ram-2025-12-04-iphonesoft","topic":"ram","date":"2025-12-04","source":"iPhoneSoft","lang":"fr","title":"Crise de la mémoire : Micron annonce que la marque Crucial va disparaître","url":"https://iphonesoft.fr/2025/12/04/crise-memoire-micron-annonce-marque-crucial-disparaitre","summary":{"fr":"Micron arrête sa marque grand public Crucial (RAM et SSD) d'ici février 2026 pour réserver sa production aux centres de données d'IA.","en":"Micron is ending its Crucial consumer brand (RAM and SSDs) by February 2026 to reserve its production for AI data centres.","ja":"Micronは2026年2月までに一般向けブランドCrucial(RAMとSSD)を終了し、生産をAIデータセンター向けに集中させる。","zh":"美光将在2026年2月前停止其消费级品牌Crucial（内存和固态硬盘），把产能留给人工智能数据中心。"}},{"id":"act-2024-07-12-eurlex","topic":"act","date":"2024-07-12","source":"EUR-Lex","lang":"fr","title":"Règlement (UE) 2024/1689 sur l'intelligence artificielle","url":"https://eur-lex.europa.eu/eli/reg/2024/1689/oj","summary":{"fr":"Le texte officiel de l'AI Act, publié au Journal officiel de l'UE le 12 juillet 2024 : la référence à consulter en cas de doute.","en":"The official text of the AI Act, published in the EU Official Journal on 12 July 2024: the reference to check when in doubt.","ja":"2024年7月12日にEU官報で公布されたAI法の正式な条文。迷ったときに確認すべき基準となる資料。","zh":"《人工智能法》官方文本，于2024年7月12日在欧盟官方公报上公布，有疑问时应查阅的权威参考。"}}]}</script>
+<script type="application/json" id="veille-data">{"updated":"2026-10-19","max_par_sujet":10,"source":"Google Sheet « Veille technologique »","articles":[{"id":"ia-ea0ee5c4f7","topic":"ia","date":"2026-10-18","time":"12:29","source":"ZATAZ","lang":"fr","title":"La Chine veut contrôler ses exportations d'IA","url":"https://www.zataz.com/la-chine-veut-controler-ses-exportations-dia/","note":3,"summary":{"fr":"Pékin propose de soumettre 40 technologies au contrôle des exportations, dont 23 liées à l'IA (LLM, agents, conception de puces, calcul). Les transferts de technologie (cession, licence) sont visés, pas l'usage via API ou application ; consultation jusqu'au 15 novembre 2026. L'article compare avec les régimes américain, français (double usage), néerlandais et japonais.","en":"Beijing proposes to subject 40 technologies to export controls, 23 of them AI-related (LLMs, agents, chip design, computing). Technology transfers (sale, licensing) are targeted, not use via API or apps; consultation until 15 November 2026. The article compares it with the US, French (dual-use), Dutch and Japanese regimes.","ja":"北京は40の技術を輸出管理の対象とする案を示し、そのうち23がAI関連(LLM、エージェント、チップ設計、計算)。対象は技術移転(譲渡、ライセンス)で、APIやアプリでの利用は含まれない。意見募集は2026年11月15日まで。記事は米国、フランス(デュアルユース)、オランダ、日本の制度と比較している。","zh":"北京提议将40项技术纳入出口管制，其中23项与人工智能相关（大语言模型、智能体、芯片设计、算力）。管制针对技术转让（出让、许可），而非通过API或应用使用；意见征集截至2026年11月15日。文章还将其与美国、法国（两用物项）、荷兰和日本的制度进行了比较。"},"reason":{"fr":"Régulation IA d'actualité avec mise en perspective internationale, peu technique","en":"Topical AI regulation with an international perspective, not very technical","ja":"国際的な視点を伴う時事的なAI規制の話題で、技術的な内容は少ない","zh":"具有国际视角的时事性人工智能监管话题，技术性不强"}},{"id":"cyber-179ff88a20","topic":"cyber","date":"2026-10-17","time":"15:03","source":"ZATAZ","lang":"fr","title":"Cyberattaques : des sites français ciblés par des pirates","url":"https://www.zataz.com/cyberattaques-des-sites-francais-cibles-par-des-pirates/","note":3,"summary":{"fr":"Du 15 au 17 octobre, NoName057(16), CyberTroll Team et Dark Storm revendiquent des DDoS contre des sites français (SGDSN, EDF, Renault Trucks, Eurenco, collectivités, ports), avec des tests Check-Host comme preuve. Dark Storm vend désormais aussi l'extraction de bases de données en plus du DDoS à l'heure. L'impact constaté se limite à des indisponibilités ponctuelles.","en":"From 15 to 17 October, NoName057(16), CyberTroll Team and Dark Storm claimed DDoS attacks on French sites (SGDSN, EDF, Renault Trucks, Eurenco, local authorities, ports), using Check-Host tests as proof. Dark Storm now also sells database extraction on top of hourly DDoS. The observed impact is limited to brief outages.","ja":"10月15日から17日にかけて、NoName057(16)、CyberTroll Team、Dark Stormが、フランスのサイト(SGDSN、EDF、Renault Trucks、Eurenco、自治体、港湾)へのDDoS攻撃を主張し、Check-Hostのテスト結果を証拠として示した。Dark Stormは時間単位のDDoSに加え、データベースの抜き取りも販売している。確認された影響は一時的な停止にとどまる。","zh":"10月15日至17日，NoName057(16)、CyberTroll Team和Dark Storm声称对法国网站（SGDSN、EDF、雷诺卡车、Eurenco、地方政府、港口）发动了DDoS攻击，并以Check-Host测试结果为证。Dark Storm除按小时出售DDoS外，现在还出售数据库提取服务。实际影响仅限于短暂的服务中断。"},"reason":{"fr":"Actualité française utile mais fondée sur des revendications, peu de détail technique","en":"Useful French news, but based on claims, with little technical detail","ja":"有用なフランスのニュースだが、犯行声明に基づいており技術的な詳細は少ない","zh":"有用的法国新闻，但基于攻击者的声明，技术细节较少"}},{"id":"cyber-45c2142607","topic":"cyber","date":"2026-10-17","time":"13:36","source":"ZATAZ","lang":"fr","title":"Phishing : une opération frappe trois kits pirate","url":"https://www.zataz.com/phishing-une-operation-frappe-trois-kits-pirate/","note":4,"summary":{"fr":"Microsoft et Health-ISAC ont saisi des domaines et lancé une procédure contre trois kits de phishing sinophones (CoGUI, CoAceV, CoFish_Ws) : environ 1 340 campagnes et 17 000 domaines depuis janvier, surtout contre le Japon. Les kits imitent 66 marques et redirigent les analyseurs automatiques vers des pages leurres. Aucun bilan de l'effet durable n'est encore disponible.","en":"Microsoft and Health-ISAC seized domains and took legal action against three Chinese-language phishing kits (CoGUI, CoAceV, CoFish_Ws): about 1,340 campaigns and 17,000 domains since January, mostly targeting Japan. The kits imitate 66 brands and redirect automated scanners to decoy pages. No assessment of the lasting effect is available yet.","ja":"MicrosoftとHealth-ISACは、中国語圏の3つのフィッシングキット(CoGUI、CoAceV、CoFish_Ws)に対してドメインを差し押さえ、法的手続きを開始した。1月以降、主に日本を狙った約1,340件のキャンペーンと17,000のドメインが確認されている。キットは66のブランドを模倣し、自動解析ツールを囮ページへ誘導する。持続的な効果はまだ評価されていない。","zh":"微软与Health-ISAC查封了域名，并对三个中文网络钓鱼工具包（CoGUI、CoAceV、CoFish_Ws）提起诉讼：自1月以来约有1340次攻击活动和17000个域名，主要针对日本。这些工具包仿冒66个品牌，并把自动分析工具引向诱饵页面。目前尚无关于长期效果的评估。"},"reason":{"fr":"Démantèlement d'infrastructure avec chiffres et techniques d'évasion détaillées","en":"Infrastructure takedown with figures and detailed evasion techniques","ja":"数字と回避手法の詳細を伴うインフラの解体","zh":"附有数据和详细规避技术的基础设施摧毁行动"}},{"id":"cyber-69af31f2a8","topic":"cyber","date":"2026-10-17","time":"11:50","source":"ZATAZ","lang":"fr","title":"Cyberattaques : les supermarchés européens perturbés","url":"https://www.zataz.com/cyberattaques-les-supermarches-europeens-perturbes/","note":4,"summary":{"fr":"Nuit du 11 au 12 octobre : des contrôleurs de froid Danfoss exposés sur Internet ont été manipulés à distance dans des centaines de magasins français, avec des stocks perdus. Ahold Delhaize (Pays-Bas, Belgique) a coupé des systèmes après un incident distinct. Des failles Danfoss publiées en août sont évoquées sans preuve qu'elles soient le vecteur ; voir CERTFR-2026-ALE-012.","en":"Night of 11–12 October: internet-exposed Danfoss refrigeration controllers were remotely manipulated in hundreds of French stores, with stock lost. Ahold Delhaize (Netherlands, Belgium) shut down systems after a separate incident. Danfoss flaws published in August are mentioned, without proof that they were the attack vector; see CERTFR-2026-ALE-012.","ja":"10月11日から12日の夜、インターネットに公開されていたDanfoss製の冷却コントローラーが、フランス国内の数百店舗で遠隔操作され、在庫が失われた。Ahold Delhaize(オランダ、ベルギー)も別の事案を受けてシステムを停止した。8月に公表されたDanfossの脆弱性が言及されているが、侵入経路である証拠はない。CERTFR-2026-ALE-012を参照。","zh":"10月11日至12日夜间，暴露在互联网上的丹佛斯冷控设备在法国数百家门店遭远程操控，导致库存损失。阿霍德德尔海兹（荷兰、比利时）在另一起事件后关闭了系统。文章提到8月公布的丹佛斯漏洞，但没有证据表明它们就是攻击途径；参见CERTFR-2026-ALE-012。"},"reason":{"fr":"Incident français récent sur des équipements OT exposés, lié à une alerte CERT-FR en cours (CERTFR-2026-ALE-012)","en":"Recent French incident on exposed OT equipment, linked to an ongoing CERT-FR alert (CERTFR-2026-ALE-012)","ja":"露出したOT機器に関するフランスでの最近の事案で、進行中のCERT-FR警報(CERTFR-2026-ALE-012)に関連","zh":"法国近期发生的暴露OT设备事件，与正在进行的CERT-FR警报（CERTFR-2026-ALE-012）相关"}}]}</script>
 
 <!-- ============ SCRIPT 1b : veille (sujets, articles, rendu du grand écran) ============ -->
 <script>
 (function () {
-  /* Les 2 sujets ; leurs articles (10 au maximum chacun) viennent de veille.json */
-  var VT = { ram: { n: "01", keys: "vt.h.keys" }, act: { n: "02", keys: "vt.h.dates" } }, MAXI = 10;
+  /* Les 3 thèmes de ma veille (Google Sheet « Veille technologique ») ; 10 articles au maximum chacun, dans veille.json */
+  var VT = { ia: { n: "01" }, cyber: { n: "02" }, dev: { n: "03" } }, MAXI = 10;
   window.VT = VT;
   function T(k) { return window.__t ? window.__t(k) : k; }
   function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -2566,45 +2429,47 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
   if (!valid(window.VEILLE)) window.VEILLE = { updated: "", articles: [] };
   /* Articles d'un sujet, du plus récent au plus ancien */
   window.__vtArticles = function (key) {
-    return window.VEILLE.articles.filter(function (a) { return a.topic === key; }).sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }).slice(0, MAXI);
+    function k(a) { return a.date + " " + (a.time || ""); }
+    return window.VEILLE.articles.filter(function (a) { return a.topic === key; }).sort(function (a, b) { return k(a) < k(b) ? 1 : k(a) > k(b) ? -1 : 0; }).slice(0, MAXI);
   };
   function sum(a) { var l = window.__lang || "fr"; return (a.summary && (a.summary[l] || a.summary.fr)) || ""; }
-  /* Contenu du grand écran (article choisi + sujet) ; compact = cartes de la version sans 3D */
+  function why(a) { var l = window.__lang || "fr"; return (a.reason && (a.reason[l] || a.reason.fr)) || ""; }
+  function stars(n) { var h = ""; for (var i = 1; i <= 5; i++) h += i <= n ? "★" : "☆"; return h; }
+  window.__vtSum = sum;
+  /* Contenu du grand écran (article choisi + thème) ; compact = cartes de la version sans 3D */
   window.__vtHTML = function (key, compact, focusId) {
     var d = VT[key], p = "vt." + key + ".", arts = window.__vtArticles(key), h = "";
-    var focus = arts.filter(function (a) { return a.id === focusId; })[0] || null;
-    var ret = [1, 2, 3].map(function (i) { return "<li>" + esc(T(p + "r" + i)) + "</li>"; }).join("");
+    var focus = arts.filter(function (a) { return a.id === focusId; })[0] || arts[0] || null;
     var head = esc(T("vt.h.arts")) + " (" + arts.length + ")";
     if (compact) {
-      return '<p class="vts-sig">' + d.n + " · " + esc(T(p + "tag")) + '</p><h3 class="vt-tt">' + esc(T(p + "t")) + "</h3>" +
-        "<p>" + esc(T(p + "p1")) + "</p><p>" + esc(T(p + "p2")) + "</p>" +
-        "<h4>" + esc(T("vt.h.ret")) + "</h4><ol>" + ret + "</ol>" +
-        "<h4>" + head + "</h4>" + (arts.length ? '<ul class="vt-arts">' + arts.map(function (a) {
-          return '<li><a href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.title) + "</a><small>" + esc(a.source) + " · " + esc(day(a.date)) + "</small><span>" + esc(sum(a)) + "</span></li>";
+      return '<p class="vts-sig">' + d.n + " · " + esc(T(p + "s")) + '</p><h3 class="vt-tt">' + esc(T(p + "t")) + "</h3>" +
+        "<p>" + esc(T(p + "d")) + "</p><h4>" + head + "</h4>" + (arts.length ? '<ul class="vt-arts">' + arts.map(function (a) {
+          return '<li><a href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.title) + "</a><small>" + esc(a.source) + " · " + esc(day(a.date)) +
+            (a.note ? " · " + stars(a.note) : "") + "</small><span>" + esc(sum(a)) + "</span></li>";
         }).join("") + "</ul>" : "<p>" + esc(T("vt.empty")) + "</p>");
     }
     if (focus) {
       h += '<div class="vts-focus"><p class="vts-fmeta"><b>' + esc(focus.source) + '</b> · <time datetime="' + focus.date + '">' + esc(day(focus.date)) + "</time>" +
         (focus.lang && focus.lang !== (window.__lang || "fr") ? ' · <span class="vts-lang">' + esc(focus.lang.toUpperCase()) + "</span>" : "") + "</p>" +
-        '<h3 class="vts-ftitle">' + esc(focus.title) + '</h3><p class="vts-fsum">' + esc(sum(focus)) + "</p>" +
+        '<p class="vts-fsum">' + esc(sum(focus)) + "</p>" +
+        (focus.note ? '<p class="vts-note"><span class="vts-stars" aria-label="' + focus.note + '/5">' + stars(focus.note) + "</span> <b>" + esc(T("vt.note")) + " " + focus.note + "/5</b>" +
+          (why(focus) ? " — " + esc(why(focus)) : "") + "</p>" : "") +
         '<a class="vts-read" href="' + esc(focus.url) + '" target="_blank" rel="noopener">' + esc(T("vt.read")) + ' <span aria-hidden="true">↗</span></a></div>';
     }
-    var keys = [1, 2, 3, 4].map(function (i) { return "<li><b>" + esc(T(p + "k" + i + "n")) + "</b><span>" + esc(T(p + "k" + i + "d")) + "</span></li>"; }).join("");
     var list = arts.map(function (a) {
-      return '<li><button type="button" class="vts-art' + (focus && a.id === focus.id ? " on" : "") + '" data-art="' + esc(a.id) + '"' + (focus && a.id === focus.id ? ' aria-current="true"' : "") + "><b>" + esc(a.source) +
+      var on = focus && a.id === focus.id;
+      return '<li><button type="button" class="vts-art' + (on ? " on" : "") + '" data-art="' + esc(a.id) + '"' + (on ? ' aria-current="true"' : "") + "><b>" + esc(a.source) +
         '</b><time datetime="' + a.date + '">' + esc(day(a.date)) + "</time><span>" + esc(a.title) + "</span></button></li>";
     }).join("");
-    h += '<div class="vts-grid">';
-    h += '<div class="vts-pres"><h3>' + esc(T("vt.h.pres")) + "</h3><p>" + esc(T(p + "p1")) + "</p><p>" + esc(T(p + "p2")) + "</p></div>";
-    h += '<div class="vts-keys"><h3>' + esc(T(d.keys)) + "</h3><ul>" + keys + "</ul></div>";
-    h += '<div class="vts-ret"><h3>' + esc(T("vt.h.ret")) + "</h3><ol>" + ret + "</ol></div>";
+    h += '<div class="vts-grid two-col">';
+    h += '<div class="vts-pres"><h3>' + esc(T("vt.theme")) + " · " + esc(T(p + "t")) + "</h3><p>" + esc(T(p + "d")) + "</p></div>";
     h += '<div class="vts-src"><h3>' + head + "</h3>" + (arts.length ? "<ul>" + list + "</ul>" : "<p>" + esc(T("vt.empty")) + "</p>") + "</div>";
     return h + "</div>";
   };
-  /* Version sans 3D : les deux sujets en cartes dans la section Veille */
+  /* Version sans 3D : les thèmes en cartes dans la section Veille */
   function fallback() {
     var box = document.getElementById("vt-fallback"); if (!box) return;
-    box.innerHTML = ["ram", "act"].map(function (k) { return '<article class="card vt-card vt-topic">' + window.__vtHTML(k, true) + "</article>"; }).join("");
+    box.innerHTML = Object.keys(VT).map(function (k) { return '<article class="card vt-card vt-topic">' + window.__vtHTML(k, true) + "</article>"; }).join("");
   }
   document.addEventListener("DOMContentLoaded", fallback);
   document.addEventListener("langchange", fallback);
@@ -3939,7 +3804,8 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     function T(k) { return window.__t ? window.__t(k) : k; }
     function buildSpots() {
       SPOTS.forEach(function (sp) { sp.el.remove(); });
-      var arts = [].concat(window.__vtArticles("ram"), window.__vtArticles("act")).sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+      var arts = []; Object.keys(window.VT).forEach(function (k) { arts = arts.concat(window.__vtArticles(k)); });
+      arts.sort(function (a, b) { var x = a.date + (a.time || ""), y = b.date + (b.time || ""); return x < y ? 1 : x > y ? -1 : 0; });
       var N = Math.max(1, arts.length);
       SPOTS = arts.map(function (art, i) {
         /* spirale de Fibonacci : des points bien répartis sur tout le globe (sans les pôles) */
@@ -3958,7 +3824,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
     }
     function legend() {
       if (!legendEl) return;
-      var h = ["ram", "act"].map(function (k) { return '<span class="lg t-' + k + '"><i></i>' + window.VT[k].n + " · " + T("vt." + k + ".s") + " (" + window.__vtArticles(k).length + ")</span>"; }).join("");
+      var h = Object.keys(window.VT).map(function (k) { return '<span class="lg t-' + k + '"><i></i>' + window.VT[k].n + " · " + T("vt." + k + ".s") + " (" + window.__vtArticles(k).length + ")</span>"; }).join("");
       if (window.VEILLE && window.VEILLE.updated) h += '<span class="lg-up">' + T("vt.updated") + " " + window.__vtDay(window.VEILLE.updated) + "</span>";
       legendEl.innerHTML = h;
     }
@@ -3986,7 +3852,7 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--pink); outli
       SPOTS.forEach(function (o) { o.el.classList.toggle("on", o === sp); });
     }
     function fillScreen(sp) {
-      vtsNum.textContent = sp.n; vtsTag.textContent = T("vt." + sp.k + ".tag"); vtsT.textContent = T("vt." + sp.k + ".t");
+      vtsNum.textContent = sp.n; vtsTag.textContent = T("vt." + sp.k + ".t"); vtsT.textContent = sp.art.title;
       vtsBody.innerHTML = window.__vtHTML ? window.__vtHTML(sp.k, false, sp.id) : "";
     }
     function openScreen() {

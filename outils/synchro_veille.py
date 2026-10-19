@@ -10,7 +10,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.dirname(ICI)
 FICHIER = os.path.join(RACINE, "veille.json")
 PAGE = os.path.join(RACINE, "index.html")
-SUJETS = {"ram", "act"}            # sujets connus du site (textes de présentation dans index.html)
+SUJETS = {"ia", "cyber", "dev"}    # thèmes du Google Sheet : IA, Cyber, Dev/Infra (textes dans index.html)
 LANGUES = ("fr", "en", "ja", "zh")
 
 data = json.load(open(FICHIER, encoding="utf-8"))
@@ -18,7 +18,7 @@ maxi = int(data.get("max_par_sujet", 10))
 erreurs, vus = [], set()
 for a in data["articles"]:
     ref = a.get("id", "?")
-    for champ in ("id", "topic", "date", "source", "lang", "title", "url", "summary"):
+    for champ in ("id", "topic", "date", "source", "title", "url", "summary"):
         if not a.get(champ):
             erreurs.append(f"{ref} : champ « {champ} » manquant")
     if a.get("topic") not in SUJETS:
@@ -32,6 +32,10 @@ for a in data["articles"]:
     for l in LANGUES:
         if not (a.get("summary") or {}).get(l):
             erreurs.append(f"{ref} : résumé « {l} » manquant")
+        if (a.get("reason") or {}).get("fr") and not a["reason"].get(l):
+            erreurs.append(f"{ref} : raison de la note « {l} » manquante")
+    if a.get("note") is not None and a.get("note") not in (1, 2, 3, 4, 5):
+        erreurs.append(f"{ref} : note invalide (1 à 5)")
     if ref in vus or a.get("url") in vus:
         erreurs.append(f"{ref} : article en double")
     vus.update([ref, a.get("url")])
@@ -42,10 +46,10 @@ if erreurs:
 # Au maximum `maxi` articles par sujet : les plus anciens sont remplacés par les nouveaux
 gardes, retires = [], []
 for s in sorted(SUJETS):
-    liste = sorted([a for a in data["articles"] if a["topic"] == s], key=lambda a: a["date"], reverse=True)
+    liste = sorted([a for a in data["articles"] if a["topic"] == s], key=lambda a: (a["date"], a.get("time", "")), reverse=True)
     gardes += liste[:maxi]
     retires += liste[maxi:]
-gardes.sort(key=lambda a: (a["date"], a["id"]), reverse=True)
+gardes.sort(key=lambda a: (a["date"], a.get("time", ""), a["id"]), reverse=True)
 data["articles"] = gardes
 json.dump(data, open(FICHIER, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 open(FICHIER, "a", encoding="utf-8").write("\n")
