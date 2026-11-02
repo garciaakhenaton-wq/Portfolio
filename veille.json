@@ -1,8 +1,192 @@
 {
- "updated": "2026-10-26",
+ "updated": "2026-11-02",
  "max_par_sujet": 10,
  "source": "Google Sheet « Veille technologique »",
  "articles": [
+  {
+   "id": "dev-ffb30fef95",
+   "topic": "dev",
+   "date": "2026-11-02",
+   "time": "00:24",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "If in doubt, delete the uv.lock file",
+   "url": "https://simonwillison.net/2026/Nov/1/delete-uv-lock-first/",
+   "note": 3,
+   "summary": {
+    "fr": "Avec Python 3.15, un uv.lock ancien peut figer une dépendance sans wheel compatible, ce qui fait échouer l'installation. La solution : supprimer uv.lock et relancer uv pour résoudre des versions récentes. Bon rappel sur les lockfiles et la montée de version d'un interpréteur.",
+    "en": "With Python 3.15, an old uv.lock can pin a dependency that has no compatible wheel, causing the installation to fail. The fix: delete uv.lock and rerun uv to resolve recent versions. A good reminder about lockfiles and upgrading the interpreter version.",
+    "ja": "Python 3.15では、古いuv.lockが互換性のあるwheelを持たない依存関係を固定してしまい、インストールが失敗することがある。解決策は、uv.lockを削除してuvを再実行し、新しいバージョンを解決させること。ロックファイルとインタプリタのバージョンアップについての良い教訓となる。",
+    "zh": "在 Python 3.15 下，旧的 uv.lock 可能会锁定一个没有兼容 wheel 的依赖，导致安装失败。解决办法：删除 uv.lock 并重新运行 uv，以解析出较新的版本。这是关于锁文件和解释器版本升级的一个很好的提醒。"
+   },
+   "reason": {
+    "fr": "Astuce pratique (retour d'expérience) sur la gestion de dépendances Python",
+    "en": "Practical tip (lessons learned) on Python dependency management",
+    "ja": "Pythonの依存関係管理に関する実践的なヒント（体験談）",
+    "zh": "关于 Python 依赖管理的实用技巧（经验分享）"
+   }
+  },
+  {
+   "id": "cyber-0def4a2fca",
+   "topic": "cyber",
+   "date": "2026-11-01",
+   "time": "00:15",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "How We Took Over ChatGPT Accounts",
+   "url": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+   "note": 5,
+   "summary": {
+    "fr": "Parameter Labs a pu prendre le contrôle de comptes ChatGPT via les aperçus HTML : une bibliothèque (MathLive) permettait d'injecter un iframe non sandboxé, puis la CSP était contournée via l'endpoint oEmbed de YouTube. Un simple lien de partage suffisait à voler et exfiltrer des données d'un utilisateur connecté. OpenAI a corrigé et versé une prime de 5 000 $.",
+    "en": "Parameter Labs was able to take over ChatGPT accounts through HTML previews: a library (MathLive) allowed an unsandboxed iframe to be injected, and the CSP was then bypassed via YouTube's oEmbed endpoint. A simple share link was enough to steal and exfiltrate a logged-in user's data. OpenAI fixed the issue and paid a $5,000 bounty.",
+    "ja": "Parameter LabsはHTMLプレビューを通じてChatGPTアカウントを乗っ取ることに成功した。ライブラリ（MathLive）によってサンドボックス化されていないiframeを挿入でき、さらにYouTubeのoEmbedエンドポイントを使ってCSPを回避した。共有リンク一つで、ログイン中のユーザーのデータを盗み出し外部に送信できた。OpenAIは修正を行い、5,000ドルの報奨金を支払った。",
+    "zh": "Parameter Labs 通过 HTML 预览功能接管了 ChatGPT 账户：一个库（MathLive）允许注入未沙箱化的 iframe，随后借助 YouTube 的 oEmbed 端点绕过了 CSP。只需一个分享链接，就能窃取并外泄已登录用户的数据。OpenAI 已修复该问题，并支付了 5,000 美元的漏洞赏金。"
+   },
+   "reason": {
+    "fr": "Chaîne d'exploitation réelle et détaillée (iframe, postMessage, contournement CSP), corrigée",
+    "en": "Real, detailed exploit chain (iframe, postMessage, CSP bypass), now fixed",
+    "ja": "実際の詳細な攻撃チェーン（iframe、postMessage、CSP回避）、修正済み",
+    "zh": "真实且详细的漏洞利用链（iframe、postMessage、绕过 CSP），已修复"
+   }
+  },
+  {
+   "id": "ia-a1765f446c",
+   "topic": "ia",
+   "date": "2026-10-29",
+   "time": "01:00",
+   "source": "Hugging Face",
+   "lang": "fr",
+   "title": "Welcome Le Chonk: Mistral Large 4 on Hugging Face",
+   "url": "https://huggingface.co/blog/mistral-large4",
+   "note": 5,
+   "summary": {
+    "fr": "Mistral Large 4 est un MoE multimodal d'environ 1 000 milliards de paramètres (49 B actifs, 128 experts) avec un contexte de 1M tokens. Licence open-weight dérivée de MIT, avec restrictions pour les offres « model-as-a-service ». Utilisable via transformers, vLLM, llama.cpp (GGUF) ou fine-tuning avec TRL.",
+    "en": "Mistral Large 4 is a multimodal MoE with about 1 trillion parameters (49B active, 128 experts) and a 1M-token context. Open-weight licence derived from MIT, with restrictions for \"model-as-a-service\" offerings. It can be used via transformers, vLLM, llama.cpp (GGUF) or fine-tuned with TRL.",
+    "ja": "Mistral Large 4は約1兆パラメータ（アクティブ490億、128エキスパート）のマルチモーダルMoEで、100万トークンのコンテキストを持つ。MITを基にしたオープンウェイトのライセンスだが、「model-as-a-service」型の提供には制限がある。transformers、vLLM、llama.cpp（GGUF）で利用でき、TRLでのファインチューニングも可能。",
+    "zh": "Mistral Large 4 是一个约 1 万亿参数的多模态 MoE 模型（490 亿活跃参数，128 个专家），上下文长度为 100 万 token。采用源自 MIT 的开放权重许可，但对“模型即服务”类产品有限制。可通过 transformers、vLLM、llama.cpp（GGUF）使用，或用 TRL 进行微调。"
+   },
+   "reason": {
+    "fr": "Sortie majeure d'un modèle open-weight européen, détails techniques précis",
+    "en": "Major release of a European open-weight model, with precise technical details",
+    "ja": "欧州発オープンウェイトモデルの大型リリースで、技術的な詳細が正確",
+    "zh": "欧洲开放权重模型的重大发布，技术细节精确"
+   }
+  },
+  {
+   "id": "dev-d8f853e661",
+   "topic": "dev",
+   "date": "2026-10-28",
+   "time": "17:45",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "GitHub Octoverse 2026",
+   "url": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
+   "note": 3,
+   "summary": {
+    "fr": "Le rapport Octoverse 2026 annonce 220 millions de pull requests fusionnées par mois (plus que triplé en moins d'un an) et 7,38 milliards de commits mensuels. Les nouveaux dépôts doublent à 30,3 millions par mois. Simon Willison y voit l'effet de l'ingénierie agentique.",
+    "en": "The Octoverse 2026 report reports 220 million merged pull requests per month (more than tripled in under a year) and 7.38 billion commits per month. New repositories doubled to 30.3 million per month. Simon Willison sees this as the effect of agentic engineering.",
+    "ja": "Octoverse 2026レポートによると、マージされたプルリクエストは月2億2,000万件（1年足らずで3倍以上）、コミットは月73億8,000万件に達した。新規リポジトリは倍増し、月3,030万件となった。Simon Willisonはこれをエージェント型エンジニアリングの影響とみている。",
+    "zh": "Octoverse 2026 报告显示，每月合并的拉取请求达 2.2 亿次（不到一年增长了三倍多），每月提交次数达 73.8 亿次。新建仓库数翻倍，达到每月 3030 万个。Simon Willison 认为这是智能体工程带来的效应。"
+   },
+   "reason": {
+    "fr": "Chiffres d'actualité sur l'activité GitHub, commentaire bref",
+    "en": "Current figures on GitHub activity, brief commentary",
+    "ja": "GitHubの活動に関する最新の数字で、コメントは短い",
+    "zh": "关于 GitHub 活动的最新数据，评论简短"
+   }
+  },
+  {
+   "id": "ia-cd6ab167aa",
+   "topic": "ia",
+   "date": "2026-10-27",
+   "time": "17:00",
+   "source": "Google DeepMind",
+   "lang": "fr",
+   "title": "Introducing Genie 4",
+   "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-genie-4/",
+   "note": 4,
+   "summary": {
+    "fr": "Genie 4 génère des mondes interactifs en temps réel, modifiables en langage naturel (caméra, météo, personnages), avec audio généré en direct. Il s'appuie sur la famille Gemini. Accès limité à des testeurs, puis aux abonnés Google AI Ultra et à certains partenaires API.",
+    "en": "Genie 4 generates interactive worlds in real time that can be modified in natural language (camera, weather, characters), with audio generated live. It builds on the Gemini family. Access is limited to testers, then to Google AI Ultra subscribers and some API partners.",
+    "ja": "Genie 4はインタラクティブな世界をリアルタイムで生成し、自然言語で変更できる（カメラ、天候、キャラクター）。音声もその場で生成される。Geminiファミリーを基盤としている。利用はまずテスター限定で、その後Google AI Ultraの加入者と一部のAPIパートナーに提供される。",
+    "zh": "Genie 4 能实时生成可交互的世界，并可用自然语言进行修改（镜头、天气、角色），音频也实时生成。它基于 Gemini 系列模型。目前仅限测试人员使用，之后将开放给 Google AI Ultra 订阅用户和部分 API 合作伙伴。"
+   },
+   "reason": {
+    "fr": "Annonce importante (modèle de monde), mais discours promotionnel et accès restreint",
+    "en": "Important announcement (world model), but promotional tone and restricted access",
+    "ja": "重要な発表（ワールドモデル）だが、宣伝的な論調でアクセスも限定的",
+    "zh": "重要发布（世界模型），但宣传色彩浓厚且访问受限"
+   }
+  },
+  {
+   "id": "ia-51b6dc0210",
+   "topic": "ia",
+   "date": "2026-10-27",
+   "time": "00:53",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "GPT-6.1 Terra",
+   "url": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
+   "note": 3,
+   "summary": {
+    "fr": "OpenAI sort GPT-6.1 Terra, modèle intermédiaire orienté raisonnement visuel, usage de l'ordinateur et rédaction. Prix : 1 $ / million de tokens en entrée, 5 $ en sortie. Simon Willison note un positionnement milieu de gamme qui complique le choix entre modèles.",
+    "en": "OpenAI releases GPT-6.1 Terra, a mid-tier model focused on visual reasoning, computer use and writing. Price: $1 per million input tokens, $5 for output. Simon Willison notes its mid-range positioning, which makes choosing between models harder.",
+    "ja": "OpenAIは、視覚的推論、コンピューター操作、文章作成に重点を置いた中間モデルGPT-6.1 Terraを公開した。価格は入力100万トークンあたり1ドル、出力は5ドル。Simon Willisonは、その中価格帯の位置づけによってモデル選びが難しくなると指摘している。",
+    "zh": "OpenAI 发布了 GPT-6.1 Terra，这是一款侧重视觉推理、计算机操作和写作的中端模型。价格：输入每百万 token 1 美元，输出 5 美元。Simon Willison 指出，其中端定位让模型之间的选择更加困难。"
+   },
+   "reason": {
+    "fr": "Nouveau modèle OpenAI avec prix et premier test, mais billet court",
+    "en": "New OpenAI model with pricing and a first test, but a short post",
+    "ja": "価格と初回テストを含むOpenAIの新モデルだが、記事は短い",
+    "zh": "OpenAI 新模型，附有价格和初步测试，但文章较短"
+   }
+  },
+  {
+   "id": "dev-d4fc15392e",
+   "topic": "dev",
+   "date": "2026-10-26",
+   "time": "17:15",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "webframe: evaluated as a scraper and a sandbox",
+   "url": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+   "note": 4,
+   "summary": {
+    "fr": "webframe (Jeff Lindsay) exécute une page web dans un navigateur headless et renvoie console.log et exceptions sur stdout/stderr. Bon outil de scraping léger, comparable à shot-scraper sans Playwright. Comme bac à sable, plusieurs limites : erreurs CSP, chargements bloqués, contrôle du navigateur réduit.",
+    "en": "webframe (Jeff Lindsay) runs a web page in a headless browser and returns console.log output and exceptions on stdout/stderr. A good lightweight scraping tool, comparable to shot-scraper without Playwright. As a sandbox it has several limits: CSP errors, blocked loads, reduced browser control.",
+    "ja": "webframe（Jeff Lindsay作）はヘッドレスブラウザでWebページを実行し、console.logと例外をstdout/stderrに返す。Playwrightを使わないshot-scraperに相当する、手軽なスクレイピングツールとして優秀。サンドボックスとしてはCSPエラー、読み込みのブロック、ブラウザ制御の少なさなど、いくつかの制約がある。",
+    "zh": "webframe（Jeff Lindsay 开发）在无头浏览器中运行网页，并将 console.log 输出和异常返回到 stdout/stderr。它是一个不错的轻量级抓取工具，类似于不依赖 Playwright 的 shot-scraper。作为沙箱则有若干局限：CSP 错误、加载被阻止、对浏览器的控制有限。"
+   },
+   "reason": {
+    "fr": "Évaluation pratique d'un outil, retour d'expérience concret",
+    "en": "Hands-on evaluation of a tool, concrete feedback from experience",
+    "ja": "ツールの実践的な評価で、具体的な体験談",
+    "zh": "对工具的实际评测，具体的实践经验"
+   }
+  },
+  {
+   "id": "cyber-eff38b7938",
+   "topic": "cyber",
+   "date": "2026-10-26",
+   "time": "00:00",
+   "source": "CERT-FR",
+   "lang": "fr",
+   "title": "Bulletin d'actualité CERTFR-2026-ACT-045 (semaine 43)",
+   "url": "https://cert.cyber.gouv.fr/actualite/CERTFR-2026-ACT-045/",
+   "note": 4,
+   "summary": {
+    "fr": "Récapitulatif des failles critiques du 19 au 25/10 : HPE Aruba AOS (une vingtaine de CVE, RCE), Cisco UCM/Unity, SolarWinds Serv-U, F5 NGINX, Apache Tomcat. Mise à jour de l'alerte en cours CERTFR-2026-ALE-014 (PHP) : preuves de concept et tentatives d'exploitation observées le 26/10. Liste aussi des failles déjà exploitées (Arista VeloCloud, Collabora Online, Plex).",
+    "en": "Roundup of critical vulnerabilities from 19 to 25 October: HPE Aruba AOS (around twenty CVEs, RCE), Cisco UCM/Unity, SolarWinds Serv-U, F5 NGINX, Apache Tomcat. Update to the ongoing alert CERTFR-2026-ALE-014 (PHP): proofs of concept and exploitation attempts observed on 26 October. It also lists vulnerabilities already being exploited (Arista VeloCloud, Collabora Online, Plex).",
+    "ja": "10月19日〜25日の重大な脆弱性のまとめ：HPE Aruba AOS（約20件のCVE、RCE）、Cisco UCM/Unity、SolarWinds Serv-U、F5 NGINX、Apache Tomcat。進行中のアラートCERTFR-2026-ALE-014（PHP）の更新：10月26日に概念実証と悪用の試みが確認された。すでに悪用されている脆弱性（Arista VeloCloud、Collabora Online、Plex）も掲載している。",
+    "zh": "10 月 19 日至 25 日严重漏洞汇总：HPE Aruba AOS（约二十个 CVE，远程代码执行）、Cisco UCM/Unity、SolarWinds Serv-U、F5 NGINX、Apache Tomcat。更新了正在进行的警报 CERTFR-2026-ALE-014（PHP）：10 月 26 日观察到概念验证和利用尝试。还列出了已被利用的漏洞（Arista VeloCloud、Collabora Online、Plex）。"
+   },
+   "reason": {
+    "fr": "Synthèse officielle des vulnérabilités critiques de la semaine, utile en SISR (heure de publication non indiquée)",
+    "en": "Official summary of the week's critical vulnerabilities, useful for SISR (publication time not stated)",
+    "ja": "その週の重大な脆弱性に関する公式まとめで、SISRに役立つ（公開時刻の記載なし）",
+    "zh": "本周严重漏洞的官方汇总，对 SISR 方向很有用（未注明发布时间）"
+   }
+  },
   {
    "id": "ia-2e71264ea8",
    "topic": "ia",
