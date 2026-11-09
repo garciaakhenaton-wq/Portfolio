@@ -1,8 +1,192 @@
 {
- "updated": "2026-11-02",
+ "updated": "2026-11-09",
  "max_par_sujet": 10,
  "source": "Google Sheet « Veille technologique »",
  "articles": [
+  {
+   "id": "ia-594105e3c5",
+   "topic": "ia",
+   "date": "2026-11-06",
+   "time": "00:00",
+   "source": "Anthropic",
+   "lang": "fr",
+   "title": "The components of agent memory",
+   "url": "https://www.anthropic.com/research/components-of-agent-memory",
+   "note": 5,
+   "summary": {
+    "fr": "Hiérarchie de mémoire d'agent : transcriptions, notes, représentations (wikis), contexte injecté. Le « dreaming » relit hors ligne les journaux pour corriger les erreurs et réorganiser. Gains nets sur CL-Bench et sur corpus d'entreprise, mais un wiki peut dépasser son corpus sans gain réel.",
+    "en": "A hierarchy of agent memory: transcripts, notes, representations (wikis), injected context. \"Dreaming\" rereads logs offline to fix errors and reorganize. Clear gains on CL-Bench and on enterprise corpora, but a wiki can outgrow its corpus with no real benefit.",
+    "ja": "エージェントのメモリの階層:トランスクリプト、メモ、表現(wiki)、注入されるコンテキスト。「ドリーミング」はオフラインでログを読み返し、誤りの修正と再編成を行う。CL-Bench と企業コーパスでは明確な改善が見られたが、wiki がコーパス自体より大きくなっても実質的な効果がない場合がある。",
+    "zh": "智能体记忆的层级:对话记录、笔记、表示形式(wiki)、注入的上下文。“做梦”机制在离线状态下重读日志,以纠正错误并重新组织内容。在 CL-Bench 和企业语料上收益明显,但 wiki 的规模可能超过其语料却没有实际增益。"
+   },
+   "reason": {
+    "fr": "Recherche appliquée avec mesures chiffrées et limites (heure de publication non indiquée)",
+    "en": "Applied research with quantified measurements and limits (publication time not given)",
+    "ja": "数値による測定と限界を示した応用研究(公開時刻の記載なし)",
+    "zh": "应用研究,附有量化测量结果和局限说明(未注明发布时间)"
+   }
+  },
+  {
+   "id": "dev-e8ad3aaf9c",
+   "topic": "dev",
+   "date": "2026-11-05",
+   "time": "21:23",
+   "source": "GitHub Engineering",
+   "lang": "fr",
+   "title": "Inside GitHub's new Git storage architecture",
+   "url": "https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/",
+   "note": 5,
+   "summary": {
+    "fr": "Face aux agents IA, GitHub sépare calcul et stockage : réplicas jetables, packs sur Azure Blob, références via Ref-CAS (compare-and-swap par quorum), compaction hors ligne. Tests à 7 200 pushes/s avec 5 000 agents sur un dépôt. Déploiement plus large prévu début 2027.",
+    "en": "Facing AI agents, GitHub is separating compute and storage: disposable replicas, packs on Azure Blob, references through Ref-CAS (quorum-based compare-and-swap), offline compaction. Tests reached 7,200 pushes/s with 5,000 agents on one repository. Wider rollout planned for early 2027.",
+    "ja": "AI エージェントの増加に対応するため、GitHub はコンピュートとストレージを分離している。使い捨てレプリカ、Azure Blob 上のパック、Ref-CAS(クォーラムによるコンペアアンドスワップ)による参照管理、オフラインのコンパクションを採用。1つのリポジトリに5,000のエージェントで毎秒7,200プッシュのテストを実施した。2027年初頭により広く展開する予定。",
+    "zh": "面对 AI 智能体,GitHub 将计算与存储分离:可丢弃的副本、存放在 Azure Blob 上的 pack、通过 Ref-CAS(基于仲裁的比较并交换)管理引用,以及离线压缩。在单个仓库上用 5000 个智能体测试,达到每秒 7200 次推送。计划于 2027 年初更大范围部署。"
+   },
+   "reason": {
+    "fr": "Retour d'expérience d'architecture à très grande échelle, prototypes abandonnés inclus",
+    "en": "Very large-scale architecture case study, including abandoned prototypes",
+    "ja": "超大規模アーキテクチャの事例で、断念したプロトタイプも紹介されている",
+    "zh": "超大规模架构经验分享,包括被放弃的原型"
+   }
+  },
+  {
+   "id": "cyber-0e040b8f64",
+   "topic": "cyber",
+   "date": "2026-11-05",
+   "time": "17:36",
+   "source": "ZATAZ",
+   "lang": "fr",
+   "title": "Cyberattaque contre les frigos de l'EFS : le plasma visé",
+   "url": "https://www.zataz.com/cyberattaque-contre-les-frigos-de-lefs-le-plasma-vise/",
+   "note": 4,
+   "summary": {
+    "fr": "Trois sites de l'EFS touchés : consignes de température de chambres froides relevées à distance via la supervision d'un prestataire. Alarmes efficaces, aucun produit altéré selon l'EFS. Thème proche de l'alerte en cours CERTFR-2026-ALE-012 (contrôleurs de réfrigération), mais aucun lien établi par l'article.",
+    "en": "Three EFS (French blood service) sites hit: cold room temperature setpoints were raised remotely through a contractor's monitoring system. Alarms worked, and no product was affected according to EFS. The topic is close to the active alert CERTFR-2026-ALE-012 (refrigeration controllers), but the article establishes no link.",
+    "ja": "EFS(フランス血液機関)の3拠点が被害を受け、委託業者の監視システムを通じて冷蔵室の設定温度が遠隔で引き上げられた。警報は有効に機能し、EFS によれば製品への影響はない。現在有効な警報 CERTFR-2026-ALE-012(冷凍コントローラー)と主題は近いが、記事では関連性は示されていない。",
+    "zh": "EFS(法国血液机构)的三个站点遭到攻击:冷库的温度设定值经由一家服务商的监控系统被远程调高。警报发挥了作用,据 EFS 称没有产品受损。该事件与现行警报 CERTFR-2026-ALE-012(制冷控制器)主题相近,但文章并未确认两者有关联。"
+   },
+   "reason": {
+    "fr": "Incident français concret sur des systèmes industriels, peu de détails techniques",
+    "en": "Concrete French incident on industrial systems, few technical details",
+    "ja": "産業システムに関するフランスの具体的なインシデントだが、技術的な詳細は少ない",
+    "zh": "法国工业系统的具体事件,技术细节较少"
+   }
+  },
+  {
+   "id": "dev-de966a2c7e",
+   "topic": "dev",
+   "date": "2026-11-05",
+   "time": "05:00",
+   "source": "apalrd.net",
+   "lang": "fr",
+   "title": "mitmproxy on a transparent bridge on Linux",
+   "url": "https://www.apalrd.net/posts/2026/network_capture/",
+   "note": 4,
+   "summary": {
+    "fr": "Interception HTTPS sur une machine à deux cartes : pont br0, br_netfilter, nftables en couche 2 pour capter le TCP/443, redirection iptables vers mitmproxy en mode transparent. Le déchiffrement exige que le client accepte le certificat ; QUIC et les autres ports ne sont pas couverts. À réserver à un cadre autorisé.",
+    "en": "HTTPS interception on a machine with two network cards: br0 bridge, br_netfilter, layer 2 nftables to capture TCP/443, iptables redirect to mitmproxy in transparent mode. Decryption requires the client to accept the certificate; QUIC and other ports are not covered. For use in an authorized setting only.",
+    "ja": "2枚のネットワークカードを持つマシンでの HTTPS 傍受:br0 ブリッジ、br_netfilter、レイヤー2の nftables で TCP/443 を捕捉し、iptables で透過モードの mitmproxy にリダイレクトする。復号にはクライアントが証明書を受け入れる必要があり、QUIC やその他のポートは対象外。許可された環境でのみ使用すること。",
+    "zh": "在装有两块网卡的机器上拦截 HTTPS:使用 br0 网桥、br_netfilter、二层 nftables 捕获 TCP/443,再通过 iptables 重定向到透明模式的 mitmproxy。解密要求客户端接受证书;QUIC 和其他端口不在覆盖范围内。仅限在获得授权的环境中使用。"
+   },
+   "reason": {
+    "fr": "Tutoriel réseau avancé et directement reproductible en lab SISR",
+    "en": "Advanced networking tutorial that can be directly reproduced in a network administration (SISR) lab",
+    "ja": "SISR の実習環境でそのまま再現できる、上級者向けネットワークチュートリアル",
+    "zh": "进阶网络教程,可在 SISR 实验环境中直接复现"
+   }
+  },
+  {
+   "id": "dev-b683d1c42a",
+   "topic": "dev",
+   "date": "2026-11-05",
+   "time": "00:00",
+   "source": "Docker",
+   "lang": "fr",
+   "title": "Docker Sandboxes vs. Containers: Choosing the Right Isolation for AI Agents",
+   "url": "https://www.docker.com/blog/docker-sandboxes-vs-containers/",
+   "note": 3,
+   "summary": {
+    "fr": "Un conteneur partage le noyau de l'hôte ; une Sandbox est une microVM avec noyau et moteur Docker privés, sans exposer le socket de l'hôte, au prix de plus de mémoire et de disque. Docker recommande d'isoler l'agent et de conteneuriser l'application. Affirmations de sécurité sans évaluation indépendante.",
+    "en": "A container shares the host's kernel; a Sandbox is a microVM with its own private kernel and Docker engine, without exposing the host's socket, at the cost of more memory and disk. Docker recommends isolating the agent and containerizing the application. Security claims lack independent evaluation.",
+    "ja": "コンテナはホストのカーネルを共有するが、Sandbox は専用のカーネルと Docker エンジンを持つ microVM で、ホストのソケットを公開しない代わりにメモリとディスクの使用量が増える。Docker はエージェントを隔離し、アプリケーションをコンテナ化することを推奨している。セキュリティに関する主張は独立した評価を受けていない。",
+    "zh": "容器共享主机内核;Sandbox 则是拥有私有内核和 Docker 引擎的 microVM,不暴露主机套接字,但会占用更多内存和磁盘。Docker 建议隔离智能体并将应用容器化。其安全性声明没有经过独立评估。"
+   },
+   "reason": {
+    "fr": "Comparaison technique utile mais orientée produit (heure de publication non indiquée)",
+    "en": "Useful technical comparison but product-oriented (publication time not given)",
+    "ja": "有用な技術比較だが製品寄りの内容(公開時刻の記載なし)",
+    "zh": "有用的技术对比,但偏向产品宣传(未注明发布时间)"
+   }
+  },
+  {
+   "id": "cyber-141ffcfd53",
+   "topic": "cyber",
+   "date": "2026-11-05",
+   "time": "00:00",
+   "source": "CERT-FR",
+   "lang": "fr",
+   "title": "Vulnérabilité dans OpenSSH (CERTFR-2026-ALE-015)",
+   "url": "https://cert.cyber.gouv.fr/alerte/CERTFR-2026-ALE-015/",
+   "note": 5,
+   "summary": {
+    "fr": "CVE-2026-123158 : contournement d'authentification dans OpenSSH avant 10.6p2, sur Linux avec musl (Alpine notamment) sans PAM ou PAM désactivé. Corriger puis redémarrer sshd, ou désactiver l'authentification par mot de passe. À vérifier dans les journaux : connexions de comptes système sans mot de passe (* dans /etc/shadow).",
+    "en": "CVE-2026-123158: authentication bypass in OpenSSH before 10.6p2, on Linux with musl (notably Alpine) without PAM or with PAM disabled. Patch and restart sshd, or disable password authentication. Check the logs for system accounts logging in without a password (* in /etc/shadow).",
+    "ja": "CVE-2026-123158:OpenSSH 10.6p2 より前のバージョンにおける認証回避の脆弱性で、musl を使う Linux(特に Alpine)で PAM なし、または PAM を無効にしている環境が対象。修正を適用して sshd を再起動するか、パスワード認証を無効にする。ログでは、パスワードのないシステムアカウント(/etc/shadow で *)によるログインを確認すること。",
+    "zh": "CVE-2026-123158:OpenSSH 10.6p2 之前版本存在身份验证绕过漏洞,影响使用 musl 的 Linux(尤其是 Alpine)且未使用 PAM 或已禁用 PAM 的系统。应打补丁并重启 sshd,或禁用密码认证。需在日志中检查无密码系统账户(/etc/shadow 中为 *)的登录记录。"
+   },
+   "reason": {
+    "fr": "Alerte en cours sur un service central en SISR, exploitation jugée triviale (heure de publication non indiquée)",
+    "en": "Active alert on a core service in network administration (SISR), exploitation deemed trivial (publication time not given)",
+    "ja": "SISR(システム・ネットワーク)の中核サービスに関する現在有効な警報で、悪用は容易と判断されている(公開時刻の記載なし)",
+    "zh": "针对 SISR(系统与网络运维)核心服务的现行警报,漏洞利用被认为十分容易(未注明发布时间)"
+   }
+  },
+  {
+   "id": "cyber-3b6a51103b",
+   "topic": "cyber",
+   "date": "2026-11-03",
+   "time": "03:24",
+   "source": "Krebs on Security",
+   "lang": "fr",
+   "title": "Tech Firms Dismantle Botnet That Turned 1.3M TV Boxes Into Proxies",
+   "url": "https://krebsonsecurity.com/2026/11/tech-firms-dismantle-botnet-that-turned-1-3m-tv-boxes-into-proxies/",
+   "note": 5,
+   "summary": {
+    "fr": "Le botnet XCPE infectait dès l'usine des boîtiers TV Android (1,3 M) et louait leurs IP via des proxys résidentiels, en plus de la fraude publicitaire. Google a agi en justice contre les domaines ; il estime que plus de 10 M d'autres appareils peuvent être coupés. Le fabricant Videostrong est mis en cause.",
+    "en": "The XCPE botnet infected Android TV boxes (1.3M) at the factory and rented out their IP addresses through residential proxies, on top of ad fraud. Google took legal action against the domains and estimates that more than 10M other devices could be cut off. The manufacturer Videostrong is implicated.",
+    "ja": "ボットネット XCPE は Android TV ボックス(130万台)に工場出荷の段階で感染し、広告詐欺に加えて、住宅用プロキシを通じてその IP アドレスを貸し出していた。Google はドメインに対して法的措置を取り、ほかに1,000万台以上の機器を遮断できる可能性があるとしている。製造元の Videostrong の関与が指摘されている。",
+    "zh": "僵尸网络 XCPE 在出厂阶段就感染了 Android 电视盒子(130 万台),除广告欺诈外,还通过住宅代理出租其 IP 地址。Google 已对相关域名采取法律行动,并估计另有超过 1000 万台设备可被切断。制造商 Videostrong 被指涉事。"
+   },
+   "reason": {
+    "fr": "Enquête détaillée sur un démantèlement réel et la chaîne d'approvisionnement",
+    "en": "Detailed investigation into a real takedown and the supply chain",
+    "ja": "実際のテイクダウンとサプライチェーンに関する詳細な調査報道",
+    "zh": "对一次真实打击行动及其供应链的详细调查"
+   }
+  },
+  {
+   "id": "ia-20954e3ac0",
+   "topic": "ia",
+   "date": "2026-11-03",
+   "time": "01:00",
+   "source": "Hugging Face",
+   "lang": "fr",
+   "title": "CWE-bench v2: More coverage, quality, and transparency",
+   "url": "https://huggingface.co/blog/cwe-bench",
+   "note": 4,
+   "summary": {
+    "fr": "100 tâches publiques sur 91 CWE : l'agent doit trouver et corriger une faille dans un vrai dépôt, sans casser le reste. Gemini 4 Argon (67,8 %) devance de peu Claude Opus 5.5 (67,3 %) en pass@1. Environ 19 % des tâches restent échouées même par le meilleur modèle.",
+    "en": "100 public tasks across 91 CWEs: the agent must find and fix a flaw in a real repository without breaking anything else. Gemini 4 Argon (67.8%) narrowly beats Claude Opus 5.5 (67.3%) on pass@1. About 19% of tasks remain failed even by the best model.",
+    "ja": "91種類の CWE にわたる100の公開タスクで、エージェントは実際のリポジトリの脆弱性を発見し、他の部分を壊さずに修正する必要がある。pass@1 では Gemini 4 Argon(67.8%)が Claude Opus 5.5(67.3%)をわずかに上回った。最良のモデルでも約19%のタスクは失敗のままである。",
+    "zh": "100 项公开任务,涵盖 91 个 CWE:智能体需要在真实代码库中发现并修复漏洞,且不破坏其他部分。在 pass@1 上,Gemini 4 Argon(67.8%)以微弱优势领先 Claude Opus 5.5(67.3%)。即使是最好的模型,仍有约 19% 的任务失败。"
+   },
+   "reason": {
+    "fr": "Benchmark ouvert IA et sécurité, reproductible, utile pour comparer les modèles",
+    "en": "Open, reproducible AI and security benchmark, useful for comparing models",
+    "ja": "AI とセキュリティに関するオープンで再現可能なベンチマークで、モデルの比較に役立つ",
+    "zh": "开放、可复现的 AI 与安全基准,有助于比较模型"
+   }
+  },
   {
    "id": "dev-ffb30fef95",
    "topic": "dev",
@@ -24,6 +208,29 @@
     "en": "Practical tip (lessons learned) on Python dependency management",
     "ja": "Pythonの依存関係管理に関する実践的なヒント（体験談）",
     "zh": "关于 Python 依赖管理的实用技巧（经验分享）"
+   }
+  },
+  {
+   "id": "ia-d94c9f77dd",
+   "topic": "ia",
+   "date": "2026-11-02",
+   "time": "00:00",
+   "source": "Anthropic",
+   "lang": "fr",
+   "title": "Progress on provable inference for large language models",
+   "url": "https://www.anthropic.com/research/provable-inference",
+   "note": 4,
+   "summary": {
+    "fr": "FlashProve, prototype zkSNARK Apache 2.0, prouve qu'une réponse vient bien de poids engagés, sans les révéler. Sur Llama 4 Maverick : environ 110 tokens/s sur un H100, preuve de 19 Mo pour 1 024 tokens, surcoût de 70 à 95 fois. Limité en contexte et hors canaux auxiliaires.",
+    "en": "FlashProve, an Apache 2.0 zkSNARK prototype, proves that a response really comes from committed weights without revealing them. On Llama 4 Maverick: about 110 tokens/s on an H100, a 19 MB proof for 1,024 tokens, and a 70 to 95x overhead. Limited in context length and does not cover side channels.",
+    "ja": "Apache 2.0 の zkSNARK プロトタイプ FlashProve は、応答がコミットされた重みから生成されたことを、重みを明かさずに証明する。Llama 4 Maverick では H100 で約110トークン/秒、1,024トークンに対して証明は19MB、オーバーヘッドは70〜95倍。コンテキスト長に制限があり、サイドチャネルは対象外。",
+    "zh": "FlashProve 是采用 Apache 2.0 许可的 zkSNARK 原型,可在不泄露权重的情况下证明回答确实来自已承诺的权重。在 Llama 4 Maverick 上:H100 约 110 tokens/秒,1024 个 token 的证明为 19 MB,开销为 70 至 95 倍。上下文长度受限,且不涵盖侧信道。"
+   },
+   "reason": {
+    "fr": "Niveau avancé, résultats mesurés, prototype open source (heure de publication non indiquée)",
+    "en": "Advanced level, measured results, open source prototype (publication time not given)",
+    "ja": "上級者向けで、測定結果とオープンソースのプロトタイプあり(公開時刻の記載なし)",
+    "zh": "内容较深,有实测结果和开源原型(未注明发布时间)"
    }
   },
   {
@@ -461,29 +668,6 @@
     "en": "Infrastructure takedown with figures and detailed evasion techniques",
     "ja": "数字と回避手法の詳細を伴うインフラの解体",
     "zh": "附有数据和详细规避技术的基础设施摧毁行动"
-   }
-  },
-  {
-   "id": "cyber-69af31f2a8",
-   "topic": "cyber",
-   "date": "2026-10-17",
-   "time": "11:50",
-   "source": "ZATAZ",
-   "lang": "fr",
-   "title": "Cyberattaques : les supermarchés européens perturbés",
-   "url": "https://www.zataz.com/cyberattaques-les-supermarches-europeens-perturbes/",
-   "note": 4,
-   "summary": {
-    "fr": "Nuit du 11 au 12 octobre : des contrôleurs de froid Danfoss exposés sur Internet ont été manipulés à distance dans des centaines de magasins français, avec des stocks perdus. Ahold Delhaize (Pays-Bas, Belgique) a coupé des systèmes après un incident distinct. Des failles Danfoss publiées en août sont évoquées sans preuve qu'elles soient le vecteur ; voir CERTFR-2026-ALE-012.",
-    "en": "Night of 11–12 October: internet-exposed Danfoss refrigeration controllers were remotely manipulated in hundreds of French stores, with stock lost. Ahold Delhaize (Netherlands, Belgium) shut down systems after a separate incident. Danfoss flaws published in August are mentioned, without proof that they were the attack vector; see CERTFR-2026-ALE-012.",
-    "ja": "10月11日から12日の夜、インターネットに公開されていたDanfoss製の冷却コントローラーが、フランス国内の数百店舗で遠隔操作され、在庫が失われた。Ahold Delhaize(オランダ、ベルギー)も別の事案を受けてシステムを停止した。8月に公表されたDanfossの脆弱性が言及されているが、侵入経路である証拠はない。CERTFR-2026-ALE-012を参照。",
-    "zh": "10月11日至12日夜间，暴露在互联网上的丹佛斯冷控设备在法国数百家门店遭远程操控，导致库存损失。阿霍德德尔海兹（荷兰、比利时）在另一起事件后关闭了系统。文章提到8月公布的丹佛斯漏洞，但没有证据表明它们就是攻击途径；参见CERTFR-2026-ALE-012。"
-   },
-   "reason": {
-    "fr": "Incident français récent sur des équipements OT exposés, lié à une alerte CERT-FR en cours (CERTFR-2026-ALE-012)",
-    "en": "Recent French incident on exposed OT equipment, linked to an ongoing CERT-FR alert (CERTFR-2026-ALE-012)",
-    "ja": "露出したOT機器に関するフランスでの最近の事案で、進行中のCERT-FR警報(CERTFR-2026-ALE-012)に関連",
-    "zh": "法国近期发生的暴露OT设备事件，与正在进行的CERT-FR警报（CERTFR-2026-ALE-012）相关"
    }
   }
  ]
