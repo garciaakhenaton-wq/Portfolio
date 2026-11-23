@@ -1,8 +1,215 @@
 {
- "updated": "2026-11-16",
+ "updated": "2026-11-23",
  "max_par_sujet": 10,
  "source": "Google Sheet « Veille technologique »",
  "articles": [
+  {
+   "id": "dev-7339d690df",
+   "topic": "dev",
+   "date": "2026-11-19",
+   "time": "21:43",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "PostgreSQL 19 Released",
+   "url": "https://simonwillison.net/2026/Nov/19/postgresql-19/",
+   "note": 4,
+   "summary": {
+    "fr": "PostgreSQL 19 sort avec deux mois de retard, en partie à cause des nombreuses vulnérabilités signalées par des IA. Nouveauté phare : WAIT FOR LSN, qui permet à un réplica d'attendre d'avoir rejoué le WAL avant une lecture, pour garantir la cohérence « lire ses propres écritures ».",
+    "en": "PostgreSQL 19 ships two months late, partly because of the many vulnerabilities reported by AIs. Headline feature: WAIT FOR LSN, which lets a replica wait until it has replayed the WAL before a read, guaranteeing \"read your own writes\" consistency.",
+    "ja": "PostgreSQL 19 が 2 か月遅れでリリースされました。遅れの一因は、AI によって報告された多数の脆弱性です。目玉機能は WAIT FOR LSN で、レプリカが読み取り前に WAL の再生を待てるようになり、「自分の書き込みを読める」一貫性を保証します。",
+    "zh": "PostgreSQL 19 推迟两个月发布，部分原因是 AI 报告了大量漏洞。主要新功能：WAIT FOR LSN，允许副本在读取前等待 WAL 重放完成，从而保证“读己之写”的一致性。"
+   },
+   "reason": {
+    "fr": "Nouvelle version majeure d'un SGBD clé pour l'infra, fonction de réplication utile",
+    "en": "New major version of a key infrastructure DBMS, with a useful replication feature",
+    "ja": "インフラの要となる DBMS の新メジャーバージョン。有用なレプリケーション機能あり",
+    "zh": "关键基础设施数据库管理系统的新主版本，带来实用的复制功能"
+   }
+  },
+  {
+   "id": "cyber-c559964442",
+   "topic": "cyber",
+   "date": "2026-11-18",
+   "time": "03:52",
+   "source": "Krebs on Security",
+   "lang": "fr",
+   "title": "Attackers Used Optimizely to A/B Test Malware on Top Websites",
+   "url": "https://krebsonsecurity.com/2026/11/attackers-used-optimizely-to-a-b-test-malware-on-top-websites/",
+   "note": 4,
+   "summary": {
+    "fr": "Le 16 novembre, une faille d'Optimizely a permis d'injecter du JavaScript malveillant sur 178 grands sites (BBC, CNN, Zoom…). Le code volait cartes, cookies et adresses crypto, et ciblait aussi de vieux iPhone. Illustre le risque des scripts tiers et l'intérêt d'une politique CSP stricte.",
+    "en": "On November 16, a flaw in Optimizely made it possible to inject malicious JavaScript into 178 major websites (BBC, CNN, Zoom…). The code stole card details, cookies and crypto addresses, and also targeted old iPhones. It shows the risk of third-party scripts and the value of a strict CSP policy.",
+    "ja": "11月16日、Optimizely の脆弱性により、178 の大手サイト（BBC、CNN、Zoom など）に悪意ある JavaScript が注入されました。このコードはカード情報、Cookie、暗号資産アドレスを盗み、古い iPhone も標的にしていました。サードパーティ製スクリプトのリスクと、厳格な CSP ポリシーの重要性を示す事例です。",
+    "zh": "11 月 16 日，Optimizely 的一个漏洞使攻击者得以向 178 个大型网站（BBC、CNN、Zoom 等）注入恶意 JavaScript。该代码窃取银行卡信息、Cookie 和加密货币地址，还针对旧款 iPhone。这说明了第三方脚本的风险以及严格 CSP 策略的价值。"
+   },
+   "reason": {
+    "fr": "Attaque supply chain JavaScript d'ampleur, leçon concrète sur CSP et dépendances tierces",
+    "en": "Large-scale JavaScript supply-chain attack, a concrete lesson on CSP and third-party dependencies",
+    "ja": "大規模な JavaScript サプライチェーン攻撃。CSP とサードパーティ依存関係についての具体的な教訓",
+    "zh": "大规模 JavaScript 供应链攻击，关于 CSP 和第三方依赖的具体教训"
+   }
+  },
+  {
+   "id": "ia-af1852b4c4",
+   "topic": "ia",
+   "date": "2026-11-18",
+   "time": "01:00",
+   "source": "Hugging Face",
+   "lang": "fr",
+   "title": "180B Parameters, 32GB of RAM: Pushing MoE Inference to the Limit with Transformers",
+   "url": "https://huggingface.co/blog/moe-expert-streaming",
+   "note": 4,
+   "summary": {
+    "fr": "Un ingénieur HF fait tourner un modèle MoE de 180 milliards de paramètres sur un Mac 32 Go en streamant les « experts » depuis le SSD. Il compare llama.cpp, vLLM, Transformers et Strata sur la gestion de la mémoire. Résultat : à 6 % de Strata en génération de tokens.",
+    "en": "A HF engineer runs a 180-billion-parameter MoE model on a 32 GB Mac by streaming the \"experts\" from the SSD. He compares llama.cpp, vLLM, Transformers and Strata on memory management. Result: within 6% of Strata on token generation.",
+    "ja": "HF のエンジニアが、「エキスパート」を SSD からストリーミングすることで、1,800 億パラメータの MoE モデルを 32 GB の Mac で動かしました。メモリ管理について llama.cpp、vLLM、Transformers、Strata を比較しています。結果：トークン生成速度で Strata との差は 6% 以内。",
+    "zh": "一位 HF 工程师通过从 SSD 流式加载“专家”，在 32 GB 内存的 Mac 上运行了一个 1800 亿参数的 MoE 模型。他比较了 llama.cpp、vLLM、Transformers 和 Strata 的内存管理。结果：token 生成速度与 Strata 相差不到 6%。"
+   },
+   "reason": {
+    "fr": "Retour d'expérience technique avancé sur l'inférence locale de gros modèles MoE",
+    "en": "Advanced technical write-up on running large MoE models locally",
+    "ja": "大規模 MoE モデルのローカル推論に関する高度な技術的知見",
+    "zh": "关于在本地推理大型 MoE 模型的高级技术经验分享"
+   }
+  },
+  {
+   "id": "dev-bd5adef578",
+   "topic": "dev",
+   "date": "2026-11-18",
+   "time": "00:00",
+   "source": "OpenAI",
+   "lang": "fr",
+   "title": "Inside the Codex sandbox",
+   "url": "https://openai.com/index/inside-the-codex-sandbox/",
+   "note": 4,
+   "summary": {
+    "fr": "OpenAI détaille le bac à sable de Codex : profils de permissions fichiers et réseau, défauts conservateurs (.git et config en lecture seule), proxy réseau. Mise en œuvre via Seatbelt sur macOS, bubblewrap + seccomp-bpf sur Linux, et un mécanisme dédié sous Windows.",
+    "en": "OpenAI details the Codex sandbox: file and network permission profiles, conservative defaults (.git and config read-only), network proxy. Implemented with Seatbelt on macOS, bubblewrap + seccomp-bpf on Linux, and a dedicated mechanism on Windows.",
+    "ja": "OpenAI が Codex のサンドボックスを詳しく解説。ファイルとネットワークの権限プロファイル、保守的なデフォルト設定（.git と設定ファイルは読み取り専用）、ネットワークプロキシ。macOS では Seatbelt、Linux では bubblewrap + seccomp-bpf、Windows では専用の仕組みで実装されています。",
+    "zh": "OpenAI 详细介绍了 Codex 沙箱：文件和网络权限配置、保守的默认设置（.git 和配置为只读）以及网络代理。在 macOS 上使用 Seatbelt，在 Linux 上使用 bubblewrap + seccomp-bpf，在 Windows 上使用专门的机制实现。"
+   },
+   "reason": {
+    "fr": "Retour d'expérience détaillé sur l'isolation multi-OS (Seatbelt, bubblewrap, seccomp)",
+    "en": "Detailed write-up on cross-OS isolation (Seatbelt, bubblewrap, seccomp)",
+    "ja": "複数 OS にまたがる隔離（Seatbelt、bubblewrap、seccomp）に関する詳細な事例紹介",
+    "zh": "关于跨操作系统隔离（Seatbelt、bubblewrap、seccomp）的详细经验分享"
+   }
+  },
+  {
+   "id": "cyber-afe972765b",
+   "topic": "cyber",
+   "date": "2026-11-18",
+   "time": "00:00",
+   "source": "CERT-FR",
+   "lang": "fr",
+   "title": "CERTFR-2026-ALE-016 : Vulnérabilité dans Oracle Java SE (java4shell)",
+   "url": "https://cert.cyber.gouv.fr/alerte/CERTFR-2026-ALE-016/",
+   "note": 5,
+   "summary": {
+    "fr": "CVE-2026-114938 (java4shell) touche le décodeur Base64 d'OpenJDK sur les CPU x86-64 avec AVX-512 VBMI et permet une exécution de code à distance. Exploitation au cas par cas, mais OpenJDK est embarqué dans Keycloak, Jira, Jenkins, Kafka, Solr, etc. Le CERT-FR donne une commande pour vérifier les drapeaux CPU et demande d'appliquer les correctifs.",
+    "en": "CVE-2026-114938 (java4shell) affects OpenJDK's Base64 decoder on x86-64 CPUs with AVX-512 VBMI and allows remote code execution. Exploitation depends on the case, but OpenJDK is embedded in Keycloak, Jira, Jenkins, Kafka, Solr, etc. CERT-FR provides a command to check the CPU flags and asks for patches to be applied.",
+    "ja": "CVE-2026-114938（java4shell）は、AVX-512 VBMI を備えた x86-64 CPU 上の OpenJDK の Base64 デコーダーに影響し、リモートコード実行を可能にします。悪用の可否は環境次第ですが、OpenJDK は Keycloak、Jira、Jenkins、Kafka、Solr などに組み込まれています。CERT-FR は CPU フラグを確認するコマンドを示し、修正パッチの適用を求めています。",
+    "zh": "CVE-2026-114938（java4shell）影响配备 AVX-512 VBMI 的 x86-64 CPU 上 OpenJDK 的 Base64 解码器，可导致远程代码执行。能否利用需视具体情况而定，但 OpenJDK 内嵌于 Keycloak、Jira、Jenkins、Kafka、Solr 等产品中。CERT-FR 提供了检查 CPU 标志的命令，并要求安装补丁。"
+   },
+   "reason": {
+    "fr": "Alerte CERT-FR en cours, RCE dans OpenJDK présent dans Jenkins, Kafka, Elasticsearch…",
+    "en": "Ongoing CERT-FR alert, RCE in OpenJDK, which ships in Jenkins, Kafka, Elasticsearch…",
+    "ja": "CERT-FR の継続中のアラート。Jenkins、Kafka、Elasticsearch などに含まれる OpenJDK の RCE。",
+    "zh": "CERT-FR 当前生效的警报，涉及 Jenkins、Kafka、Elasticsearch 等所内置的 OpenJDK 中的远程代码执行漏洞。"
+   }
+  },
+  {
+   "id": "cyber-0dcd44088c",
+   "topic": "cyber",
+   "date": "2026-11-18",
+   "time": "00:00",
+   "source": "CERT-FR",
+   "lang": "fr",
+   "title": "CERTFR-2026-ALE-017 : Multiples vulnérabilités dans F5 NGINX",
+   "url": "https://cert.cyber.gouv.fr/alerte/CERTFR-2026-ALE-017/",
+   "note": 5,
+   "summary": {
+    "fr": "Deux failles (CVE-2026-123633, CVE-2026-123007) dans NGINX Open Source et Plus permettent une exécution de code à distance sans authentification via HTTP/2. Une preuve de concept est publique. En attendant le correctif, le CERT-FR recommande de désactiver HTTP/2 et donne les commandes de test (nginx -t, openssl s_client).",
+    "en": "Two flaws (CVE-2026-123633, CVE-2026-123007) in NGINX Open Source and Plus allow unauthenticated remote code execution over HTTP/2. A proof of concept is public. Until a patch is available, CERT-FR recommends disabling HTTP/2 and provides test commands (nginx -t, openssl s_client).",
+    "ja": "NGINX Open Source および Plus の2件の脆弱性（CVE-2026-123633、CVE-2026-123007）により、HTTP/2 経由で認証なしのリモートコード実行が可能です。概念実証（PoC）が公開されています。修正が出るまで、CERT-FR は HTTP/2 の無効化を推奨し、確認用コマンド（nginx -t、openssl s_client）を示しています。",
+    "zh": "NGINX Open Source 和 Plus 中的两个漏洞（CVE-2026-123633、CVE-2026-123007）允许通过 HTTP/2 进行无需认证的远程代码执行。概念验证代码已公开。在补丁发布前，CERT-FR 建议禁用 HTTP/2，并给出了测试命令（nginx -t、openssl s_client）。"
+   },
+   "reason": {
+    "fr": "Alerte CERT-FR en cours, RCE non authentifiée via HTTP/2 avec preuve de concept publique",
+    "en": "Ongoing CERT-FR alert, unauthenticated RCE over HTTP/2 with a public proof of concept",
+    "ja": "CERT-FR の継続中のアラート。公開 PoC のある HTTP/2 経由の認証不要 RCE",
+    "zh": "CERT-FR 当前生效的警报，通过 HTTP/2 的无认证远程代码执行，且已有公开的概念验证"
+   }
+  },
+  {
+   "id": "ia-acdaad578a",
+   "topic": "ia",
+   "date": "2026-11-17",
+   "time": "23:52",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "External sandboxes for coding agents",
+   "url": "https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/",
+   "note": 4,
+   "summary": {
+    "fr": "Simon Willison propose le motif « sandbox externe » : l'agent reste dehors, le code qu'il lance s'exécute dans un bac à sable (v86/WebAssembly, Apple Containers ou QEMU). Un proxy à liste blanche filtre les hôtes joignables et remplace les identifiants sans les exposer à l'agent.",
+    "en": "Simon Willison proposes the \"external sandbox\" pattern: the agent stays outside, while the code it launches runs in a sandbox (v86/WebAssembly, Apple Containers or QEMU). An allowlist proxy filters reachable hosts and substitutes credentials without exposing them to the agent.",
+    "ja": "Simon Willison は「外部サンドボックス」パターンを提案しています。エージェント自体は外に置き、エージェントが起動したコードをサンドボックス（v86/WebAssembly、Apple Containers、QEMU）内で実行します。許可リスト方式のプロキシが接続先ホストを制限し、認証情報をエージェントに見せずに差し替えます。",
+    "zh": "Simon Willison 提出了“外部沙箱”模式：智能体本身留在外部，它启动的代码在沙箱（v86/WebAssembly、Apple Containers 或 QEMU）中运行。白名单代理会过滤可访问的主机，并在不向智能体暴露凭据的情况下替换凭据。"
+   },
+   "reason": {
+    "fr": "Approche concrète et open source pour isoler le code exécuté par les agents IA",
+    "en": "Concrete, open-source approach to isolating code run by AI agents",
+    "ja": "AI エージェントが実行するコードを隔離するための具体的なオープンソースの手法",
+    "zh": "隔离 AI 智能体所执行代码的具体开源方案"
+   }
+  },
+  {
+   "id": "ia-2a139dc941",
+   "topic": "ia",
+   "date": "2026-11-17",
+   "time": "23:38",
+   "source": "Simon Willison",
+   "lang": "fr",
+   "title": "GPT‑6.2 Astra and GPT‑6.2 Sol",
+   "url": "https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/",
+   "note": 4,
+   "summary": {
+    "fr": "OpenAI sort GPT-6.2 Astra (modèle frontière) et GPT-6.2 Sol (modèle courant). Astra baisse de 20 % (8 $/40 $ le million de tokens), avec un cache bien moins cher, utile pour les agents longs. Simon Willison les teste et les juge en retrait face à Claude Fable 5.2 et Gemini 4 Carbon sur son benchmark.",
+    "en": "OpenAI releases GPT-6.2 Astra (frontier model) and GPT-6.2 Sol (everyday model). Astra is 20% cheaper ($8/$40 per million tokens), with much cheaper caching, useful for long-running agents. Simon Willison tests them and finds them behind Claude Fable 5.2 and Gemini 4 Carbon on his benchmark.",
+    "ja": "OpenAI が GPT-6.2 Astra（フロンティアモデル）と GPT-6.2 Sol（標準モデル）をリリース。Astra は 20% 値下げ（100 万トークンあたり 8 ドル／40 ドル）され、キャッシュも大幅に安くなり、長時間動くエージェントに有用です。Simon Willison はこれらを試し、自身のベンチマークでは Claude Fable 5.2 や Gemini 4 Carbon に劣ると評価しています。",
+    "zh": "OpenAI 发布 GPT-6.2 Astra（前沿模型）和 GPT-6.2 Sol（日常模型）。Astra 降价 20%（每百万 token 8 美元/40 美元），缓存也便宜得多，适合长时间运行的智能体。Simon Willison 对其进行了测试，认为在他的基准测试中不及 Claude Fable 5.2 和 Gemini 4 Carbon。"
+   },
+   "reason": {
+    "fr": "Sortie de nouveaux modèles OpenAI avec analyse prix et tests indépendants",
+    "en": "Release of new OpenAI models with pricing analysis and independent tests",
+    "ja": "価格分析と独自テスト付きの OpenAI 新モデルのリリース",
+    "zh": "OpenAI 新模型发布，附价格分析和独立测试"
+   }
+  },
+  {
+   "id": "dev-e2c93b2ad7",
+   "topic": "dev",
+   "date": "2026-11-17",
+   "time": "19:20",
+   "source": "GitHub Engineering",
+   "lang": "fr",
+   "title": "Building the Agent Host Protocol for sessions that continue across devices",
+   "url": "https://github.blog/engineering/engineering-principles/building-the-agent-host-protocol-for-sessions-that-continue-across-devices/",
+   "note": 3,
+   "summary": {
+    "fr": "GitHub présente l'Agent Host Protocol, standard ouvert né dans VS Code, qui découple les sessions d'agents de l'éditeur. Une session Copilot peut ainsi continuer entre VS Code, l'app, le mobile et le cloud sans intégration spécifique par client.",
+    "en": "GitHub presents the Agent Host Protocol, an open standard born in VS Code that decouples agent sessions from the editor. A Copilot session can thus continue across VS Code, the app, mobile and the cloud without client-specific integration.",
+    "ja": "GitHub が、VS Code から生まれたオープン標準 Agent Host Protocol を紹介。エージェントのセッションをエディタから切り離します。これにより Copilot のセッションを、クライアントごとの個別連携なしに VS Code、アプリ、モバイル、クラウドの間で継続できます。",
+    "zh": "GitHub 介绍了源自 VS Code 的开放标准 Agent Host Protocol，它将智能体会话与编辑器解耦。这样，Copilot 会话无需针对各客户端单独集成，即可在 VS Code、应用、移动端和云端之间延续。"
+   },
+   "reason": {
+    "fr": "Retour d'expérience d'architecture, protocole ouvert, mais orienté produit Copilot",
+    "en": "Architecture write-up, open protocol, but focused on the Copilot product",
+    "ja": "アーキテクチャの事例紹介。オープンなプロトコルだが Copilot 製品寄り",
+    "zh": "架构经验分享，协议开放，但偏向 Copilot 产品"
+   }
+  },
   {
    "id": "cyber-9dbfccbe18",
    "topic": "cyber",
@@ -464,52 +671,6 @@
    }
   },
   {
-   "id": "ia-cd6ab167aa",
-   "topic": "ia",
-   "date": "2026-10-27",
-   "time": "17:00",
-   "source": "Google DeepMind",
-   "lang": "fr",
-   "title": "Introducing Genie 4",
-   "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-genie-4/",
-   "note": 4,
-   "summary": {
-    "fr": "Genie 4 génère des mondes interactifs en temps réel, modifiables en langage naturel (caméra, météo, personnages), avec audio généré en direct. Il s'appuie sur la famille Gemini. Accès limité à des testeurs, puis aux abonnés Google AI Ultra et à certains partenaires API.",
-    "en": "Genie 4 generates interactive worlds in real time that can be modified in natural language (camera, weather, characters), with audio generated live. It builds on the Gemini family. Access is limited to testers, then to Google AI Ultra subscribers and some API partners.",
-    "ja": "Genie 4はインタラクティブな世界をリアルタイムで生成し、自然言語で変更できる（カメラ、天候、キャラクター）。音声もその場で生成される。Geminiファミリーを基盤としている。利用はまずテスター限定で、その後Google AI Ultraの加入者と一部のAPIパートナーに提供される。",
-    "zh": "Genie 4 能实时生成可交互的世界，并可用自然语言进行修改（镜头、天气、角色），音频也实时生成。它基于 Gemini 系列模型。目前仅限测试人员使用，之后将开放给 Google AI Ultra 订阅用户和部分 API 合作伙伴。"
-   },
-   "reason": {
-    "fr": "Annonce importante (modèle de monde), mais discours promotionnel et accès restreint",
-    "en": "Important announcement (world model), but promotional tone and restricted access",
-    "ja": "重要な発表（ワールドモデル）だが、宣伝的な論調でアクセスも限定的",
-    "zh": "重要发布（世界模型），但宣传色彩浓厚且访问受限"
-   }
-  },
-  {
-   "id": "ia-51b6dc0210",
-   "topic": "ia",
-   "date": "2026-10-27",
-   "time": "00:53",
-   "source": "Simon Willison",
-   "lang": "fr",
-   "title": "GPT-6.1 Terra",
-   "url": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
-   "note": 3,
-   "summary": {
-    "fr": "OpenAI sort GPT-6.1 Terra, modèle intermédiaire orienté raisonnement visuel, usage de l'ordinateur et rédaction. Prix : 1 $ / million de tokens en entrée, 5 $ en sortie. Simon Willison note un positionnement milieu de gamme qui complique le choix entre modèles.",
-    "en": "OpenAI releases GPT-6.1 Terra, a mid-tier model focused on visual reasoning, computer use and writing. Price: $1 per million input tokens, $5 for output. Simon Willison notes its mid-range positioning, which makes choosing between models harder.",
-    "ja": "OpenAIは、視覚的推論、コンピューター操作、文章作成に重点を置いた中間モデルGPT-6.1 Terraを公開した。価格は入力100万トークンあたり1ドル、出力は5ドル。Simon Willisonは、その中価格帯の位置づけによってモデル選びが難しくなると指摘している。",
-    "zh": "OpenAI 发布了 GPT-6.1 Terra，这是一款侧重视觉推理、计算机操作和写作的中端模型。价格：输入每百万 token 1 美元，输出 5 美元。Simon Willison 指出，其中端定位让模型之间的选择更加困难。"
-   },
-   "reason": {
-    "fr": "Nouveau modèle OpenAI avec prix et premier test, mais billet court",
-    "en": "New OpenAI model with pricing and a first test, but a short post",
-    "ja": "価格と初回テストを含むOpenAIの新モデルだが、記事は短い",
-    "zh": "OpenAI 新模型，附有价格和初步测试，但文章较短"
-   }
-  },
-  {
    "id": "dev-d4fc15392e",
    "topic": "dev",
    "date": "2026-10-26",
@@ -530,167 +691,6 @@
     "en": "Hands-on evaluation of a tool, concrete feedback from experience",
     "ja": "ツールの実践的な評価で、具体的な体験談",
     "zh": "对工具的实际评测，具体的实践经验"
-   }
-  },
-  {
-   "id": "cyber-eff38b7938",
-   "topic": "cyber",
-   "date": "2026-10-26",
-   "time": "00:00",
-   "source": "CERT-FR",
-   "lang": "fr",
-   "title": "Bulletin d'actualité CERTFR-2026-ACT-045 (semaine 43)",
-   "url": "https://cert.cyber.gouv.fr/actualite/CERTFR-2026-ACT-045/",
-   "note": 4,
-   "summary": {
-    "fr": "Récapitulatif des failles critiques du 19 au 25/10 : HPE Aruba AOS (une vingtaine de CVE, RCE), Cisco UCM/Unity, SolarWinds Serv-U, F5 NGINX, Apache Tomcat. Mise à jour de l'alerte en cours CERTFR-2026-ALE-014 (PHP) : preuves de concept et tentatives d'exploitation observées le 26/10. Liste aussi des failles déjà exploitées (Arista VeloCloud, Collabora Online, Plex).",
-    "en": "Roundup of critical vulnerabilities from 19 to 25 October: HPE Aruba AOS (around twenty CVEs, RCE), Cisco UCM/Unity, SolarWinds Serv-U, F5 NGINX, Apache Tomcat. Update to the ongoing alert CERTFR-2026-ALE-014 (PHP): proofs of concept and exploitation attempts observed on 26 October. It also lists vulnerabilities already being exploited (Arista VeloCloud, Collabora Online, Plex).",
-    "ja": "10月19日〜25日の重大な脆弱性のまとめ：HPE Aruba AOS（約20件のCVE、RCE）、Cisco UCM/Unity、SolarWinds Serv-U、F5 NGINX、Apache Tomcat。進行中のアラートCERTFR-2026-ALE-014（PHP）の更新：10月26日に概念実証と悪用の試みが確認された。すでに悪用されている脆弱性（Arista VeloCloud、Collabora Online、Plex）も掲載している。",
-    "zh": "10 月 19 日至 25 日严重漏洞汇总：HPE Aruba AOS（约二十个 CVE，远程代码执行）、Cisco UCM/Unity、SolarWinds Serv-U、F5 NGINX、Apache Tomcat。更新了正在进行的警报 CERTFR-2026-ALE-014（PHP）：10 月 26 日观察到概念验证和利用尝试。还列出了已被利用的漏洞（Arista VeloCloud、Collabora Online、Plex）。"
-   },
-   "reason": {
-    "fr": "Synthèse officielle des vulnérabilités critiques de la semaine, utile en SISR (heure de publication non indiquée)",
-    "en": "Official summary of the week's critical vulnerabilities, useful for SISR (publication time not stated)",
-    "ja": "その週の重大な脆弱性に関する公式まとめで、SISRに役立つ（公開時刻の記載なし）",
-    "zh": "本周严重漏洞的官方汇总，对 SISR 方向很有用（未注明发布时间）"
-   }
-  },
-  {
-   "id": "ia-2e71264ea8",
-   "topic": "ia",
-   "date": "2026-10-23",
-   "time": "21:40",
-   "source": "Simon Willison",
-   "lang": "fr",
-   "title": "Introducing Kimi K3.1 Pro",
-   "url": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
-   "note": 3,
-   "summary": {
-    "fr": "Moonshot lance Kimi K3.1 Pro (API, poids promis pour le 4/11/2026), à 2 $/10 $ par million de tokens. Artificial Analysis lui donne 55, juste derrière Claude Opus 5.5. Simon l'a testé à plusieurs niveaux de raisonnement.",
-    "en": "Moonshot launches Kimi K3.1 Pro (API, weights promised for 4/11/2026), at $2/$10 per million tokens. Artificial Analysis gives it 55, just behind Claude Opus 5.5. Simon tested it at several reasoning levels.",
-    "ja": "MoonshotがKimi K3.1 Proを公開(API提供、重みは2026年11月4日に公開予定)、価格は100万トークンあたり2ドル/10ドル。Artificial Analysisのスコアは55で、Claude Opus 5.5のすぐ後ろ。Simonは複数の推論レベルで試した。",
-    "zh": "Moonshot发布Kimi K3.1 Pro（提供API，权重承诺于2026年11月4日公开），价格为每百万token 2美元/10美元。Artificial Analysis给出55分，仅次于Claude Opus 5.5。Simon在多个推理级别下进行了测试。"
-   },
-   "reason": {
-    "fr": "Nouveau modèle bientôt open-weight proche du niveau frontière",
-    "en": "New model, soon open-weight, close to frontier level",
-    "ja": "まもなくオープンウェイトとなる、フロンティア水準に近い新モデル",
-    "zh": "即将开放权重、接近前沿水平的新模型"
-   }
-  },
-  {
-   "id": "dev-19832c7e09",
-   "topic": "dev",
-   "date": "2026-10-23",
-   "time": "00:00",
-   "source": "OpenAI",
-   "lang": "fr",
-   "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)",
-   "url": "https://openai.com/index/scaling-storage-one-billion-users-part-two/",
-   "note": 4,
-   "summary": {
-    "fr": "La plateforme Habitat (Cosmos DB, 40 régions) souffrait de collisions de clés et de voisins bruyants. Conteneur partagé, QoS, cache Valkey invalidé par CDC et réécriture en Rust : latence p50 de ~120 ms à ~10 ms.",
-    "en": "The Habitat platform (Cosmos DB, 40 regions) suffered from key collisions and noisy neighbours. Shared container, QoS, a Valkey cache invalidated by CDC and a rewrite in Rust: p50 latency down from ~120 ms to ~10 ms.",
-    "ja": "Habitatプラットフォーム(Cosmos DB、40リージョン)はキーの衝突とノイジーネイバーに悩まされていた。共有コンテナ、QoS、CDCで無効化されるValkeyキャッシュ、Rustでの書き直しにより、p50レイテンシは約120ミリ秒から約10ミリ秒に。",
-    "zh": "Habitat平台（Cosmos DB，40个区域）曾受键冲突和“吵闹邻居”问题困扰。通过共享容器、QoS、由CDC失效的Valkey缓存以及用Rust重写，p50延迟从约120毫秒降至约10毫秒。"
-   },
-   "reason": {
-    "fr": "Retour d'expérience stockage distribué à l'échelle mondiale",
-    "en": "Lessons learned on distributed storage at global scale",
-    "ja": "グローバル規模の分散ストレージに関する経験報告",
-    "zh": "全球规模分布式存储的经验总结"
-   }
-  },
-  {
-   "id": "dev-0cb5c0503a",
-   "topic": "dev",
-   "date": "2026-10-22",
-   "time": "00:00",
-   "source": "apalrd.net",
-   "lang": "fr",
-   "title": "Full Disk Encryption on Fedora w/ TPM2",
-   "url": "https://www.apalrd.net/posts/2026/ent_luks/",
-   "note": 5,
-   "summary": {
-    "fr": "Chiffrement LUKS2 avec slots passphrase, keyfile et clé de récupération, puis déverrouillage auto via systemd-cryptenroll (TPM2, PCR 7) et dracut. Points d'attention : Secure Boot, sauvegarde d'en-tête, garder la passphrase de secours.",
-    "en": "LUKS2 encryption with passphrase, keyfile and recovery key slots, then automatic unlocking via systemd-cryptenroll (TPM2, PCR 7) and dracut. Points to watch: Secure Boot, header backup, keeping the fallback passphrase.",
-    "ja": "パスフレーズ、キーファイル、リカバリーキーのスロットを使ったLUKS2暗号化と、systemd-cryptenroll(TPM2、PCR 7)およびdracutによる自動解除。注意点:Secure Boot、ヘッダーのバックアップ、予備のパスフレーズを残しておくこと。",
-    "zh": "使用口令、密钥文件和恢复密钥槽位进行LUKS2加密，然后通过systemd-cryptenroll（TPM2，PCR 7）和dracut实现自动解锁。注意事项：Secure Boot、头部备份、保留备用口令。"
-   },
-   "reason": {
-    "fr": "Tuto pratique LUKS2 + TPM2 directement utile en SISR",
-    "en": "Practical LUKS2 + TPM2 tutorial directly useful in SISR",
-    "ja": "SISRですぐに役立つLUKS2+TPM2の実践チュートリアル",
-    "zh": "实用的LUKS2 + TPM2教程，对SISR方向直接有用"
-   }
-  },
-  {
-   "id": "dev-d345d7957a",
-   "topic": "dev",
-   "date": "2026-10-21",
-   "time": "18:00",
-   "source": "GitHub Engineering",
-   "lang": "fr",
-   "title": "The bridge to agent-scale Git infrastructure",
-   "url": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/",
-   "note": 4,
-   "summary": {
-    "fr": "GitHub a migré la quasi-totalité des dépôts vers Azure et remplacé le verrou par dépôt par des quorums par référence, plus du stockage objet. Résultat : débit d'écriture x3-4 ; leçon : ne pas sérialiser ce qui n'en a pas besoin.",
-    "en": "GitHub migrated almost all repositories to Azure and replaced the per-repository lock with per-reference quorums, plus object storage. Result: write throughput ×3–4; lesson: don’t serialise what doesn’t need it.",
-    "ja": "GitHubはほぼすべてのリポジトリをAzureに移行し、リポジトリ単位のロックを参照単位のクォーラムとオブジェクトストレージに置き換えた。結果、書き込みスループットは3〜4倍に。教訓:直列化が不要なものを直列化しないこと。",
-    "zh": "GitHub将几乎所有代码库迁移到Azure，并用按引用的仲裁机制加对象存储取代了按仓库加锁。结果：写入吞吐量提升3至4倍；经验：不要串行化无需串行化的操作。"
-   },
-   "reason": {
-    "fr": "Retour d'expérience d'architecture à très grande échelle",
-    "en": "Lessons learned on architecture at very large scale",
-    "ja": "超大規模アーキテクチャに関する経験報告",
-    "zh": "超大规模架构的经验总结"
-   }
-  },
-  {
-   "id": "cyber-24755a352d",
-   "topic": "cyber",
-   "date": "2026-10-21",
-   "time": "17:26",
-   "source": "Krebs on Security",
-   "lang": "fr",
-   "title": "Widespread PHP Flaw May Cause Many Site Outages Today",
-   "url": "https://krebsonsecurity.com/2026/10/widespread-php-flaw-may-cause-many-site-outages-today/",
-   "note": 5,
-   "summary": {
-    "fr": "Deux RCE (CVE-2026-109618/109619, « PHP2Shell ») touchent PHP 5.4 et plus, exploits publics et exploitation active. Corrigé en 8.5.12, 8.4.27, 8.3.36 et 8.2.35 : mise à jour urgente. Alerte CERTFR-2026-ALE-014 en cours.",
-    "en": "Two RCEs (CVE-2026-109618/109619, “PHP2Shell”) affect PHP 5.4 and later, with public exploits and active exploitation. Fixed in 8.5.12, 8.4.27, 8.3.36 and 8.2.35: urgent update. Alert CERTFR-2026-ALE-014 ongoing.",
-    "ja": "2件のRCE(CVE-2026-109618/109619、「PHP2Shell」)がPHP 5.4以降に影響し、公開エクスプロイトが存在し実際に悪用されている。8.5.12、8.4.27、8.3.36、8.2.35で修正済みで、早急な更新が必要。警報CERTFR-2026-ALE-014が発令中。",
-    "zh": "两个远程代码执行漏洞（CVE-2026-109618/109619，“PHP2Shell”）影响PHP 5.4及以上版本，漏洞利用代码已公开且正被积极利用。已在8.5.12、8.4.27、8.3.36和8.2.35中修复：需紧急更新。CERTFR-2026-ALE-014警报正在进行中。"
-   },
-   "reason": {
-    "fr": "Faille critique exploitée sur tous les serveurs PHP ≥ 5.4, alerte CERT-FR en cours",
-    "en": "Critical flaw exploited on all PHP ≥ 5.4 servers, ongoing CERT-FR alert",
-    "ja": "PHP 5.4以上の全サーバーで悪用されている重大な脆弱性、CERT-FR警報発令中",
-    "zh": "所有PHP ≥ 5.4服务器上被利用的严重漏洞，CERT-FR警报正在进行中"
-   }
-  },
-  {
-   "id": "cyber-7fb0596b6d",
-   "topic": "cyber",
-   "date": "2026-10-21",
-   "time": "16:28",
-   "source": "ZATAZ",
-   "lang": "fr",
-   "title": "LibreOffice et OpenOffice piégés par des tableurs",
-   "url": "https://www.zataz.com/libreoffice-et-openoffice-pieges-par-des-tableurs/",
-   "note": 4,
-   "summary": {
-    "fr": "Des tableurs piégés exécutent du code Java via les connexions BDD si Java est activé. LibreOffice (CVE-2026-63277) corrigé en 26.2.5/26.8.0 ; OpenOffice ≤ 4.1.16 (CVE-2026-59265) : désactiver Java en attendant 4.1.17.",
-    "en": "Booby-trapped spreadsheets run Java code through database connections if Java is enabled. LibreOffice (CVE-2026-63277) fixed in 26.2.5/26.8.0; OpenOffice ≤ 4.1.16 (CVE-2026-59265): disable Java while waiting for 4.1.17.",
-    "ja": "細工された表計算ファイルが、Javaが有効な場合にデータベース接続を介してJavaコードを実行する。LibreOffice(CVE-2026-63277)は26.2.5/26.8.0で修正済み。OpenOffice 4.1.16以下(CVE-2026-59265)は、4.1.17が出るまでJavaを無効にすること。",
-    "zh": "恶意电子表格在启用Java时通过数据库连接执行Java代码。LibreOffice（CVE-2026-63277）已在26.2.5/26.8.0中修复；OpenOffice ≤ 4.1.16（CVE-2026-59265）：在4.1.17发布前请禁用Java。"
-   },
-   "reason": {
-    "fr": "Vulnérabilité poste de travail concrète avec correctifs et contournement",
-    "en": "Concrete workstation vulnerability with patches and a workaround",
-    "ja": "修正版と回避策が示された、具体的な端末の脆弱性",
-    "zh": "具体的终端漏洞，附有补丁和临时解决方法"
    }
   }
  ]
